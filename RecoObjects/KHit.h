@@ -134,6 +134,9 @@ namespace trkf {
     /// Update track method.
     void update(KETrack& tre) const;
 
+    /// Return dimension of measurement (template parameter N).
+    int getNMeas() const;
+
     // Pure virtual methods.
 
     /// Calculate prediction function (return via arguments).
@@ -363,6 +366,13 @@ namespace trkf {
 
     tre.setVector(newvec);
     tre.setError(newerr);
+  }
+
+  /// Return dimension of measurement (template parameter N).
+  template <int N>
+  int KHit<N>::getNMeas() const
+  {
+    return N;
   }
 
   /// Printout

@@ -149,6 +149,7 @@ namespace trkf {
     // Loop over KHitTracks.
 
     unsigned int n = 0;
+    int nmeas = 0;
     for(std::multimap<double, KHitTrack>::const_iterator itr = fTrackMap.begin();
 	itr != fTrackMap.end(); ++itr, ++n) {
       const KHitTrack& trh = (*itr).second;
@@ -214,11 +215,23 @@ namespace trkf {
 	  }
 	}
       }
+
+      // Count number of measurements.
+
+      nmeas += phit->getNMeas();
     }
+
+    // Get track chisquare from starting track fit.
+
+    double chisq = startTrack().getChisq();
+
+    // We currently assume zero time.
+
+    double trktime = 0.;
 
     // Fill track.
 
-    track = recob::Track(xyz, dxdydz, cov, dqdx, momentum, id);
+    track = recob::Track(xyz, dxdydz, cov, dqdx, momentum, id, recob::Track::HIT, 0, nmeas, chisq, trktime);
   }
 
   /// Fill a PtrVector of Hits.

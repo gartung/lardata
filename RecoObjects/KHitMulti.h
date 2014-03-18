@@ -115,6 +115,9 @@ namespace trkf {
     /// Update track method.
     void update(KETrack& tre) const;
 
+    /// Return dimension of measurement (template parameter N).
+    int getNMeas() const {return fMeasDim;}
+
     /// Printout
     virtual std::ostream& Print(std::ostream& out, bool doTitle = true) const;
 

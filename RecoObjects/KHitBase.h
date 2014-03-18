@@ -26,6 +26,8 @@
 /// 3.  Update method, in which the track object is passed in and is
 ///     updated according to the Kalman updating formula.
 ///
+/// 4.  Accessor for returning dimension of measurement.
+///
 /// This class does not include in its interface anything having to do
 /// with concrete measurements, predictions, or residuals, or anything
 /// with a variable dimension.
@@ -98,6 +100,10 @@ namespace trkf {
 
     /// Update track method.
     virtual void update(KETrack& tre) const = 0;
+
+    /// Return dimension of measurement.
+    virtual int getNMeas() const = 0;
+    
 
     /// Printout
     virtual std::ostream& Print(std::ostream& out, bool doTitle = true) const;
