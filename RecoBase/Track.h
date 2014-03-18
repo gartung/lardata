@@ -45,17 +45,33 @@ namespace recob {
                                                         ///< determined from a fit. Intermediate points
                                                         ///< can be added if desired
     int                                 fID;            ///< track's ID
+    int                                 fTrackType;     ///< Track type.
+    int                                 fTrackQuality;  ///< Track quality word.
+    int                                 fNMeas;         ///< Number of measurements on track.
+    double                              fChisq;         ///< Track chisquare
+    double                              fTime;          ///< Track time (ticks).
 
 #ifndef __GCCXML__
 
   public:
+
+    //Enums
+    // This enum should be set by the producer module that geneates the track, and in 
+    // particular identifies whether each trajectory point represents a Hit, a space point
+    // or a seed.
+    enum TrackType {UNKNOWN, SPS, HIT, BEZIER};
 
     // Bezier-like constructor
     Track(std::vector<TVector3>               const& xyz,
 	  std::vector<TVector3>               const& dxdydz,
 	  std::vector< std::vector <double> > dQdx = std::vector< std::vector<double> >(0),
 	  std::vector<double>                 fitMomentum = std::vector<double>(2, util::kBogusD),
-	  int                                 ID = -1);
+	  int                                 ID = -1,
+	  int                                 fTrackType = BEZIER,
+          int                                 fTrackQuality = 0,
+	  int                                 nmeas = -1,
+	  double                              chisq = -1.,
+	  double                              trktime = 0.);
     
     // Kalman-like constructor
     Track(std::vector<TVector3>        const& xyz,
@@ -63,7 +79,12 @@ namespace recob {
 	  std::vector<TMatrixD >       const& cov,
 	  std::vector< std::vector <double> > dQdx = std::vector< std::vector<double> >(0),
 	  std::vector<double>                 fitMomentum = std::vector<double>(2, util::kBogusD),
-	  int                                 ID = -1);
+	  int                                 ID = -1,
+	  int                                 fTrackType = UNKNOWN,
+          int                                 fTrackQuality = 0,
+	  int                                 nmeas = -1,
+	  double                              chisq = -1.,
+	  double                              trktime = 0.);
 
     void            Extent(std::vector<double> &xyzStart,
 			   std::vector<double> &xyzEnd)        const;
@@ -72,6 +93,12 @@ namespace recob {
     double          ProjectedLength(geo::View_t view)          const;
     double          PitchInView(geo::View_t view)              const;
     int             ID()                                       const;
+    int             TrackType()                                const;
+    int             TrackQuality()                             const;
+    int             NMeas()                                    const;
+    double          Chisq()                                    const;
+    double          ChisqDOF()                                 const;
+    double          Time()                                     const;
 
 
     // A trajectory point is the combination of a position vector
@@ -122,6 +149,11 @@ namespace recob {
 #ifndef __GCCXML__
 
 inline int             recob::Track::ID()                               const { return fID;                  }
+inline int             recob::Track::TrackType()                        const { return fTrackType;           }
+inline int             recob::Track::TrackQuality()                     const { return fTrackQuality;        }
+inline int             recob::Track::NMeas()                            const { return fNMeas;               }
+inline double          recob::Track::Chisq()                            const { return fChisq;               }
+inline double          recob::Track::Time()                             const { return fTime;                }
 inline size_t          recob::Track::NumberTrajectoryPoints()           const { return fDir.size();          }
 inline size_t          recob::Track::NumberCovariance()                 const { return fCov.size();          }
 inline size_t          recob::Track::NumberFitMomentum()                const { return fFitMomentum.size();  }

@@ -31,12 +31,22 @@ namespace recob{
 	       std::vector<TVector3>              const& dxdydz,
 	       std::vector<std::vector <double> >        dQdx,
 	       std::vector<double>                       fitMomentum,
-               int                                       ID)
+               int                                       ID,
+               int                                       trackType,
+               int                                       trackQuality,
+	       int                                       nmeas,
+	       double                                    chisq,
+	       double                                    trktime)
     : fXYZ (xyz)
     , fDir (dxdydz)
     , fdQdx(dQdx)
     , fFitMomentum(fitMomentum)
     , fID  (ID)
+    , fTrackType(trackType)
+    , fTrackQuality(trackQuality)
+    , fNMeas(nmeas)
+    , fChisq(chisq)
+    , fTime (trktime)
   {
     fCov.resize(0);
 
@@ -53,13 +63,23 @@ namespace recob{
 	       std::vector<TMatrixT<double> >      const& cov,
 	       std::vector< std::vector <double> >        dQdx,
 	       std::vector<double>                        fitMomentum,
-	       int                                        ID)
+	       int                                        ID,
+               int                                        trackType,
+               int                                        trackQuality,
+	       int                                        nmeas,
+	       double                                     chisq,
+	       double                                     trktime)
     : fXYZ  (xyz)
     , fDir  (dxdydz)
     , fCov  (cov)
     , fdQdx (dQdx)
     , fFitMomentum(fitMomentum)
     , fID   (ID)
+    , fTrackType(trackType)
+    , fTrackQuality(trackQuality)
+    , fNMeas(nmeas)
+    , fChisq(chisq)
+    , fTime (trktime)
   {
     if(fXYZ.size() != fDir.size() || fXYZ.size() < 1)
       throw cet::exception("Track Constructor") << "Position, direction vectors "
@@ -223,6 +243,16 @@ namespace recob{
   }
 
   //----------------------------------------------------------------------
+  // Return track chisquare per degree-of-freedom.
+  double Track::ChisqDOF() const
+  {
+    double result = -1.;
+    if(fNMeas > 5)
+      result = fChisq / (fNMeas - 5);
+    return result;
+  }
+
+  //----------------------------------------------------------------------
   // ostream operator.
   //
   std::ostream& operator<< (std::ostream& stream, Track const& a)
@@ -232,7 +262,8 @@ namespace recob{
     //a.Direction(dcoss,dcose);
     stream << std::setiosflags(std::ios::fixed) << std::setprecision(3)
 	   << "\n\n Track ID "       << std::setw(4) << std::right << a.ID()
-	   << " Theta = "            << std::setw(6) << std::right << a.Theta()
+           << "\n Chi/DOF = "        << std::setw(6) << std::right << a.ChisqDOF()
+	   << "\n Theta = "          << std::setw(6) << std::right << a.Theta()
 	   << " Phi = "              << std::setw(6) << std::right << a.Phi()
 	   << " \nStartCosines : ( " << &a.VertexDirection()
 	   << ")  EndCosines : ( "   << &a.EndDirection()

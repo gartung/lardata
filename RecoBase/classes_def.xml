@@ -24,7 +24,8 @@
  <class name="recob::Shower"           ClassVersion="11"	       	       		      >
   <version ClassVersion="11" checksum="1998712487"/>
  </class>
- <class name="recob::Track"            ClassVersion="14"	       	       		      >
+ <class name="recob::Track"            ClassVersion="15"	       	       		      >
+  <version ClassVersion="15" checksum="2640518383"/>
   <version ClassVersion="14" checksum="2345363916"/>
  </class>
  <class name="recob::Seed"             ClassVersion="12"	       	       		      >
