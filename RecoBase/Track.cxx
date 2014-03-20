@@ -23,6 +23,12 @@ namespace recob{
 
   //----------------------------------------------------------------------
   Track::Track()
+    : fID(0)
+    , fTrackType(UNKNOWN)
+    , fTrackQuality(0)
+    , fNMeas(0)
+    , fChisq(0.)
+    , fTime(0.)
   {
   }
 
