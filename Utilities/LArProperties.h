@@ -58,7 +58,7 @@ namespace util{
       double ScintBirksConstant()   { return fScintBirksConstant;   }
 
       bool ScintByParticleType()    { return fScintByParticleType;  }
-
+	bool ExtraMatProperties() { return fExtraMatProperties; }
       double ScintYield()           { return fScintYield;           }
       double ScintYieldRatio()      { return fScintYieldRatio;      }
 
@@ -74,19 +74,24 @@ namespace util{
       double ElectronScintYieldRatio(){ return fElectronScintYieldRatio;  }
       double AlphaScintYield()        { return fAlphaScintYield;          }
       double AlphaScintYieldRatio()   { return fAlphaScintYieldRatio;     }
-
+	double TpbTimeConstant()   { return fTpbTimeConstant;     }
       bool CerenkovLightEnabled()     { return fEnableCerenkovLight;      }
+      bool SimpleBoundary()     { return fSimpleBoundary;      }
+      bool SimpleScint()     { return fSimpleScint;      }
 
       
       std::map<double, double>  SlowScintSpectrum();   
       std::map<double, double>  FastScintSpectrum();
+      std::map<double, double>  TpbAbs();   
+      std::map<double, double>  TpbEm();
       std::map<double, double>  RIndexSpectrum();
       std::map<double, double>  AbsLengthSpectrum();
       std::map<double, double>  RayleighSpectrum();
 
       std::map<std::string, std::map<double, double> > SurfaceReflectances();
       std::map<std::string, std::map<double, double> > SurfaceReflectanceDiffuseFractions();
-      
+      std::map<std::string, std::map<double, double> > SurfaceTpbReflectances();
+      std::map<std::string, std::map<double, double> > SurfaceReflectanceTpbDiffuseFractions();
 
     private:
 
@@ -142,7 +147,7 @@ namespace util{
       double fElectronScintYieldRatio; 
       double fAlphaScintYield;
       double fAlphaScintYieldRatio; 
-
+	double fTpbTimeConstant;
       double fScintYield;
       double fScintResolutionScale;
       double fScintFastTimeConst;
@@ -151,13 +156,23 @@ namespace util{
       double fScintBirksConstant;
 
       bool fEnableCerenkovLight;
+      bool fExtraMatProperties;
+      bool fSimpleBoundary;
+      bool fSimpleScint;
+
 
       std::vector<std::string>          fReflectiveSurfaceNames;
       std::vector<double>               fReflectiveSurfaceEnergies;
       std::vector<std::vector<double> > fReflectiveSurfaceReflectances;
       std::vector<std::vector<double> > fReflectiveSurfaceDiffuseFractions;
-      
-      
+      std::vector<double>               fTpbEmmisionEnergies;
+      std::vector<double>               fTpbEmmisionSpectrum;
+      std::vector<double>               fTpbAbsorptionEnergies;
+      std::vector<double>               fTpbAbsorptionSpectrum;
+      std::vector<std::string>          fReflectiveSurfaceTpbNames;
+      std::vector<double>               fReflectiveSurfaceTpbEnergies;
+      std::vector<std::vector<double> > fReflectiveSurfaceTpbReflectances;
+      std::vector<std::vector<double> > fReflectiveSurfaceTpbDiffuseFractions;
       
     }; // class LArProperties
 } //namespace utils

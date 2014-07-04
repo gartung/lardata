@@ -101,7 +101,9 @@ void util::LArProperties::reconfigure(fhicl::ParameterSet const& pset)
   fScintByParticleType  = pset.get<bool>("ScintByParticleType"   );
   fScintYield           = pset.get<double>("ScintYield"          );
   fScintYieldRatio      = pset.get<double>("ScintYieldRatio"     );
-
+  fExtraMatProperties      = pset.get<bool>("LoadExtraMatProperties"     );
+  fSimpleBoundary     = pset.get<bool>("SimpleBoundaryProcess");
+  fSimpleScint     = pset.get<bool>("SimpleScintillation");
   if(fScintByParticleType){
     fProtonScintYield        = pset.get<double>("ProtonScintYield"     );
     fProtonScintYieldRatio   = pset.get<double>("ProtonScintYieldRatio");
@@ -117,6 +119,20 @@ void util::LArProperties::reconfigure(fhicl::ParameterSet const& pset)
     fAlphaScintYieldRatio    = pset.get<double>("AlphaScintYieldRatio" );
   }
   
+if(fExtraMatProperties){
+
+std::cout<<"EXTRA MATERIAL PROPERTIES BEING LOADED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<std::endl;
+fTpbTimeConstant      = pset.get<double>("TpbTimeConstant"     );     
+  fTpbEmmisionEnergies       = pset.get<std::vector<double> >              ("TpbEmmisionEnergies"        );
+  fTpbEmmisionSpectrum        = pset.get<std::vector<double> >              ("TpbEmmisionSpectrum"        );
+  fTpbAbsorptionEnergies        = pset.get<std::vector<double> >              ("TpbAbsorptionEnergies"        );
+  fTpbAbsorptionSpectrum        = pset.get<std::vector<double> >              ("TpbAbsorptionSpectrum"        );
+fReflectiveSurfaceTpbNames           = pset.get<std::vector<std::string> >         ("ReflectiveSurfaceTpbNames"           );
+  fReflectiveSurfaceTpbEnergies        = pset.get<std::vector<double> >              ("ReflectiveSurfaceTpbEnergies"        );
+  fReflectiveSurfaceTpbReflectances    = pset.get<std::vector<std::vector<double> > >("ReflectiveSurfaceTpbReflectances"    );
+  fReflectiveSurfaceTpbDiffuseFractions= pset.get<std::vector<std::vector<double> > >("ReflectiveSurfaceTpbDiffuseFractions");
+}
+
   fEnableCerenkovLight  = pset.get<bool>("EnableCerenkovLight"       );
 
   fReflectiveSurfaceNames           = pset.get<std::vector<std::string> >         ("ReflectiveSurfaceNames"           );
@@ -153,7 +169,7 @@ double util::LArProperties::Efield(unsigned int planegap) const
   this->checkDBstatus();
 
   if(planegap >= fEfield.size())
-    throw cet::exception("LArProperties") << "requesting Electric field in a plane gap that is not defined\n";
+    throw cet::exception("LArProperties") << "requesting Electric field in a plane gap that is not defined";
 
   return fEfield[planegap];
 }
@@ -508,6 +524,40 @@ std::map<double, double> util::LArProperties::RayleighSpectrum()
 }
 
 //---------------------------------------------------------------------------------
+std::map<double, double> util::LArProperties::TpbAbs()
+{
+  if(fTpbAbsorptionEnergies.size()!=fTpbAbsorptionSpectrum.size()){
+    throw cet::exception("Incorrect vector sizes in LArProperties")
+      << "The vectors specifying the TpbAbsorption spectrum are "
+      << " different sizes - " << fTpbAbsorptionEnergies.size()
+      << " " << fTpbAbsorptionSpectrum.size();
+  }
+
+  std::map<double, double> ToReturn;
+  for(size_t i=0; i!=fTpbAbsorptionSpectrum.size(); ++i)
+    ToReturn[fTpbAbsorptionEnergies.at(i)]=fTpbAbsorptionSpectrum.at(i);
+
+  return ToReturn;
+}
+
+//---------------------------------------------------------------------------------
+std::map<double, double> util::LArProperties::TpbEm()
+{
+  if(fTpbEmmisionEnergies.size()!=fTpbEmmisionSpectrum.size()){
+    throw cet::exception("Incorrect vector sizes in LArProperties")
+      << "The vectors specifying the TpbEmmision spectrum are "
+      << " different sizes - " << fTpbEmmisionEnergies.size()
+      << " " << fTpbEmmisionSpectrum.size();
+  }
+
+  std::map<double, double> ToReturn;
+  for(size_t i=0; i!=fTpbEmmisionSpectrum.size(); ++i)
+    ToReturn[fTpbEmmisionEnergies.at(i)]=fTpbEmmisionSpectrum.at(i);
+
+  return ToReturn;
+}
+
+//---------------------------------------------------------------------------------
 std::map<std::string, std::map<double,double> > util::LArProperties::SurfaceReflectances()
 {
   std::map<std::string, std::map<double, double> > ToReturn;
@@ -550,6 +600,53 @@ std::map<std::string, std::map<double,double> > util::LArProperties::SurfaceRefl
   for(size_t iName=0; iName!=fReflectiveSurfaceNames.size(); ++iName)
     for(size_t iEnergy=0; iEnergy!=fReflectiveSurfaceEnergies.size(); ++iEnergy)
       ToReturn[fReflectiveSurfaceNames.at(iName)][fReflectiveSurfaceEnergies.at(iEnergy)]=fReflectiveSurfaceDiffuseFractions[iName][iEnergy];
+
+  return ToReturn;
+}
+
+//---------------------------------------------------------------------------------
+std::map<std::string, std::map<double,double> > util::LArProperties::SurfaceTpbReflectances()
+{
+  std::map<std::string, std::map<double, double> > ToReturn;
+std::cout<<"if yousee this that means you're setting tpb reflectances in a wrong way !!"<<std::endl;
+  if(fReflectiveSurfaceTpbNames.size()!=fReflectiveSurfaceTpbReflectances.size()){
+    throw cet::exception("Incorrect vector sizes in LArProperties")
+      << "The vectors specifying the surface Tpb reflectivities "
+      << "do not have consistent sizes";
+  }
+  for(size_t i=0; i!=fReflectiveSurfaceTpbNames.size(); ++i){
+    if(fReflectiveSurfaceTpbEnergies.size()!=fReflectiveSurfaceTpbReflectances.at(i).size()){
+      throw cet::exception("Incorrect vector sizes in LArProperties")
+  << "The vectors specifying the surface Tpb reflectivities do not have consistent sizes";
+    }
+  }
+  for(size_t iName=0; iName!=fReflectiveSurfaceTpbNames.size(); ++iName)
+    for(size_t iEnergy=0; iEnergy!=fReflectiveSurfaceTpbEnergies.size(); ++iEnergy)
+      ToReturn[fReflectiveSurfaceTpbNames.at(iName)][fReflectiveSurfaceTpbEnergies.at(iEnergy)]=fReflectiveSurfaceTpbReflectances[iName][iEnergy];
+
+  return ToReturn;
+
+}
+
+//---------------------------------------------------------------------------------
+std::map<std::string, std::map<double,double> > util::LArProperties::SurfaceReflectanceTpbDiffuseFractions()
+{
+  std::map<std::string, std::map<double, double> > ToReturn;
+
+  if(fReflectiveSurfaceTpbNames.size()!=fReflectiveSurfaceTpbDiffuseFractions.size()){
+    throw cet::exception("Incorrect vector sizes in LArProperties")
+      << "The vectors specifying the surface Tpb reflectivities do not have consistent sizes";
+  }
+  for(size_t i=0; i!=fReflectiveSurfaceTpbNames.size(); ++i){
+    if(fReflectiveSurfaceTpbEnergies.size()!=fReflectiveSurfaceTpbDiffuseFractions.at(i).size()){
+      throw cet::exception("Incorrect vector sizes in LArProperties")
+  << "The vectors specifying the surface Tpb reflectivities do not have consistent sizes";
+
+    }
+  }
+  for(size_t iName=0; iName!=fReflectiveSurfaceTpbNames.size(); ++iName)
+    for(size_t iEnergy=0; iEnergy!=fReflectiveSurfaceTpbEnergies.size(); ++iEnergy)
+      ToReturn[fReflectiveSurfaceTpbNames.at(iName)][fReflectiveSurfaceTpbEnergies.at(iEnergy)]=fReflectiveSurfaceTpbDiffuseFractions[iName][iEnergy];
 
   return ToReturn;
 }
