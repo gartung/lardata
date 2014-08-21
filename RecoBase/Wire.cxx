@@ -9,12 +9,6 @@
 
 #include "RecoBase/Wire.h"
 
-#include "Geometry/CryostatGeo.h"
-#include "Geometry/PlaneGeo.h"
-#include "Geometry/TPCGeo.h"
-#include "Geometry/Geometry.h"
-#include "RawData/raw.h"
-
 namespace recob{
 
   //----------------------------------------------------------------------
@@ -25,32 +19,68 @@ namespace recob{
   }
 
   //----------------------------------------------------------------------
-  Wire::Wire(
-    art::Ptr<raw::RawDigit> &rawdigit)
+  Wire::Wire(geo::View_t    view, 
+	     geo::SigType_t signaltype,
+	     uint32_t       chan,
+	     unsigned int   max_samples)
     : fSignalROI()
-    , fRawDigit(rawdigit)
+    , fView(view)
+    , fSignalType(signaltype)
+    , fChannel(chan)
+    , fMaxSamples(max_samples)
   {
+    fSignalROI.resize(fMaxSamples);
+  }
 
-    art::ServiceHandle<geo::Geometry> geo;
-    
-    fView       = geo->View(rawdigit->Channel());
-    fSignalType = geo->SignalType(rawdigit->Channel());
-    fMaxSamples = rawdigit->Samples();
+  Wire::Wire(raw::RawDigit const& rawdigit, geo::Geometry const& geo)
+    : fSignalROI()
+  {
+    fView       = geo.View(rawdigit.Channel());
+    fSignalType = geo.SignalType(rawdigit.Channel());
+    fMaxSamples = rawdigit.Samples();
     fSignalROI.resize(fMaxSamples); // "filled" with empty samples
   }
 
   //----------------------------------------------------------------------
   Wire::Wire
-    (const RegionsOfInterest_t& sigROIlist, art::Ptr<raw::RawDigit> &rawdigit)
-    : Wire(rawdigit)
+    (const RegionsOfInterest_t& sigROIlist, 
+     geo::View_t    view, 
+     geo::SigType_t signaltype,
+     uint32_t       chan,
+     unsigned int   max_samples)
+      : Wire(view,signaltype,chan,max_samples)
   {
     fSignalROI = sigROIlist;
     fSignalROI.resize(fMaxSamples); // "filled" with empty samples
   }
 
   Wire::Wire
-    (RegionsOfInterest_t&& sigROIlist, art::Ptr<raw::RawDigit> &rawdigit)
-    : Wire(rawdigit)
+    (const RegionsOfInterest_t& sigROIlist, 
+     raw::RawDigit const& rawdigit, 
+     geo::Geometry const& geo)
+      : Wire(rawdigit,geo)
+  {
+    fSignalROI = sigROIlist;
+    fSignalROI.resize(fMaxSamples); // "filled" with empty samples
+  }
+
+  Wire::Wire
+    (RegionsOfInterest_t&& sigROIlist, 
+     geo::View_t    view, 
+     geo::SigType_t signaltype,
+     uint32_t       chan,
+     unsigned int   max_samples)
+      : Wire(view,signaltype,chan,max_samples)
+  {
+    fSignalROI = sigROIlist; // should use the move assignment
+    fSignalROI.resize(fMaxSamples); // "filled" with empty samples
+  }
+
+  Wire::Wire
+    (RegionsOfInterest_t&& sigROIlist, 
+     raw::RawDigit const& rawdigit, 
+     geo::Geometry const& geo)
+      : Wire(rawdigit,geo)
   {
     fSignalROI = sigROIlist; // should use the move assignment
     fSignalROI.resize(fMaxSamples); // "filled" with empty samples

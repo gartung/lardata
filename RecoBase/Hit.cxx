@@ -7,8 +7,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 #include "RecoBase/Hit.h"
-#include "Geometry/Geometry.h"
-#include "messagefacility/MessageLogger/MessageLogger.h"
 #include "cetlib/exception.h"
 
 #include <iomanip>
@@ -43,7 +41,7 @@ namespace recob{
   }
 
   //----------------------------------------------------------------------
-  Hit::Hit(art::Ptr<recob::Wire> &wire,
+  Hit::Hit(recob::Wire const& wire,
 	   geo::WireID wid,
 	   double startTime, double sigmaStartTime,
 	   double endTime,   double sigmaEndTime,
@@ -64,19 +62,18 @@ namespace recob{
     , fSigmaMaxCharge(sigmaMaxCharge   	)
     , fMultiplicity  (multiplicity     	)
     , fGoodnessOfFit (goodnessOfFit    	)
-    , fWire          (wire             	)
-    , fRawDigit      (wire->RawDigit() 	)
-    , fView          (wire->View()     	)
-    , fSignalType    (wire->SignalType())
+    , fView          (wire.View()     	)
+    , fSignalType    (wire.SignalType() )
     , fWireID        (wid               )
+    , fChannel       (wire.Channel()    )
   {
     fHitSignal.clear();
   }
   //----------------------------------------------------------------------
-  Hit::Hit(art::Ptr<raw::RawDigit> rawdigit,
-	   geo::View_t view,
+  Hit::Hit(geo::View_t view,
 	   geo::SigType_t signaltype,
 	   geo::WireID wid,
+	   uint32_t channel,
 	   double startTime, double sigmaStartTime,
 	   double endTime,   double sigmaEndTime,
 	   double peakTime,  double sigmaPeakTime,
@@ -97,10 +94,10 @@ namespace recob{
     , fSigmaMaxCharge(sigmaMaxCharge   	)
     , fMultiplicity  (multiplicity     	)
     , fGoodnessOfFit (goodnessOfFit    	)
-    , fRawDigit      (rawdigit  	)
     , fView          (view      	)
     , fSignalType    (signaltype        )
     , fWireID        (wid               )
+    , fChannel       (channel           )
   {
     fHitSignal.clear();
   }
@@ -123,24 +120,50 @@ namespace recob{
   //----------------------------------------------------------------------
   geo::WireID Hit::WireID() const 
   { 
+    // check if the wire id is valid, 
+    // if not, bail, and tell user to use the one where you give it the geometry
+    if(!fWireID.isValid){      
+      throw cet::exception("Hit") << "WireID in hit object is not valid.\n"
+				  << "Try using Hit::WireID(geo::Geometry const& geo).\n";
+    }
+    return fWireID;            
+  }
+
+  //----------------------------------------------------------------------
+  geo::WireID Hit::WireID(geo::Geometry const& geo) const 
+  { 
     ///\todo: remove the following after S2012.12.27 is obsolete
     // check if the wire id is valid, 
     // if not, use the geometry to
     // determine the id from the Channel
     if(!fWireID.isValid){      
-      art::ServiceHandle<geo::Geometry> geo;
-      std::vector<geo::WireID> wids = geo->ChannelToWire(this->Channel());
+      std::vector<geo::WireID> wids = geo.ChannelToWire(fChannel);
 
       // if there are no wires, or more than one, not sure what 
       // to do so throw an exception
       if(wids.size() == 1) return wids[0];
+      else if(wids.size() == 0)
+	throw cet::exception("Hit") 
+	  << "Cannot determine any WireID for Hit on channel " << fChannel <<".\n";
       else
-	throw cet::exception("Hit") << "Cannot determine correct WireID for Hit.\n";
+	throw cet::exception("Hit") 
+	  << "Cannot determine unique WireID for Hit on channel " << fChannel <<".\n";
     }
 
     return fWireID;            
   }
 
+  //----------------------------------------------------------------------
+  std::vector<geo::WireID> Hit::WireID(geo::Geometry const& geo)
+  { 
+    std::vector<geo::WireID> wids = geo.ChannelToWire(fChannel);
+
+    if(wids.size() == 0)
+      throw cet::exception("Hit") 
+	<< "Cannot determine any WireID for Hit on channel " << fChannel <<".\n";
+    else
+      return wids;
+  }
 
   //----------------------------------------------------------------------
   // ostream operator.

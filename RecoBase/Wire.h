@@ -15,10 +15,8 @@
 
 #include "Utilities/sparse_vector.h"
 #include "RawData/RawDigit.h"
+#include "Geometry/Geometry.h"
 #include "SimpleTypesAndConstants/geo_types.h"
-
-#include "art/Persistency/Common/Ptr.h"
-
 
 ///Reconstruction base classes
 namespace recob {
@@ -33,23 +31,41 @@ namespace recob {
       
     private:
       RegionsOfInterest_t fSignalROI;
-      art::Ptr<raw::RawDigit> fRawDigit;   ///< vector to index of raw digit for this wire
       geo::View_t             fView;       ///< view corresponding to the plane of this wire
       geo::SigType_t          fSignalType; ///< signal type of the plane for this wire
+      uint32_t                fChannel;    ///< channel number for this wire
       unsigned int            fMaxSamples; ///< max number of ADC samples possible on the wire
 
 #ifndef __GCCXML__
 
-  // partial constructor, used only as common part by the other constructors
-      Wire(art::Ptr<raw::RawDigit> &rawdigit);
+      // partial constructor, used only as common part by the other constructors
+      Wire(geo::View_t    view, 
+	   geo::SigType_t signaltype,
+	   uint32_t       chan,
+	   unsigned int   max_samples);
+      Wire(raw::RawDigit const& rawdigit,
+	   geo::Geometry const& geo);
   
     public:
       
       // ROI constructor
       Wire(const RegionsOfInterest_t& sigROIlist,
-           art::Ptr<raw::RawDigit> &rawdigit);
+           geo::View_t    view, 
+	   geo::SigType_t signaltype,
+	   uint32_t       chan,
+	   unsigned int   max_samples);
+      Wire(const RegionsOfInterest_t& sigROIlist,
+	   raw::RawDigit const& rawdigit,
+	   geo::Geometry const& geo);
+
       Wire(RegionsOfInterest_t&& sigROIlist,
-           art::Ptr<raw::RawDigit> &rawdigit);
+           geo::View_t    view, 
+	   geo::SigType_t signaltype,
+	   uint32_t       chan,
+	   unsigned int   max_samples);
+      Wire(RegionsOfInterest_t&& sigROIlist,
+	   raw::RawDigit const& rawdigit,
+	   geo::Geometry const& geo);
 
       // Get Methods
       // zero-padded full length vector filled with ROIs
@@ -57,7 +73,6 @@ namespace recob {
 
       const RegionsOfInterest_t& SignalROI()  const;
       size_t                     NSignal()    const;
-      art::Ptr<raw::RawDigit>    RawDigit()   const;
       geo::View_t                View()       const;
       geo::SigType_t             SignalType() const;
       uint32_t                   Channel()    const;
@@ -72,10 +87,9 @@ namespace recob {
 inline const recob::Wire::RegionsOfInterest_t&
                                   recob::Wire::SignalROI()  const { return fSignalROI;          }
 inline size_t                     recob::Wire::NSignal()    const { return fMaxSamples;         }
-inline art::Ptr<raw::RawDigit>    recob::Wire::RawDigit()   const { return fRawDigit;           }
 inline geo::View_t                recob::Wire::View()       const { return fView;               }
 inline geo::SigType_t             recob::Wire::SignalType() const { return fSignalType;         }
-inline uint32_t                   recob::Wire::Channel()    const { return fRawDigit->Channel();}
+inline uint32_t                   recob::Wire::Channel()    const { return fChannel;}
 
 #endif
 
