@@ -154,7 +154,7 @@ namespace recob{
   }
 
   //----------------------------------------------------------------------
-  std::vector<geo::WireID> Hit::WireID(geo::Geometry const& geo)
+  std::vector<geo::WireID> Hit::WireIDs(geo::Geometry const& geo)
   { 
     std::vector<geo::WireID> wids = geo.ChannelToWire(fChannel);
 
