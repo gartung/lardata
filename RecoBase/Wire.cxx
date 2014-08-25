@@ -8,6 +8,8 @@
 ////////////////////////////////////////////////////////////////////////
 
 #include "RecoBase/Wire.h"
+#include "RawData/RawDigit.h"
+#include "Geometry/Geometry.h"
 
 namespace recob{
 

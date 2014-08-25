@@ -34,6 +34,7 @@
 // make dummy variables of the PtrVector types so that we are
 // sure to generate the dictionaries for them
 namespace {
+  art::PtrVector<recob::Hit>        hpv;
   art::PtrVector<recob::Track>      tpv;
   art::PtrVector<recob::OpFlash>    flv;
   art::PtrVector<anab::Calorimetry> cpv;

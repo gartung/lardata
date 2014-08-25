@@ -29,6 +29,7 @@
   <version ClassVersion="12" checksum="1302402512"/>
  </class>
  <class name="recob::Hit"              ClassVersion="14"	       	       		      >
+  <version ClassVersion="14" checksum="2070803520"/>
   <version ClassVersion="13" checksum="2260253886"/>
  </class>
  <class name="recob::PFParticle"         ClassVersion="13"	       	       		      >
@@ -49,6 +50,7 @@
   <version ClassVersion="13" checksum="595254911"/>
  </class>
  <class name="recob::Wire"             ClassVersion="18"	       	       		      >
+  <version ClassVersion="18" checksum="1407339768"/>
   <version ClassVersion="17" checksum="4245857386"/>
   <version ClassVersion="16" checksum="2920613755"/>
   <version ClassVersion="15" checksum="1996069203"/>

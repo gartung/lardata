@@ -14,9 +14,15 @@
 #include <stdint.h>
 
 #include "Utilities/sparse_vector.h"
-#include "RawData/RawDigit.h"
-#include "Geometry/Geometry.h"
 #include "SimpleTypesAndConstants/geo_types.h"
+
+namespace geo{
+  class Geometry;
+}
+
+namespace raw{
+  class RawDigit;
+}
 
 ///Reconstruction base classes
 namespace recob {

@@ -17,8 +17,11 @@
 #include <stdint.h>
 
 #include "SimpleTypesAndConstants/geo_types.h"
-#include "Geometry/Geometry.h"
 #include "RecoBase/Wire.h"
+
+namespace geo{
+  class Geometry;
+}
 
 namespace recob {
 

@@ -7,6 +7,7 @@
 ////////////////////////////////////////////////////////////////////////
 
 #include "RecoBase/Hit.h"
+#include "Geometry/Geometry.h"
 #include "cetlib/exception.h"
 
 #include <iomanip>

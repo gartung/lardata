@@ -1,6 +1,10 @@
 
+# for classes_def.xml!!
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
+
 art_make( LIBRARY_NAME  AnalysisBase
-          LIB_LIBRARIES ${ART_FRAMEWORK_CORE}
+          LIB_LIBRARIES RecoBase
+	  		${ART_FRAMEWORK_CORE}
 			${ART_FRAMEWORK_PRINCIPAL}
 			${ART_PERSISTENCY_PROVENANCE}
 			${ART_UTILITIES}
