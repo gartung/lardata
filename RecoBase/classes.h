@@ -98,6 +98,8 @@ template class std::pair< art::Ptr<recob::Cluster>,    art::Ptr<recob::Track>   
 template class std::pair< art::Ptr<recob::EndPoint2D>, art::Ptr<recob::Hit>        >;
 template class std::pair< art::Ptr<recob::Event>,      art::Ptr<recob::Hit>        >;
 template class std::pair< art::Ptr<recob::Event>,      art::Ptr<recob::Vertex>     >;
+template class std::pair< art::Ptr<recob::Wire>,       art::Ptr<recob::Hit>        >;
+template class std::pair< art::Ptr<recob::Hit>,        art::Ptr<recob::Wire>       >;
 template class std::pair< art::Ptr<recob::Hit>,        art::Ptr<recob::Cluster>    >;
 template class std::pair< art::Ptr<recob::Hit>,        art::Ptr<recob::EndPoint2D> >;
 template class std::pair< art::Ptr<recob::Hit>,        art::Ptr<recob::Event>      >;
@@ -142,6 +144,8 @@ template class art::Assns<recob::Cluster,    recob::PFParticle,   void>;
 template class art::Assns<recob::EndPoint2D, recob::Hit,        void>;
 template class art::Assns<recob::Event,      recob::Hit,        void>;
 template class art::Assns<recob::Event,      recob::Vertex,     void>;
+template class art::Assns<recob::Wire,       recob::Hit,        void>;
+template class art::Assns<recob::Hit,        recob::Wire,       void>;
 template class art::Assns<recob::Hit,        recob::Cluster,    void>;
 template class art::Assns<recob::Hit,        recob::EndPoint2D, void>;
 template class art::Assns<recob::Hit,        recob::Event,      void>;
@@ -186,6 +190,8 @@ template class art::Wrapper< art::Assns<recob::Cluster,    recob::Track,      vo
 template class art::Wrapper< art::Assns<recob::EndPoint2D, recob::Hit,        void> >;
 template class art::Wrapper< art::Assns<recob::Event,      recob::Hit,        void> >;
 template class art::Wrapper< art::Assns<recob::Event,      recob::Vertex,     void> >;
+template class art::Wrapper< art::Assns<recob::Wire,       recob::Hit,        void> >;
+template class art::Wrapper< art::Assns<recob::Hit,        recob::Wire,       void> >;
 template class art::Wrapper< art::Assns<recob::Hit,        recob::Cluster,    void> >;
 template class art::Wrapper< art::Assns<recob::Hit,        recob::EndPoint2D, void> >;
 template class art::Wrapper< art::Assns<recob::Hit,        recob::Event,      void> >;
