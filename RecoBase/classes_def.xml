@@ -277,4 +277,31 @@
  </ioread> 
 -->
 
+<ioread 
+    version="[-17]"
+    sourceClass="recob::Wire" 
+    source="art::Ptr<raw::RawDigit> fRawDigit" 
+    targetClass="recob::Wire" 
+    target="fChannel" 
+    embed="true"
+    include="art/Persistency/Common/Ptr.h;RawData/RawDigit.h">
+    <![CDATA[
+       fChannel = onfile.fRawDigit->Channel();
+    ]]>
+ </ioread>
+
+<ioread 
+    version="[-13]" 
+    sourceClass="recob::Hit" 
+    source="art::Ptr<recob::Wire> fWire" 
+    targetClass="recob::Hit" 
+    target="fChannel"
+    embed="true"
+    include="art/Persistency/Common/Ptr.h;Wire.h">
+    <![CDATA[
+       fChannel = onfile.fWire->Channel();
+    ]]>
+ </ioread>
+
+
 </lcgdict>
