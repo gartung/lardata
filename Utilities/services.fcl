@@ -105,6 +105,29 @@ argoneut_services:
  TimeService:        @local::standard_timeservice
 }
 
+lariatfull_services:
+{
+ Geometry:           @local::lariatfull_geo 	       
+ DetectorProperties: @local::argoneut_detproperties
+ LArProperties:      @local::argoneut_properties	       
+ LArFFT:             @local::argoneut_larfft  	     
+ DatabaseUtil:	     @local::argoneut_database    
+ BackTracker:        @local::argoneut_backtracker  
+}
+
+lariatfull_simulation_services:
+{
+ LArG4Parameters:    @local::argoneut_largeantparameters
+ LArVoxelCalculator: @local::argoneut_larvoxelcalculator
+ MagneticField:      @local::no_mag
+ Geometry:           @local::lariatfull_geo          
+ DetectorProperties: @local::argoneut_detproperties
+ LArProperties:      @local::argoneut_properties            
+ LArFFT:             @local::argoneut_larfft         
+ DatabaseUtil:	     @local::argoneut_database    
+ BackTracker:        @local::argoneut_backtracker  
+}
+
 argoneut_simulation_services:
 {
  LArG4Parameters:    @local::argoneut_largeantparameters
