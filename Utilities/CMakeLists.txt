@@ -17,6 +17,7 @@ art_make( NO_PLUGINS
 			${MF_UTILITIES}
 			${CETLIB}
 			${ROOT_BASIC_LIB_LIST}
+
         )
 
 simple_plugin(TimeService "service"
@@ -93,6 +94,8 @@ simple_plugin(LArProperties "service"
 	      ${MF_MESSAGELOGGER}
 	      ${MF_UTILITIES}
 	      ${CETLIB}
+	      ${ROOT_BASIC_LIB_LIST}
+	      ${ROOT_MATHCORE}
               BASENAME_ONLY
 )
 
