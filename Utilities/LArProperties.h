@@ -52,6 +52,7 @@ namespace util{
       /// Energy loss fluctuation (sigma_E^2 / length in MeV^2/cm).
       double ElossVar(double mom, double mass) const;
 
+
       double ScintResolutionScale() const { return fScintResolutionScale; }
       double ScintFastTimeConst()   const { return fScintFastTimeConst;   } 
       double ScintSlowTimeConst()   const { return fScintSlowTimeConst;   }
@@ -77,16 +78,25 @@ namespace util{
 
       bool CerenkovLightEnabled()     const { return fEnableCerenkovLight;      }
 
+      bool ExtraMatProperties() const { return fExtraMatProperties; }
+      double TpbTimeConstant()  const { return fTpbTimeConstant;     }
+      bool SimpleBoundary()     const { return fSimpleBoundary;      }
+      bool SimpleScint()    const { return fSimpleScint;      }
+
+
       
       std::map<double, double>  SlowScintSpectrum();   
       std::map<double, double>  FastScintSpectrum();
+      std::map<double, double>  TpbAbs();   
+      std::map<double, double>  TpbEm();
       std::map<double, double>  RIndexSpectrum();
       std::map<double, double>  AbsLengthSpectrum();
       std::map<double, double>  RayleighSpectrum();
 
       std::map<std::string, std::map<double, double> > SurfaceReflectances();
       std::map<std::string, std::map<double, double> > SurfaceReflectanceDiffuseFractions();
-      
+      std::map<std::string, std::map<double, double> > SurfaceTpbReflectances();
+      std::map<std::string, std::map<double, double> > SurfaceReflectanceTpbDiffuseFractions();
 
     private:
 
@@ -142,7 +152,7 @@ namespace util{
       double fElectronScintYieldRatio; 
       double fAlphaScintYield;
       double fAlphaScintYieldRatio; 
-
+	double fTpbTimeConstant;
       double fScintYield;
       double fScintResolutionScale;
       double fScintFastTimeConst;
@@ -151,13 +161,23 @@ namespace util{
       double fScintBirksConstant;
 
       bool fEnableCerenkovLight;
+      bool fExtraMatProperties;
+      bool fSimpleBoundary;
+      bool fSimpleScint;
+
 
       std::vector<std::string>          fReflectiveSurfaceNames;
       std::vector<double>               fReflectiveSurfaceEnergies;
       std::vector<std::vector<double> > fReflectiveSurfaceReflectances;
       std::vector<std::vector<double> > fReflectiveSurfaceDiffuseFractions;
-      
-      
+      std::vector<double>               fTpbEmmisionEnergies;
+      std::vector<double>               fTpbEmmisionSpectrum;
+      std::vector<double>               fTpbAbsorptionEnergies;
+      std::vector<double>               fTpbAbsorptionSpectrum;
+      std::vector<std::string>          fReflectiveSurfaceTpbNames;
+      std::vector<double>               fReflectiveSurfaceTpbEnergies;
+      std::vector<std::vector<double> > fReflectiveSurfaceTpbReflectances;
+      std::vector<std::vector<double> > fReflectiveSurfaceTpbDiffuseFractions;
       
     }; // class LArProperties
 } //namespace utils
