@@ -58,6 +58,7 @@ LoadExtraMatProperties: false
  AlphaScintYieldRatio:    0.56
 
 # TPB - WLS
+# Used data to be found e.g. in:  JINST 7 P05008 (reflectances estimated from measurements at Cracow University of Technology (thanks to dr. J. Jaglarz and dr. N. Nosidlak) + http://refractiveindex.info and refs. therein), G.M. Seidel, et al.,Nucl. Instr. and Meth. A 489 (2002)189; arXiv:1108.5584 [physics.ins-det]; Journal of Luminescence 81 (1999) 285}291;  arXiv:1304.6117v3 [physics.ins-det]; „Optical characterization and GEANT4 simulation of the light collection system for the WArP 100 liters detector: analysis of the event reconstruction capability”, F. Di Pompeo PhD thesis; //http://gentitfx.fr/litrani/AllModules/FitMacros/RIndexRev_vm2000.C.html for vm2000 (VM2000 (TM)) and refs. Therein - list will be updated for reference
 TpbTimeConstant: 2.5 #wls time constant in s 
  # Refractive index as a function of energy
  RIndexEnergies:    [1.82, 3.09, 4.45, 6.19, 7.74, 9.16, 9.90, 10.12, 10.56, 10.87]
