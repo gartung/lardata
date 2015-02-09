@@ -14,6 +14,10 @@
 /// 2.  Measurement plane index.
 /// 3.  Prediction surface.
 /// 4.  Prediction distance.
+/// 5.  Unique id.
+///
+/// Each constructor initializes the unique id to zero.  Derived classes
+/// may set the unique id if they wish (the unique id is protected).
 ///
 /// This class has the following pure virtual methods.
 ///
@@ -81,6 +85,9 @@ namespace trkf {
     /// Measurement plane index.
     int getMeasPlane() const {return fMeasPlane;}
 
+    /// Unique id.
+    int getID() const {return fID;}
+
     // Modifiers.
 
     /// Measurement surface.
@@ -114,6 +121,7 @@ namespace trkf {
 
     mutable std::shared_ptr<const Surface> fPredSurf;   ///< Prediction surface.
     mutable double fPredDist;                           ///< Prediction distance.
+    int fID;                                            ///< Unique id.
 
   private:
 

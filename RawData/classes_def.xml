@@ -9,7 +9,8 @@
 
 
 <lcgdict>
- <class name="raw::BeamInfo       " ClassVersion="11"           >
+ <class name="raw::BeamInfo       " ClassVersion="12"           >
+  <version ClassVersion="12" checksum="1420893295"/>
   <version ClassVersion="11" checksum="2883012746"/>
  </class>
  <class name="raw::DAQHeader  	  " ClassVersion="12"           >
@@ -18,7 +19,8 @@
  <class name="raw::RawDigit   	  " ClassVersion="12"           >
   <version ClassVersion="12" checksum="160151695"/>
  </class>
- <class name="raw::AuxDetDigit	  " ClassVersion="10"           >
+ <class name="raw::AuxDetDigit	  " ClassVersion="11"           >
+  <version ClassVersion="11" checksum="2699414988"/>
   <version ClassVersion="10" checksum="1690717253"/>
  </class>
  <class name="raw::OpDetPulse 	  " ClassVersion="14"           >
@@ -27,12 +29,17 @@
  <class name="raw::ExternalTrigger" ClassVersion="10"           >
   <version ClassVersion="10" checksum="3590754331"/>
  </class>
+ <class name="raw::Trigger" ClassVersion="11"                   >
+  <version ClassVersion="11" checksum="2734695139"/>
+  <version ClassVersion="10" checksum="3347706756"/>
+ </class>
  <class name="std::vector<raw::BeamInfo>       "                />
  <class name="std::vector<raw::DAQHeader>      "                />
  <class name="std::vector<raw::RawDigit>       "                />
  <class name="std::vector<raw::AuxDetDigit>    "                />
  <class name="std::vector<raw::OpDetPulse>     "                />
  <class name="std::vector<raw::ExternalTrigger>"                />
+ <class name="std::vector<raw::Trigger>        "                />
  <class name="std::pair<std::string,std::vector<double> >"      />
  <class name="std::map<std::string,std::vector<double> >"       />
  <class name="art::Wrapper< raw::BeamInfo                     >"/>
@@ -45,7 +52,7 @@
  <class name="art::Wrapper< std::vector<raw::OpDetPulse>      >"/>
  <class name="art::Wrapper< std::vector<raw::AuxDetDigit>     >"/>
  <class name="art::Wrapper< std::vector<raw::ExternalTrigger> >"/>
-
+ <class name="art::Wrapper< std::vector<raw::Trigger>         >"/>
 
  <ioread 
     version="[-11]" 

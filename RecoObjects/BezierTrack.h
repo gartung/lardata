@@ -25,7 +25,7 @@ namespace trkf {
   {
   public:
     BezierTrack();
-    BezierTrack(recob::Track btb);
+    BezierTrack(const recob::Track& btb);
     BezierTrack(std::vector<TVector3> Pos, 
 		std::vector<TVector3> Dir, 
 		std::vector<std::vector<double> > dQdx,
@@ -46,7 +46,11 @@ namespace trkf {
     TVector3 GetTrackDirectionV (  double s )           const;
     void   GetTrackPoint    (  double s, double* xyz )  const;
     void   GetTrackDirection(  double s, double* xyz )  const;  
- 
+
+    void   FillTrackVectors( std::vector<TVector3>& xyzVector,
+			     std::vector<TVector3>& dirVector,
+			     double const ds=0.1 ) const;
+    
     double GetCurvature(double s)                       const;
     double GetdQdx(double s, unsigned int View)         const ;
     

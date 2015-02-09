@@ -38,6 +38,19 @@
 /// Negative frequencies (not stored) are complex conjugate of
 /// corresponding postive frequency.
 ///
+/// \update notes:  Yun-Tse Tsai (yuntse@slac.stanford.edu), July 17th, 2014
+///                 Modify
+///                 void AddResponseFunction(const std::vector<double>& resp);
+///                 to 
+///                 void AddResponseFunction(const std::vector<double>& resp, bool ResetResponse = false );
+///                 If you want to reset your response, fResponse in this
+///                 object, you can do 
+///                 AddResponseFunction( yourResponse, true )
+///                 The other part involving AddResponseFunction shouldn't
+///                 be affected.
+///                 X. Qian 2015/01/06
+///                 Add the time offset variable
+///                 Need to add the set and extraction code 
 ////////////////////////////////////////////////////////////////////////
 
 #ifndef SIGNALSHAPING_H
@@ -60,9 +73,11 @@ namespace util {
 
     // Accessors.
     const std::vector<double>& Response() const {return fResponse;}
+    const std::vector<double>& Response_save() const {return fResponse_save;}
     const std::vector<TComplex>& ConvKernel() const {return fConvKernel;}
     const std::vector<TComplex>& Filter() const {return fFilter;}
     const std::vector<TComplex>& DeconvKernel() const {return fDeconvKernel;}
+    /* const int GetTimeOffset() const {return fTimeOffset;} */
 
     // Signal shaping methods.
 
@@ -74,12 +89,19 @@ namespace util {
 
     // Configuration methods.
 
+    // Only reset deconvolution
+    //void ResetDecon();
     // Reset this class to default-constructed state.
     void Reset();
 
+    void save_response(){ fResponse_save.clear(); fResponse_save=fResponse;}
+
     // Add a time domain response function.
     // Updates overall response function and convolution kernel.
-    void AddResponseFunction(const std::vector<double>& resp);
+    void AddResponseFunction(const std::vector<double>& resp, bool ResetResponse = false );
+
+    /* //X. Qian, set time offset */
+    /* void SetTimeOffset(const int time){fTimeOffset = time;} */
 
     // Shift response function in time.
     // Updates overall response function and convolution kernel.
@@ -88,6 +110,11 @@ namespace util {
 
     // Add a filter function.
     void AddFilterFunction(const std::vector<TComplex>& filt);
+
+    //Add DeconvKernel Polarity switch to decide how to normalize
+    //deconvoluted signal w.r.t. RawDigits. If +1 then normalize
+    //to Max ADC, if -1 to Min ADC
+    void SetDeconvKernelPolarity(int pol);
 
     // Test and lock the current response function.
     // Does not lock filter configuration.
@@ -108,6 +135,7 @@ namespace util {
 
     // Overall response.
     std::vector<double> fResponse;
+    std::vector<double> fResponse_save;
 
     // Convolution kernel (fourier transform of response function).
     std::vector<TComplex> fConvKernel;
@@ -117,6 +145,14 @@ namespace util {
 
     // Deconvolution kernel (= fFilter / fConvKernel).
     mutable std::vector<TComplex> fDeconvKernel;
+
+    // Deconvolution Kernel Polarity Flag
+    // Set to +1 if deconv signal should be deconv to + ADC count
+    // Set to -1 if one wants to normalize to - ADC count
+    int fDeconvKernelPolarity;
+
+    /* // Xin added */
+    /* int fTimeOffset; */
   };
 }
 

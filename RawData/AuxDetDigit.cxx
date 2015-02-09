@@ -9,10 +9,6 @@
 
 #include "RawData/AuxDetDigit.h"
 
-#include <string>
-#include <iostream>
-#include <cassert>
-
 #include "cetlib/exception.h"
 
 namespace raw{
@@ -21,7 +17,7 @@ namespace raw{
   AuxDetDigit::AuxDetDigit()  
     : fADC(0)
     , fChannel(0) 
-    , fAuxDetType(raw::kUnknownAuxDet)
+    , fAuxDetName("UnknownAuxDet")
   {
 
   }
@@ -29,10 +25,10 @@ namespace raw{
   //----------------------------------------------------------------------
   AuxDetDigit::AuxDetDigit(unsigned short     channel,
 			   std::vector<short> adclist, 
-			   raw::AuxDetType_t  type) 
+			   std::string        name) 
     : fADC(adclist) 
     , fChannel(channel) 
-    , fAuxDetType(type)
+    , fAuxDetName(name)
   { 
 
   }
@@ -42,7 +38,7 @@ namespace raw{
   {
     if(i >= fADC.size())
       throw cet::exception("AuxDetDigit") << "illegal index requested for ADC vector: "
-					  << i;
+					  << i << "\n";
 
     return fADC[i];
   }

@@ -37,28 +37,14 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
   WERROR
   NO_UNDEFINED
   EXTRA_FLAGS -pedantic -Wno-unused-local-typedefs
-  EXTRA_CXX_FLAGS -std=c++11
 )
-cet_enable_asserts()
-
-# issue 5589: if we are not in a debugging build, disable the dispatch of debug messages in messagefacility
-string(TOUPPER ${CMAKE_BUILD_TYPE} BTYPE_UC )
-if( ${BTYPE_UC} STREQUAL "OPT" OR
-    ${BTYPE_UC} STREQUAL "PROF" OR
-    ${BTYPE_UC} STREQUAL "RELEASE" OR
-    ${BTYPE_UC} STREQUAL "MINSIZEREL" )
-  message ( STATUS "Disabling LOG_DEBUG from messagefacility library" )
-  add_definitions(-DML_NDEBUG)
-endif()
 
 cet_report_compiler_flags()
 
 # these are minimum required versions, not the actual product versions
-find_ups_product( larcore v0_01_00 )
-find_ups_product( nutools v0_00_00 )
+find_ups_product( larcore v1_00_00 )
+find_ups_product( nutools v1_00_00 )
 find_ups_product( postgresql v9_1_5 )
-
-cet_check_gcc()
 
 #  Find all the libraries needed by our dependent CMakeList.txt files
 cet_find_library( BOOST_SERIALIZATION NAMES boost_serialization PATHS ENV BOOST_LIB NO_DEFAULT_PATH )
@@ -81,6 +67,10 @@ add_subdirectory(RawData)
 add_subdirectory(RecoBase)
 add_subdirectory(RecoObjects)
 add_subdirectory(Utilities)
+add_subdirectory(MCBase)
+
+# tests
+add_subdirectory(test)
 
 # ups - table and config files
 add_subdirectory(ups)

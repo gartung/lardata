@@ -8,7 +8,6 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#include <cassert>
 #include <cmath>
 #include "RecoObjects/PropYZPlane.h"
 #include "RecoObjects/SurfYZPlane.h"
@@ -22,9 +21,10 @@ namespace trkf {
   /// Arguments.
   ///
   /// tcut   - Delta ray energy cutoff for calculating dE/dx.
+  /// doDedx - dE/dx enable flag.
   ///
-  PropYZPlane::PropYZPlane(double tcut) :
-    Propagator(tcut, std::shared_ptr<const Interactor>(new InteractPlane(tcut)))
+  PropYZPlane::PropYZPlane(double tcut, bool doDedx) :
+    Propagator(tcut, doDedx, std::shared_ptr<const Interactor>(new InteractPlane(tcut)))
   {}
 
   /// Destructor.
@@ -102,7 +102,6 @@ namespace trkf {
 
     if(dir1 == Surface::UNKNOWN)
       return result;
-    assert(dir1 == Surface::FORWARD || dir1 == Surface::BACKWARD);
 
     // Calculate initial position in the destination coordinate
     // system.
@@ -134,22 +133,19 @@ namespace trkf {
     // Direction will flip if dw2dw1 < 0.;
 
     Surface::TrackDirection dir2;
-    if(dir1 == Surface::FORWARD) {
-      if(dw2dw1 > 0.)
-	dir2 = Surface::FORWARD;
-      else
-	dir2 = Surface::BACKWARD;
-    }
-    else {
-      if(dw2dw1 > 0.)
-	dir2 = Surface::BACKWARD;
-      else
-	dir2 = Surface::FORWARD;
-    }
-    assert(dir2 == Surface::FORWARD || dir2 == Surface::BACKWARD);
+    switch (dir1) {
+      case Surface::FORWARD:
+        dir2 = (dw2dw1 > 0.)? Surface::FORWARD: Surface::BACKWARD;
+        break;
+      case Surface::BACKWARD:
+        dir2 = (dw2dw1 > 0.)? Surface::BACKWARD: Surface::FORWARD;
+        break;
+      default:
+        throw cet::exception("PropYZPlane")
+          << "unexpected direction #" << ((int) dir1) << "\n";
+    } // switch
 
     // Calculate the signed propagation distance.
-
     double s = -w2 * std::sqrt(1. + dudw2*dudw2 + dvdw2*dvdw2);
     if(dir2 == Surface::BACKWARD)
       s = -s;
@@ -171,7 +167,7 @@ namespace trkf {
 
     double deriv = 1.;
     boost::optional<double> pinv2(true, pinv);
-    if(doDedx && s != 0.) {
+    if(getDoDedx() && doDedx && s != 0.) {
       double* pderiv = (prop_matrix != 0 ? &deriv : 0);
       pinv2 = dedx_prop(pinv, trk.Mass(), s, pderiv);
     }

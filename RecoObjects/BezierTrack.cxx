@@ -8,6 +8,7 @@
 #include "RecoBase/Hit.h"
 #include "RecoBase/SpacePoint.h"
 #include "SimpleTypesAndConstants/PhysicalConstants.h"
+#include "SimpleTypesAndConstants/geo_types.h"
 #include "RecoObjects/BezierCurveHelper.h"
 #include "Utilities/DetectorProperties.h"
 
@@ -20,7 +21,7 @@ namespace trkf {
   //----------------------------------------------------------------------
   // Constructor from Base object (for analysis)
   //
-  BezierTrack::BezierTrack(recob::Track btb)
+  BezierTrack::BezierTrack(const recob::Track& btb)
     : recob::Track(btb)
   {
     fID = btb.ID();
@@ -192,6 +193,9 @@ namespace trkf {
 
     double s, d;
 
+    bool do_now=true;
+    geo::PlaneID planeID;
+
     if(Hits.size()>0)
       {
 	for(size_t i=0; i!=Hits.size(); ++i)
@@ -206,6 +210,11 @@ namespace trkf {
 		resRange.push_back(Range - s*Range);
 		dQdx.push_back(Hits.at(i)->Charge()/ThisPitch);
 		dEdx.push_back( calalg.dEdx_AMP(Hits.at(i), ThisPitch) );
+
+		if(do_now) {
+		  planeID = geo::PlaneID(Hits.at(i)->WireID().Cryostat,Hits.at(i)->WireID().TPC,Hits.at(i)->WireID().Plane);
+		  do_now=false;
+		}
 	      }
 	    
 	  }
@@ -217,7 +226,7 @@ namespace trkf {
     for(size_t i=0; i!=dEdx.size(); ++i)
       KineticEnergy+=dEdx.at(i)*TrkPitch.at(i);
 
-    return anab::Calorimetry(KineticEnergy, dEdx, dQdx, resRange, deadwire, Range, TrkPitch);
+    return anab::Calorimetry(KineticEnergy, dEdx, dQdx, resRange, deadwire, Range, TrkPitch,planeID);
 
 
   }
@@ -245,6 +254,9 @@ namespace trkf {
  
     double s, d;
 
+    bool do_now=true;
+    geo::PlaneID planeID;
+
     if(Hits.size()>0)
       {
 	for(size_t i=0; i!=Hits.size(); ++i)
@@ -260,13 +272,18 @@ namespace trkf {
 		dEdx.push_back( ThisdEdx);
 		KineticEnergy+=ThisdEdx*ThisPitch;
 				
+		if(do_now) {
+		  planeID = geo::PlaneID(Hits.at(i)->WireID().Cryostat,Hits.at(i)->WireID().TPC,Hits.at(i)->WireID().Plane);
+		  do_now=false;
+		}
+
 	      }
 	    
 	  }
       }
 
 
-    return anab::Calorimetry(KineticEnergy, dEdx, dQdx, resRange, deadwire, Range, TrkPitch);
+    return anab::Calorimetry(KineticEnergy, dEdx, dQdx, resRange, deadwire, Range, TrkPitch, planeID);
 
   }
 
@@ -343,8 +360,7 @@ namespace trkf {
 	      <<"CalculateSegments method of Bezier track called with no"
 	      <<" track information loaded.  You must fill track with "
 	      <<"poisition and direction data before calling this method."
-	      <<std::endl;
-	    return;
+	      <<"\n";
 	  }
       }
     if(NSegments()==0)
@@ -1040,14 +1056,14 @@ namespace trkf {
       {
 	throw cet::exception("Bezier dQdx: S out of range")
 	  <<"Bezier track S value of " << s <<" is not in the range 0<S<1"
-	  <<std::endl;
+	  <<"\n";
       }
     if( /* (view<0)|| */ view>(fdQdx.size()-1))
       {
 	throw cet::exception("Bezier dQdx: view out of range")
 	  <<"Bezier track view value of " << view <<" is not in the range "
 	  <<"of stored views, 0 < view < " << fdQdx.size()
-	  <<std::endl;
+	  <<"\n";
       }
     int Segment = WhichSegment(s);
     //    if((Segment>=fdQdx[view].size())||(Segment<0))
@@ -1055,7 +1071,7 @@ namespace trkf {
     //  throw cet::exception("Bezier dQdx: segment of range")
     //    <<"Bezier track segment value of " << Segment <<" is not in the range "
     //    <<"of stored segments, 0 < seg < " << fdQdx[view].size()
-    //    <<std::endl;
+    //    <<"\n";
     //     }
     if( ( Segment < (int)fdQdx[view].size() ) && (Segment>1))
       return fdQdx[view][Segment];
@@ -1081,7 +1097,7 @@ namespace trkf {
 	throw cet::exception("view out of range")
 	  <<"Bezier track view value of " << view <<" is not in the range "
 	  <<"of stored views, 0 < view < " << fdQdx.size()
-	  <<std::endl;
+	  <<"\n";
       }
 
     size_t NSeg = NSegments();
@@ -1175,6 +1191,30 @@ namespace trkf {
       }
     return BezierTrack(SeedCol);
   }
+
+  //-----------------------------------------
+  void BezierTrack::FillTrackVectors(std::vector<TVector3>& xyzVector,
+				     std::vector<TVector3>& dirVector,
+				     double const ds) const
+  {
+    const double s = ds / GetLength();
+    const size_t n_traj_pts = (size_t)(GetLength()/ds);
+
+    //+2: evenly space points, plus one for start and one for end
+    xyzVector.resize(n_traj_pts+2);
+    dirVector.resize(n_traj_pts+2);
+
+    for(size_t i_traj=0; i_traj<=n_traj_pts; i_traj++){
+      xyzVector[i_traj] = this->GetTrackPointV(i_traj*s);
+      dirVector[i_traj] = this->GetTrackDirectionV(i_traj*s);
+    }
+
+    xyzVector[n_traj_pts+1] = this->GetTrackPointV(1.);
+    dirVector[n_traj_pts+1] = this->GetTrackDirectionV(1.);
+
+
+  }
+  
 } 
 
 

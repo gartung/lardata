@@ -19,10 +19,13 @@ namespace trkf {
   ///
   /// Arguments:
   ///
-  /// tcut - Maximum delta ray energy.
+  /// tcut   - Maximum delta ray energy.
+  /// doDedx - dE/dx enable flag.
   ///
-  Propagator::Propagator(double tcut, const std::shared_ptr<const Interactor>& interactor) :
+  Propagator::Propagator(double tcut, bool doDedx,
+			 const std::shared_ptr<const Interactor>& interactor) :
     fTcut(tcut),
+    fDoDedx(doDedx),
     fInteractor(interactor)
   {}
 
@@ -54,8 +57,8 @@ namespace trkf {
 					       TrackError* noise_matrix) const
   {
     // Default result.
-
-    boost::optional<double> result;
+    
+    auto result = boost::make_optional<double>(false, 0.);
 
     // Get the inverse momentum (assumed to be track parameter four).
 
@@ -65,8 +68,9 @@ namespace trkf {
     // it is safe to propagate in one step.  In this case, just pass
     // the call to short_vec_prop with unlimited distance.
 
-    if(!doDedx || pinv == 0.)
-      result = short_vec_prop(trk, psurf, dir, doDedx, prop_matrix, noise_matrix);
+    bool dedx = getDoDedx() && doDedx;
+    if(!dedx || pinv == 0.)
+      result = short_vec_prop(trk, psurf, dir, dedx, prop_matrix, noise_matrix);
 
     else {
 
@@ -135,7 +139,8 @@ namespace trkf {
 	double t = p*p / (e + mass);
 	double dedx = 0.001 * larprop->Eloss(p, mass, fTcut);
 	double smax = 0.1 * t / dedx;
-	assert(smax > 0.);
+	if (smax <= 0.)
+	  throw cet::exception("Propagator") << __func__ << ": maximum step " << smax << "\n";
 
 	// Always allow a step of at least 0.3 cm (about one wire spacing).
 
@@ -301,7 +306,9 @@ namespace trkf {
 
 	trk.setVector(newvec);
 	trk.setSurface(psurf);
-	assert(trk.getSurface()->isEqual(*(ref->getSurface())));
+	trk.setDirection(ref->getDirection());
+	if (!trk.getSurface()->isEqual(*(ref->getSurface())))
+	  throw cet::exception("Propagator") << __func__ << ": surface mismatch";
       }
       else {
 

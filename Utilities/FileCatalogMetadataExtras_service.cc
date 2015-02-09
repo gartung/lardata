@@ -12,7 +12,7 @@
 #include <algorithm>
 #include "Utilities/FileCatalogMetadataExtras.h"
 #include "art/Framework/Services/System/FileCatalogMetadata.h"
-#include "art/Framework/Core/OutputFileInfo.h"
+#include "art/Utilities/OutputFileInfo.h"
 #include "art/Persistency/RootDB/SQLite3Wrapper.h"
 #include "art/Persistency/RootDB/SQLErrMsg.h"
 #include "cetlib/exception.h"
@@ -68,7 +68,7 @@ void util::FileCatalogMetadataExtras::reconfigure(fhicl::ParameterSet const& pse
 
   if(md.size() %2 != 0)
     throw cet::exception("FileCatalogMetadataExtras")
-      << "Metadata array has odd number of entries.";
+      << "Metadata array has odd number of entries.\n";
   for(unsigned int i=0; i<md.size(); i += 2)
     fPerJobMetadata.insert(std::pair<std::string, std::string>(md[i], md[i+1]));
 
@@ -108,9 +108,8 @@ void util::FileCatalogMetadataExtras::postBeginJob()
 	  // If value doesn't match, throw an exception.
 
 	  if(nvp.second != value) {
-	    std::ostringstream ostr;
-	    ostr << "Found duplicate name " << name << " with non-matching value.";
-	    throw cet::exception("FileCatalogMetadataExtras") << ostr.str();
+	    throw cet::exception("FileCatalogMetadataExtras")
+	      << "Found duplicate name " << name << " with non-matching value.\n";
 	  }
 	}
       }
@@ -165,8 +164,12 @@ void util::FileCatalogMetadataExtras::postEvent(art::Event const& evt)
   art::EventNumber_t event = evt.event();
 
   for(auto const& fn : fOutputFiles) {
-    assert(fPerFileMetadataMap.count(fn) != 0);
-    PerFileMetadata& md = fPerFileMetadataMap[fn];
+    auto iMap = fPerFileMetadataMap.find(fn);
+    if (iMap == fPerFileMetadataMap.end()) {
+      throw cet::exception("FileCatalogMetadataExtras")
+        << "no metadata for output file '" << fn << "'\n";
+    }
+    PerFileMetadata& md = iMap->second;
 
     if(md.fRunNumbers.count(run) == 0)
       md.fRunNumbers.insert(run);
@@ -189,7 +192,7 @@ void util::FileCatalogMetadataExtras::postOpenOutputFile(std::string const& fn)
 
   if(fPerFileMetadataMap.count(fn) != 0)
     throw cet::exception("FileCatalogMetadataExtras")
-      << "Output file " << fn << " already has metadata.";
+      << "Output file " << fn << " already has metadata.\n";
   PerFileMetadata md;
   md.fStartTime = time(0);
   md.fEndTime = md.fStartTime;
@@ -203,7 +206,7 @@ void util::FileCatalogMetadataExtras::postOpenOutputFile(std::string const& fn)
 
       // Open sqlite database from input file.
 
-      TFile* file = new TFile(fLastInputFile.c_str(), "READ");
+      TFile* file = TFile::Open(fLastInputFile.c_str(), "READ");
       if(file != 0 && !file->IsZombie() && file->IsOpen()) {
 
 	// Open the sqlite datatabase.
@@ -282,7 +285,7 @@ bool util::FileCatalogMetadataExtras::isArtFile(std::string const& fn)
 
     TFile* file = 0;
     try {
-      file = new TFile(fn.c_str(), "READ");
+      file = TFile::Open(fn.c_str(), "READ");
     }
     catch (...) {
       file = 0;
@@ -397,7 +400,7 @@ void util::FileCatalogMetadataExtras::addPerFileMetadata(std::string const& fn)
       map_fn = renamed_files.front();
     else {
       throw cet::exception("FileCatalogMetadataExtras")
-	<< "Could not access metadata because there is more than one renamed output file.";
+	<< "Could not access metadata because there is more than one renamed output file.\n";
     }
   }
   if(map_fn != fn) {
@@ -408,7 +411,7 @@ void util::FileCatalogMetadataExtras::addPerFileMetadata(std::string const& fn)
 
   if(fPerFileMetadataMap.count(map_fn) == 0)
     throw cet::exception("FileCatalogMetadataExtras")
-      << "No metadata found for file " << map_fn << ".";
+      << "No metadata found for file " << map_fn << ".\n";
   PerFileMetadata& md = fPerFileMetadataMap[map_fn];
 
   // Update end time.
@@ -418,7 +421,7 @@ void util::FileCatalogMetadataExtras::addPerFileMetadata(std::string const& fn)
   // Update sam metadata in root file.  
   // Open exsiting root file for update.
 
-  TFile* file = new TFile(fn.c_str(), "UPDATE");
+  TFile* file = TFile::Open(fn.c_str(), "UPDATE");
   if(file != 0 && !file->IsZombie() && file->IsOpen()) {
 
     // Open the sqlite datatabase.
@@ -835,7 +838,7 @@ std::string util::FileCatalogMetadataExtras::expandTemplate() const
 
     if(expanded.find_first_of("${}") != std::string::npos)
       throw cet::exception("FileCatalogMetadataExtras")
-	<< "Problem parsing output file name template: " << filename << "\n.";
+	<< "Problem parsing output file name template: " << filename << ".\n";
 
     // Reassemble file name.
 
@@ -847,7 +850,7 @@ std::string util::FileCatalogMetadataExtras::expandTemplate() const
 
   if(filename.find_first_of("${}") != std::string::npos)
     throw cet::exception("FileCatalogMetadataExtras")
-      << "Problem parsing output file name template: "<< filename << "\n.";
+      << "Problem parsing output file name template: "<< filename << ".\n";
   return filename;
 }
 
