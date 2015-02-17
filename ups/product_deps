@@ -7,7 +7,7 @@ fcldir product_dir job
 #
 product         version
 larcore		v04_00_00
-nutools		v1_07_01
+nutools		v1_07_03
 gcc		v4_9_1
 
 cetbuildtools	v4_05_00	-	only_for_build
