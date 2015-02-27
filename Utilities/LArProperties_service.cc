@@ -122,7 +122,7 @@ void util::LArProperties::reconfigure(fhicl::ParameterSet const& pset)
   }
   
 if(fExtraMatProperties){
-
+// Used data to be found e.g. in:  JINST 7 P05008 (reflectances estimated from measurements at Cracow University of Technology (thanks to dr. J. Jaglarz and dr. N. Nosidlak) + http://refractiveindex.info and refs. therein), G.M. Seidel, et al.,Nucl. Instr. and Meth. A 489 (2002)189; arXiv:1108.5584 [physics.ins-det]; Journal of Luminescence 81 (1999) 285}291;  arXiv:1304.6117v3 [physics.ins-det]; „Optical characterization and GEANT4 simulation of the light collection system for the WArP 100 liters detector: analysis of the event reconstruction capability”, F. Di Pompeo PhD thesis; //http://gentitfx.fr/litrani/AllModules/FitMacros/RIndexRev_vm2000.C.html for vm2000 (VM2000 (TM)) and refs. Therein - list will be updated for reference
 std::cout<<"EXTRA MATERIAL PROPERTIES BEING LOADED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<std::endl;
 fTpbTimeConstant      = pset.get<double>("TpbTimeConstant"     );     
   fTpbEmmisionEnergies       = pset.get<std::vector<double> >              ("TpbEmmisionEnergies"        );
