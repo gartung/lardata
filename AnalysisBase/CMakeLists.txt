@@ -1,3 +1,6 @@
+IF(ALT_CMAKE)
+INCLUDE(altCMakeLists.cmake)
+ELSE()
 
 art_make( LIBRARY_NAME  AnalysisBase
           LIB_LIBRARIES ${ART_FRAMEWORK_CORE}
@@ -13,3 +16,4 @@ art_make( LIBRARY_NAME  AnalysisBase
 install_headers()
 install_fhicl()
 install_source()
+ENDIF()

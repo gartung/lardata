@@ -1,3 +1,6 @@
+IF(ALT_CMAKE)
+INCLUDE(altCMakeLists.cmake)
+ELSE()
 
 art_make( BASENAME_ONLY
 	  LIBRARY_NAME     MCBase
@@ -10,3 +13,4 @@ art_make( BASENAME_ONLY
 install_headers()
 install_fhicl()
 install_source()
+ENDIF()

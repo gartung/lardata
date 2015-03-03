@@ -1,3 +1,6 @@
+IF(ALT_CMAKE)
+INCLUDE(altCMakeLists.cmake)
+ELSE()
 # test raw data compression
 cet_test(raw_test USE_BOOST_UNIT
   LIBRARIES RawData
@@ -10,3 +13,4 @@ cet_test(RawDigit_test USE_BOOST_UNIT
 
 install_headers()
 install_source()
+ENDIF()

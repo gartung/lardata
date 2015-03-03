@@ -1,3 +1,6 @@
+IF(ALT_CMAKE)
+INCLUDE(altCMakeLists.cmake)
+ELSE()
 
 # for classes_def.xml!!
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
@@ -28,3 +31,4 @@ add_subdirectory(utils)
 # that also means that we must also exclucde LArRawInputDriverUBooNE from the utils library build
 # this code will be moved into a uboone package
 #add_subdirectory(uboone_datatypes)
+ENDIF()

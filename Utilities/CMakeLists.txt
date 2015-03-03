@@ -1,3 +1,6 @@
+IF(ALT_CMAKE)
+INCLUDE(altCMakeLists.cmake)
+ELSE()
 
 art_make( NO_PLUGINS
           LIBRARY_NAME  Utilities
@@ -123,3 +126,4 @@ install_source()
 
 add_subdirectory(test)
 
+ENDIF()

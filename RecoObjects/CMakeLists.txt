@@ -1,3 +1,6 @@
+IF(ALT_CMAKE)
+INCLUDE(altCMakeLists.cmake)
+ELSE()
 
 art_make( LIBRARY_NAME  RecoObjects
           LIB_LIBRARIES AnalysisAlg
@@ -26,3 +29,4 @@ install_fhicl()
 install_source()
 
 
+ENDIF()

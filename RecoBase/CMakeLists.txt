@@ -1,3 +1,6 @@
+IF(ALT_CMAKE)
+INCLUDE(altCMakeLists.cmake)
+ELSE()
 
 # for classes_def.xml!!
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
@@ -24,3 +27,4 @@ set_target_properties(RecoBase_dict RecoBase_map
 install_headers()
 install_fhicl()
 install_source()
+ENDIF()

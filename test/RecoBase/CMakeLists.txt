@@ -1,3 +1,6 @@
+IF(ALT_CMAKE)
+INCLUDE(altCMakeLists.cmake)
+ELSE()
 cet_test(Wire_test USE_BOOST_UNIT
   LIBRARIES RecoBase
   )
@@ -12,3 +15,4 @@ cet_test(Cluster_test USE_BOOST_UNIT
 
 install_headers()
 install_source()
+ENDIF()
