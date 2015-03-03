@@ -2,7 +2,7 @@ BEGIN_PROLOG
 
 standard_properties:
 {
-
+LoadExtraMatProperties: false
  # Drift properties 
  Efield:           [0.5,0.66,0.8 ]   #kV/cm
  Temperature:      91                #Kelvin
@@ -39,7 +39,8 @@ standard_properties:
  ScintByParticleType:  false  # whether to use different yields and
                               # quenching per particle in fast op sim
  EnableCerenkovLight: true    # whether to switch on cerenkov light (slow)
-
+ SimpleBoundaryProcess: true #enable opticalBoundaryProcessSimple instead of G4 default
+ SimpleScintillation: true #enable OpFastScintillation instead of G4 default
 
 
  # Scintillation yields and fast/slow ratios per particle type 
@@ -56,6 +57,9 @@ standard_properties:
  AlphaScintYield:         16800
  AlphaScintYieldRatio:    0.56
 
+# TPB - WLS
+
+TpbTimeConstant: 2.5 #wls time constant in s 
  # Refractive index as a function of energy
  RIndexEnergies:    [1.82, 3.09, 4.45, 6.19, 7.74, 9.16, 9.90, 10.12, 10.56, 10.87]
  RIndexSpectrum:    [1.23, 1.23, 1.24, 1.26, 1.29, 1.35, 1.39, 1.45,  1.54,  1.60]
@@ -69,11 +73,27 @@ standard_properties:
  RayleighSpectrum:  [ 3790, 1850, 930,  410,  192,  90,   38,   10    ]   
 
  # Surface reflectivity data - vector of energy spectrum per
- #   surface type
+ #   surface type [1.77, 2.0675, 2.481, 2.819, 2.953, 3.1807, 3.54, 4.135, 4.962, 5.39]0.42, 0.43,0.46,0.43,0.41,0.36,0.33,0.2,0.07,0.07
  ReflectiveSurfaceEnergies:           [ 7, 9, 10 ]             
- ReflectiveSurfaceNames:            [ "STEEL_STAINLESS_Fe7Cr2Ni" ]  
+ ReflectiveSurfaceNames:            [ "STEEL_STAINLESS_Fe7Cr2Ni"]  
  ReflectiveSurfaceReflectances:     [ [ 0.25, 0.25, 0.25 ] ]        
- ReflectiveSurfaceDiffuseFractions: [ [ 0.5,  0.5,  0.5  ] ]        
+ ReflectiveSurfaceDiffuseFractions: [ [ 0.5,  0.5,  0.5  ]]    
+ 
+
+ ReflectiveSurfaceTpbEnergies:           [ 1.77, 2.0675, 2.481, 2.819, 2.953, 3.1807, 3.54, 4.135, 4.962, 5.39 ]             
+ ReflectiveSurfaceTpbNames:            [ "vm2000" ]  
+  ReflectiveSurfaceTpbReflectances:   [ [0.93, 0.93,0.93,0.93,0.93,0.93, 0.1,0.1,0.7,0.3] ]        
+ ReflectiveSurfaceTpbDiffuseFractions: [ [0.05,  0.05,  0.05,0.05,  0.05,  0.05,0.05,  0.05,  0.05,0.05 ] ]
+
+#WLS - TPB properties original tpb [0.0, 0.0, 0.0, 0.0588,0.235, 0.853, 1.0,1.0,0.9259,0.704,0.0296,0.011, 0.0,0.0, 0.]
+TpbEmmisionEnergies: [0.05,1.0,1.5, 2.25, 2.481, 2.819, 2.952,2.988,3.024, 3.1, 3.14,3.1807, 3.54, 5.5, 50.39]
+TpbEmmisionSpectrum: [0.0, 0.0, 0.0, 0.0588,0.235, 0.853, 1.0,1.0,0.9259,0.704,0.0296,0.011, 0.0,0.0, 0.]
+TpbAbsorptionEnergies: [0.05,1.77,2.0675, 7.42, 7.75, 8.16, 8.73, 9.78,10.69, 50.39]
+TpbAbsorptionSpectrum: [100000.0,100000.0, 100000.0,0.001,0.00000000001,0.00000000001, 0.00000000001, 0.00000000001, 0.00000000001, 0.00000000001]
+
+#copper cathode/foil preliminary
+
+#G10 from measurements 10 points spectrum  
 }
 
 END_PROLOG
