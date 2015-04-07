@@ -60,9 +60,18 @@ LoadExtraMatProperties: false
 # TPB - WLS
 
 TpbTimeConstant: 2.5 #wls time constant in s 
+ 
+ # Updated values with better resolution around critical VUV energies
+ # Values from: arxiv-1502.04213
+ RIndexEnergies: [2.480,3.100,4.133,6.200,6.889,7.750,8.857,9.254,9.394,9.538,9.764,9.920,10.333]
+ RIndexSpectrum: [1.230,1.230,1.235,1.260,1.275,1.300,1.350,1.380,1.390,1.405,1.430,1.460,1.550]
+ 
  # Refractive index as a function of energy
- RIndexEnergies:    [1.82, 3.09, 4.45, 6.19, 7.74, 9.16, 9.90, 10.12, 10.56, 10.87]
- RIndexSpectrum:    [1.23, 1.23, 1.24, 1.26, 1.29, 1.35, 1.39, 1.45,  1.54,  1.60]
+ # RIndexEnergies:    [1.82, 3.09, 4.45, 6.19, 7.74, 9.16, 9.90, 10.12, 10.56, 10.87]
+ # RIndexSpectrum:    [1.23, 1.23, 1.24, 1.26, 1.29, 1.35, 1.39, 1.45,  1.54,  1.60]
+ 
+
+
 
  # absorption length as function of energy
  AbsLengthEnergies: [ 4,     5,     6,     7,     8,     9,     10,    11   ]       
