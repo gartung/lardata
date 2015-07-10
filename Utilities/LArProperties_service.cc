@@ -3,7 +3,7 @@
 //  LArProperties_plugin
 //
 ////////////////////////////////////////////////////////////////////////
-// Framework includes
+
 
 // C++ language includes
 #include <cmath>
@@ -16,7 +16,9 @@
 
 // ROOT includes
 #include "TMath.h"
-
+#include "TSpline.h"
+#include "TH1.h"
+#include <Rtypes.h>
 // Framework includes
 #include "art/Framework/Principal/Run.h"
 #include "messagefacility/MessageLogger/MessageLogger.h"
@@ -102,7 +104,9 @@ void util::LArProperties::reconfigure(fhicl::ParameterSet const& pset)
   fScintYield           = pset.get<double>("ScintYield"          );
   fScintPreScale        = pset.get<double>("ScintPreScale"       );
   fScintYieldRatio      = pset.get<double>("ScintYieldRatio"     );
-
+  fExtraMatProperties      = pset.get<bool>("LoadExtraMatProperties"     );
+  fSimpleBoundary     = pset.get<bool>("SimpleBoundaryProcess");
+  fSimpleScint     = pset.get<bool>("SimpleScintillation");
   if(fScintByParticleType){
     fProtonScintYield        = pset.get<double>("ProtonScintYield"     );
     fProtonScintYieldRatio   = pset.get<double>("ProtonScintYieldRatio");
@@ -118,6 +122,20 @@ void util::LArProperties::reconfigure(fhicl::ParameterSet const& pset)
     fAlphaScintYieldRatio    = pset.get<double>("AlphaScintYieldRatio" );
   }
   
+if(fExtraMatProperties){
+// Used data to be found e.g. in:  JINST 7 P05008 (reflectances estimated from measurements at Cracow University of Technology (thanks to dr. J. Jaglarz and dr. N. Nosidlak) + http://refractiveindex.info and refs. therein), G.M. Seidel, et al.,Nucl. Instr. and Meth. A 489 (2002)189; arXiv:1108.5584 [physics.ins-det]; Journal of Luminescence 81 (1999) 285}291;  arXiv:1304.6117v3 [physics.ins-det]; „Optical characterization and GEANT4 simulation of the light collection system for the WArP 100 liters detector: analysis of the event reconstruction capability”, F. Di Pompeo PhD thesis; //http://gentitfx.fr/litrani/AllModules/FitMacros/RIndexRev_vm2000.C.html for vm2000 (VM2000 (TM)) and refs. Therein - list will be updated for reference
+//std::cout<<"EXTRA MATERIAL PROPERTIES BEING LOADED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<std::endl;
+fTpbTimeConstant      = pset.get<double>("TpbTimeConstant"     );     
+  fTpbEmmisionEnergies       = pset.get<std::vector<double> >              ("TpbEmmisionEnergies"        );
+  fTpbEmmisionSpectrum        = pset.get<std::vector<double> >              ("TpbEmmisionSpectrum"        );
+  fTpbAbsorptionEnergies        = pset.get<std::vector<double> >              ("TpbAbsorptionEnergies"        );
+  fTpbAbsorptionSpectrum        = pset.get<std::vector<double> >              ("TpbAbsorptionSpectrum"        );
+fReflectiveSurfaceTpbNames           = pset.get<std::vector<std::string> >         ("ReflectiveSurfaceTpbNames"           );
+  fReflectiveSurfaceTpbEnergies        = pset.get<std::vector<double> >              ("ReflectiveSurfaceTpbEnergies"        );
+  fReflectiveSurfaceTpbReflectances    = pset.get<std::vector<std::vector<double> > >("ReflectiveSurfaceTpbReflectances"    );
+  fReflectiveSurfaceTpbDiffuseFractions= pset.get<std::vector<std::vector<double> > >("ReflectiveSurfaceTpbDiffuseFractions");
+}
+
   fEnableCerenkovLight  = pset.get<bool>("EnableCerenkovLight"       );
 
   fReflectiveSurfaceNames           = pset.get<std::vector<std::string> >         ("ReflectiveSurfaceNames"           );
@@ -154,7 +172,7 @@ double util::LArProperties::Efield(unsigned int planegap) const
   this->checkDBstatus();
 
   if(planegap >= fEfield.size())
-    throw cet::exception("LArProperties") << "requesting Electric field in a plane gap that is not defined\n";
+    throw cet::exception("LArProperties") << "requesting Electric field in a plane gap that is not defined";
 
   return fEfield[planegap];
 }
@@ -509,6 +527,76 @@ std::map<double, double> util::LArProperties::RayleighSpectrum()
 }
 
 //---------------------------------------------------------------------------------
+std::map<double, double> util::LArProperties::TpbAbs()
+{
+  if(fTpbAbsorptionEnergies.size()!=fTpbAbsorptionSpectrum.size()){
+    throw cet::exception("Incorrect vector sizes in LArProperties")
+      << "The vectors specifying the TpbAbsorption spectrum are "
+      << " different sizes - " << fTpbAbsorptionEnergies.size()
+      << " " << fTpbAbsorptionSpectrum.size();
+  }
+
+  std::map<double, double> ToReturn;
+  for(size_t i=0; i!=fTpbAbsorptionSpectrum.size(); ++i)
+    ToReturn[fTpbAbsorptionEnergies.at(i)]=fTpbAbsorptionSpectrum.at(i);
+
+  return ToReturn;
+}
+
+//---------------------------------------------------------------------------------
+std::map<double, double> util::LArProperties::TpbEm()
+{
+  if(fTpbEmmisionEnergies.size()!=fTpbEmmisionSpectrum.size()){
+    throw cet::exception("Incorrect vector sizes in LArProperties")
+      << "The vectors specifying the TpbEmmision spectrum are "
+      << " different sizes - " << fTpbEmmisionEnergies.size()
+      << " " << fTpbEmmisionSpectrum.size();
+  }
+//using interpolation for more smooth spectrum of TPB emmision - won't affect anything but the effective size of table passed to G4
+Int_t tablesize=100;
+std::vector<double> new_x;
+double xrange=0.0;
+Double_t *en = new Double_t[int(fTpbEmmisionSpectrum.size())+1];
+Double_t *spectr = new Double_t[int(fTpbEmmisionSpectrum.size())+1];
+	for(int j=0;j<int(fTpbEmmisionSpectrum.size())+1;j++){
+		if(j==0){ 
+			en[j]=0.;
+			en[j]=0.;
+			}
+		else{
+			en[j]=fTpbEmmisionEnergies[j-1];
+			spectr[j]=fTpbEmmisionSpectrum[j-1];
+			//if(j==int(fTpbEmmisionSpectrum.size())) spectr[j]=+0.5;
+			}
+		//std::cout<<j<<" "<<int(fTpbEmmisionSpectrum.size())<<" energiestpb "<<en[j]<<std::endl;
+	}
+TH1D *energyhist=new TH1D();
+energyhist->SetBins(int(fTpbEmmisionSpectrum.size()),en);
+for(int ii=0;ii<int(fTpbEmmisionSpectrum.size());ii++) energyhist->SetBinContent(ii,spectr[ii]);
+xrange=double((en[int(fTpbEmmisionSpectrum.size())]-en[0])/double(fTpbEmmisionSpectrum.size()));
+new_x.clear();
+  for(int jj=0; jj<int(tablesize); jj++){
+
+ new_x.push_back(jj*(xrange/double(tablesize)));
+//std::cout<<"position "<<jj<<" "<<new_x[jj]<<" size of table "<<tablesize<<" range x "<<xrange<<std::endl;
+}
+  std::map<double, double> ToReturn;
+  //for(size_t i=0; i!=fTpbEmmisionSpectrum.size(); ++i)
+  //  ToReturn[fTpbEmmisionEnergies.at(i)]=fTpbEmmisionSpectrum.at(i);
+
+
+  for(int i=0; i<tablesize; i++){
+    ToReturn[new_x.at(i)]=energyhist->Interpolate(new_x[i]);
+//std::cout<<ToReturn[new_x[i]]<< " is set in material propertiestpb at energy "<<new_x[i]<<" size of x "<<new_x.size()<<" "<<energyhist->Interpolate(new_x[i])<<std::endl;
+		}
+delete energyhist;
+
+delete[] en;
+delete[] spectr;
+  return ToReturn;
+}
+
+//---------------------------------------------------------------------------------
 std::map<std::string, std::map<double,double> > util::LArProperties::SurfaceReflectances()
 {
   std::map<std::string, std::map<double, double> > ToReturn;
@@ -551,6 +639,53 @@ std::map<std::string, std::map<double,double> > util::LArProperties::SurfaceRefl
   for(size_t iName=0; iName!=fReflectiveSurfaceNames.size(); ++iName)
     for(size_t iEnergy=0; iEnergy!=fReflectiveSurfaceEnergies.size(); ++iEnergy)
       ToReturn[fReflectiveSurfaceNames.at(iName)][fReflectiveSurfaceEnergies.at(iEnergy)]=fReflectiveSurfaceDiffuseFractions[iName][iEnergy];
+
+  return ToReturn;
+}
+
+//---------------------------------------------------------------------------------
+std::map<std::string, std::map<double,double> > util::LArProperties::SurfaceTpbReflectances()
+{
+  std::map<std::string, std::map<double, double> > ToReturn;
+std::cout<<"if yousee this that means you're setting tpb reflectances in a wrong way !!"<<std::endl;
+  if(fReflectiveSurfaceTpbNames.size()!=fReflectiveSurfaceTpbReflectances.size()){
+    throw cet::exception("Incorrect vector sizes in LArProperties")
+      << "The vectors specifying the surface Tpb reflectivities "
+      << "do not have consistent sizes";
+  }
+  for(size_t i=0; i!=fReflectiveSurfaceTpbNames.size(); ++i){
+    if(fReflectiveSurfaceTpbEnergies.size()!=fReflectiveSurfaceTpbReflectances.at(i).size()){
+      throw cet::exception("Incorrect vector sizes in LArProperties")
+  << "The vectors specifying the surface Tpb reflectivities do not have consistent sizes";
+    }
+  }
+  for(size_t iName=0; iName!=fReflectiveSurfaceTpbNames.size(); ++iName)
+    for(size_t iEnergy=0; iEnergy!=fReflectiveSurfaceTpbEnergies.size(); ++iEnergy)
+      ToReturn[fReflectiveSurfaceTpbNames.at(iName)][fReflectiveSurfaceTpbEnergies.at(iEnergy)]=fReflectiveSurfaceTpbReflectances[iName][iEnergy];
+
+  return ToReturn;
+
+}
+
+//---------------------------------------------------------------------------------
+std::map<std::string, std::map<double,double> > util::LArProperties::SurfaceReflectanceTpbDiffuseFractions()
+{
+  std::map<std::string, std::map<double, double> > ToReturn;
+
+  if(fReflectiveSurfaceTpbNames.size()!=fReflectiveSurfaceTpbDiffuseFractions.size()){
+    throw cet::exception("Incorrect vector sizes in LArProperties")
+      << "The vectors specifying the surface Tpb reflectivities do not have consistent sizes";
+  }
+  for(size_t i=0; i!=fReflectiveSurfaceTpbNames.size(); ++i){
+    if(fReflectiveSurfaceTpbEnergies.size()!=fReflectiveSurfaceTpbDiffuseFractions.at(i).size()){
+      throw cet::exception("Incorrect vector sizes in LArProperties")
+  << "The vectors specifying the surface Tpb reflectivities do not have consistent sizes";
+
+    }
+  }
+  for(size_t iName=0; iName!=fReflectiveSurfaceTpbNames.size(); ++iName)
+    for(size_t iEnergy=0; iEnergy!=fReflectiveSurfaceTpbEnergies.size(); ++iEnergy)
+      ToReturn[fReflectiveSurfaceTpbNames.at(iName)][fReflectiveSurfaceTpbEnergies.at(iEnergy)]=fReflectiveSurfaceTpbDiffuseFractions[iName][iEnergy];
 
   return ToReturn;
 }

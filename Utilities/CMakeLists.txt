@@ -8,15 +8,16 @@ art_make( NO_PLUGINS
                         RecoBase
                         Geometry
                         ${ART_FRAMEWORK_CORE}
-                        ${ART_FRAMEWORK_PRINCIPAL}
-                        ${ART_FRAMEWORK_SERVICES_REGISTRY}
-                        ${ART_PERSISTENCY_COMMON}
-                        ${ART_PERSISTENCY_PROVENANCE}
-                        ${ART_UTILITIES}
-                        ${MF_MESSAGELOGGER}
-                        ${MF_UTILITIES}
-                        ${CETLIB}
-                        ${ROOT_BASIC_LIB_LIST}
+			${ART_FRAMEWORK_PRINCIPAL}
+			${ART_FRAMEWORK_SERVICES_REGISTRY}
+			${ART_PERSISTENCY_COMMON}
+			${ART_PERSISTENCY_PROVENANCE}
+			${ART_UTILITIES}
+			${MF_MESSAGELOGGER}
+			${MF_UTILITIES}
+			${CETLIB}
+			${ROOT_BASIC_LIB_LIST}
+
         )
 
 simple_plugin(TimeService "service"
@@ -100,6 +101,8 @@ simple_plugin(LArProperties "service"
 	      ${MF_MESSAGELOGGER}
 	      ${MF_UTILITIES}
 	      ${CETLIB}
+	      ${ROOT_BASIC_LIB_LIST}
+	      ${ROOT_MATHCORE}
               BASENAME_ONLY
 )
 
