@@ -39,6 +39,9 @@ simple_plugin(TimeService "service"
 )
 
 simple_plugin(DatabaseUtil "service"
+	      SOURCE
+	        DatabaseUtil_service.cc DatabaseUtilProvider.cc
+	      NOP
 	      ${MF_MESSAGELOGGER}
 	      ${MF_UTILITIES}
 	      ${FHICLCPP}
