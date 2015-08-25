@@ -25,6 +25,16 @@
 
 ///General LArSoft Utilities
 namespace util{
+    /**
+     * @brief Properties related to liquid argon environment in the detector
+     *
+     * This class can access databases via DatabaseUtil service.
+     * 
+     * @note Some of the database connection properties are established before
+     * the beginning of the job and if they change this service will not be
+     * aware of it. These properties petrain, so far, only the connection mode
+     * and not any content of the databases themselves.
+     */
     class LArProperties {
     public:
       LArProperties(fhicl::ParameterSet const& pset, art::ActivityRegistry& reg);
@@ -172,6 +182,7 @@ namespace util{
       std::vector<double>               fReflectiveSurfaceEnergies;
       std::vector<std::vector<double> > fReflectiveSurfaceReflectances;
       std::vector<std::vector<double> > fReflectiveSurfaceDiffuseFractions;
+
       std::vector<double>               fTpbEmmisionEnergies;
       std::vector<double>               fTpbEmmisionSpectrum;
       std::vector<double>               fTpbAbsorptionEnergies;
@@ -180,6 +191,17 @@ namespace util{
       std::vector<double>               fReflectiveSurfaceTpbEnergies;
       std::vector<std::vector<double> > fReflectiveSurfaceTpbReflectances;
       std::vector<std::vector<double> > fReflectiveSurfaceTpbDiffuseFractions;
+
+      
+      struct DBsettingsClass {
+        DBsettingsClass();
+        
+        bool ToughErrorTreatment; ///< equivalent parameter in DatabaseUtil
+        bool ShouldConnect; ///< equivalent parameter in DatabaseUtil
+      }; // DBsettingsClass
+      
+      DBsettingsClass DBsettings; ///< settings read from DB access
+
       
     }; // class LArProperties
 } //namespace utils
