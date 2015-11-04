@@ -1,5 +1,6 @@
 
 #include "TimeService.h"
+#include "messagefacility/MessageLogger/MessageLogger.h"
 
 //-----------------------------------------------------------------------------------------
 util::TimeService::TimeService(fhicl::ParameterSet const& pset, art::ActivityRegistry &reg)
@@ -22,6 +23,10 @@ util::TimeService::TimeService(fhicl::ParameterSet const& pset, art::ActivityReg
   
   fInheritClockConfig = false;
   fAlreadyReadFromDB  = false;
+
+  fMismatchedG4RefTime = false;
+  fG4RefTimeFromFile = -99999;
+
   reconfigure(pset);
 
   reg.sPreProcessEvent.watch (this, &TimeService::preProcessEvent);
@@ -51,6 +56,9 @@ void util::TimeService::reconfigure(fhicl::ParameterSet const& pset)
   // Save fcl parameters in a container to check for inheritance
   fBeamGateTime = fTriggerTime = 0;
 
+  fMismatchedG4RefTime = false;
+  fG4RefTimeFromFile = -99999;
+
   ApplyParams();
 
 }
@@ -75,6 +83,15 @@ void util::TimeService::ApplyParams()
 void util::TimeService::preProcessEvent(const art::Event& evt)
 //------------------------------------------------------------
 {
+
+  //check if we have mismatched time and this is not data
+  if( !evt.isRealData() && fMismatchedG4RefTime)
+    throw cet::exception(__FUNCTION__) << Form("\033[95mFound historical value disagreement for %s ... %g != %g",
+					       fConfigName.at(kG4RefTime).c_str(),
+					       fG4RefTime,
+					       fG4RefTimeFromFile)
+				       << "\033[00m" << std::endl;
+
   art::Handle<std::vector<raw::Trigger> > trig_handle;
   evt.getByLabel(fTrigModuleName, trig_handle);
 
@@ -201,6 +218,11 @@ void util::TimeService::postOpenFile(const std::string& filename)
 
 	  else if(config_value.at(i) != value_from_file)
 
+	    if(i==kG4RefTime){
+	      mf::LogWarning("TimeService") << "\tMismatched G4RefTime: OK for data, but bad for MC.";
+	      fMismatchedG4RefTime = true;
+	      fG4RefTimeFromFile = value_from_file;
+	    }
 	    throw cet::exception(__FUNCTION__) << Form("\033[95mFound historical value disagreement for %s ... %g != %g",
 						       fConfigName.at(i).c_str(),
 						       config_value.at(i),

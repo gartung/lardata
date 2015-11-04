@@ -97,6 +97,9 @@ namespace util{
 
     bool fAlreadyReadFromDB;
 
+    bool   fMismatchedG4RefTime;
+    double fG4RefTimeFromFile;
+    
     std::string fTrigModuleName;
 
   }; // class TimeService
