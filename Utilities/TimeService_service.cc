@@ -216,18 +216,21 @@ void util::TimeService::postOpenFile(const std::string& filename)
 
 	    config_value.at(i) = value_from_file;
 
-	  else if(config_value.at(i) != value_from_file)
+	  else if(config_value.at(i) != value_from_file){
 
 	    if(i==kG4RefTime){
 	      mf::LogWarning("TimeService") << "\tMismatched G4RefTime: OK for data, but bad for MC.";
 	      fMismatchedG4RefTime = true;
 	      fG4RefTimeFromFile = value_from_file;
 	    }
-	    throw cet::exception(__FUNCTION__) << Form("\033[95mFound historical value disagreement for %s ... %g != %g",
-						       fConfigName.at(i).c_str(),
-						       config_value.at(i),
-						       value_from_file)
-					       << "\033[00m" << std::endl;
+	    else{
+	      throw cet::exception(__FUNCTION__) << Form("\033[95mFound historical value disagreement for %s ... %g != %g",
+							 fConfigName.at(i).c_str(),
+							 config_value.at(i),
+							 value_from_file)
+						 << "\033[00m" << std::endl;
+	    }
+	  }
 	  config_count.at(i) +=1;
 
 	}
