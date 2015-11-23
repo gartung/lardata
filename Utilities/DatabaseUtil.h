@@ -24,7 +24,7 @@ namespace util{
     DatabaseUtil(fhicl::ParameterSet const& pset, art::ActivityRegistry& reg);
     ~DatabaseUtil();
 
-    void   reconfigure(fhicl::ParameterSet const& pset);
+    void reconfigure(fhicl::ParameterSet const& pset);
       
     int GetLifetimeFromDB(int run,double &lftime_real);
     int GetTriggerOffsetFromDB(int run,double &T0_real);

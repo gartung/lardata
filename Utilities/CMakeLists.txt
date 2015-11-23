@@ -1,4 +1,3 @@
-
 art_make( NO_PLUGINS
           LIBRARY_NAME  Utilities
           LIB_LIBRARIES DetectorProperties_service

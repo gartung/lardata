@@ -25,7 +25,6 @@ util::DatabaseUtil::DatabaseUtil(fhicl::ParameterSet const& pset, art::ActivityR
 //------------------------------------------------
 util::DatabaseUtil::~DatabaseUtil() 
 {
-
 }
 
 //----------------------------------------------
