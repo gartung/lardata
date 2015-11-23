@@ -18,36 +18,6 @@
 ///General LArSoft Utilities
 namespace util{
 
-  class UBDaqID {
-  public:
-  UBDaqID() : crate(-1), card(-1), channel(-1) {};
-  UBDaqID( int _crate, int _card, int _channel ) :    
-    crate(_crate), card(_card), channel(_channel) {};
-    ~UBDaqID() {};
-    
-    int crate;
-    int card;
-    int channel;
-
-    const bool operator<(const UBDaqID& rhs) const {
-      bool is_less=false;
-      if (this->crate   == rhs.crate &&
-    	  this->card    == rhs.card  &&
-    	  this->channel <  rhs.channel) is_less=true;
-      else if (this->crate == rhs.crate &&
-    	       this->card  <  rhs.card) is_less=true;
-      else if (this->crate < rhs.crate) is_less=true;
-      return is_less;
-    }
-    
-  };
-
-  
-  typedef int UBLArSoftCh_t;
-
-  typedef std::map< UBDaqID, UBLArSoftCh_t > UBChannelMap_t;
-  typedef std::map< UBLArSoftCh_t, UBDaqID > UBChannelReverseMap_t;
-
 
   class DatabaseUtil {
   public:
@@ -61,8 +31,6 @@ namespace util{
     int GetTemperatureFromDB(int run,double &temp_real);
     int GetEfieldValuesFromDB(int run,std::vector<double> &efield);
     int GetPOTFromDB(int run,long double &POT);
-    UBChannelMap_t GetUBChannelMap(int data_taking_timestamp = -1 , int  swizzling_timestamp = -1 );
-    UBChannelReverseMap_t GetUBChannelReverseMap(int data_taking_timestamp = -1 , int  swizzling_timestamp = -1 );
 
     int SelectFieldByName(std::vector<std::string> &value,const char * field,const char * condition,const char * table);
     std::vector<std::string> & split(const std::string &s, char delim, std::vector<std::string> &elems);
@@ -87,10 +55,6 @@ namespace util{
     bool fToughErrorTreatment;
     bool fShouldConnect;
 
-    UBChannelMap_t        fChannelMap;
-    UBChannelReverseMap_t fChannelReverseMap;
-    void LoadUBChannelMap(int data_taking_timestamp = -1 , int  swizzling_timestamp = -1 );
-    
   }; // class DatabaseUtil
 } //namespace util
 

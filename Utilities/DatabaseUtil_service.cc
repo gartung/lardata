@@ -20,8 +20,6 @@ util::DatabaseUtil::DatabaseUtil(fhicl::ParameterSet const& pset, art::ActivityR
 {
   conn = NULL;
   this->reconfigure(pset);
-  fChannelMap.clear();
-  fChannelReverseMap.clear();
 }
 
 //------------------------------------------------
@@ -292,96 +290,6 @@ int util::DatabaseUtil::GetPOTFromDB(int run,long double &POT) {
 }
 
 namespace util {
-
-  void DatabaseUtil::LoadUBChannelMap( int data_taking_timestamp, int  swizzling_timestamp) {
-
-    if ( fChannelMap.size()>0 ) {
-      // Use prevously grabbed data to avoid repeated call to database.
-      // Also this avoids inglorious segfault. 
-      return;
-    }
-    if ( conn==NULL )
-      Connect( 0 );
-
-    if(PQstatus(conn)!=CONNECTION_OK) {
-      mf::LogError("") << __PRETTY_FUNCTION__ << ": Couldn't open connection to postgresql interface"  << PQdb(conn) <<":"<<PQhost(conn);
-      PQfinish(conn);
-      throw art::Exception( art::errors::FileReadError )
-        << "Failed to get channel map from DB."<< std::endl;
-    }
-    
-    fChannelMap.clear();
-    fChannelReverseMap.clear();
-
-    PGresult *res  = PQexec(conn, "BEGIN");    
-    if (PQresultStatus(res) != PGRES_COMMAND_OK) { 
-      mf::LogError("")<< "postgresql BEGIN failed";
-      PQclear(res);
-      PQfinish(conn);
-      throw art::Exception( art::errors::FileReadError )
-        << "postgresql BEGIN failed." << std::endl;
-    }
-    
-    // Jason St. John's updated call to versioned database.
-    // get_map_double_sec (data_taking_timestamp int DEFAULT now() , 
-    //                     swizzling_timestamp   int DEFAULT now() )
-    // Returns rows of: crate, slot, fem_channel, larsoft_channel 
-    // Both arguments are optional, or can be passed their default of now(), or can be passed an explicit timestamp:
-    // Example: "SELECT get_map_double_sec(1438430400);"
-    PQclear(res);
-
-    char dbquery[1] = {' '};  //I hate C++ strong typing and string handling so very, very much. 
-    sprintf(dbquery, "SELECT get_map_double_sec(%i,%i);", data_taking_timestamp, swizzling_timestamp);
-    res = PQexec(conn, dbquery); 
-
-    if ((!res) || (PQresultStatus(res) != PGRES_TUPLES_OK) || (PQntuples(res) < 1))
-      {
-	mf::LogError("")<< "SELECT command did not return tuples properly. \n" << PQresultErrorMessage(res) << "Number rows: "<< PQntuples(res);
-        PQclear(res);
-        PQfinish(conn);
-        throw art::Exception( art::errors::FileReadError )
-          << "postgresql SELECT failed." << std::endl;
-      } 
-
-    int num_records=PQntuples(res);            //One record per channel, ideally.
-
-    for (int i=0;i<num_records;i++) {
-      std::string tup = PQgetvalue(res, i, 0); // (crate,slot,FEMch,larsoft_chan) format
-      tup = tup.substr(1,tup.length()-2);      // Strip initial & final parentheses.
-      std::vector<std::string> fields;
-      split(tup, ',', fields);                 // Explode substrings into vector with comma delimiters. 
-      
-      int crate_id     = atoi( fields[0].c_str() );
-      int slot         = atoi( fields[1].c_str() );
-      int boardChan    = atoi( fields[2].c_str() );
-      int larsoft_chan = atoi( fields[3].c_str() );
-      
-      UBDaqID daq_id(crate_id,slot,boardChan);
-      std::pair<UBDaqID, UBLArSoftCh_t> p(daq_id,larsoft_chan);
-
-      if ( fChannelMap.find(daq_id) != fChannelMap.end() ){
-	std::cout << __PRETTY_FUNCTION__ << ": ";
-        std::cout << "Multiple entries!" << std::endl;
-        mf::LogWarning("")<< "Multiple DB entries for same (crate,card,channel). "<<std::endl
-			  << "Redefining (crate,card,channel)=>id link ("
-			  << daq_id.crate<<", "<< daq_id.card<<", "<< daq_id.channel<<")=>"
-			  << fChannelMap.find(daq_id)->second;
-      }
-             
-      fChannelMap.insert( p );
-      fChannelReverseMap.insert( std::pair< UBLArSoftCh_t, UBDaqID >( larsoft_chan, daq_id ) );
-    }
-  }// end of LoadUBChannelMap
-
-  UBChannelMap_t DatabaseUtil::GetUBChannelMap( int data_taking_timestamp, int swizzling_timestamp ) {
-    LoadUBChannelMap( data_taking_timestamp, swizzling_timestamp );
-    return fChannelMap;
-  }
-
-  UBChannelReverseMap_t DatabaseUtil::GetUBChannelReverseMap( int data_taking_timestamp, int swizzling_timestamp ) {
-    LoadUBChannelMap( data_taking_timestamp, swizzling_timestamp );
-    return fChannelReverseMap;
-  }
 
   // Handy, typical string-splitting-to-vector function. 
   // I hate C++ strong typing and string handling so very, very much. 
