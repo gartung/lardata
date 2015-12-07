@@ -48,6 +48,13 @@ namespace util{
   typedef std::map< UBDaqID, UBLArSoftCh_t > UBChannelMap_t;
   typedef std::map< UBLArSoftCh_t, UBDaqID > UBChannelReverseMap_t;
 
+  
+  typedef int UBLArSoftOpCh_t;
+
+  typedef std::map< UBDaqID, UBLArSoftOpCh_t > UBOpChannelMap_t;
+  typedef std::map< UBLArSoftOpCh_t, UBDaqID > UBOpChannelReverseMap_t;
+  
+  
 
   class DatabaseUtil {
   public:
@@ -64,6 +71,9 @@ namespace util{
     UBChannelMap_t GetUBChannelMap(int data_taking_timestamp = -1 , int  swizzling_timestamp = -1 );
     UBChannelReverseMap_t GetUBChannelReverseMap(int data_taking_timestamp = -1 , int  swizzling_timestamp = -1 );
 
+    UBOpChannelMap_t GetUBOpChannelMap(int data_taking_timestamp = -1 , int  swizzling_timestamp = -1 );
+    UBOpChannelReverseMap_t GetUBOpChannelReverseMap(int data_taking_timestamp = -1 , int  swizzling_timestamp = -1 );
+    
     int SelectFieldByName(std::vector<std::string> &value,const char * field,const char * condition,const char * table);
     std::vector<std::string> & split(const std::string &s, char delim, std::vector<std::string> &elems);
 
@@ -90,6 +100,12 @@ namespace util{
     UBChannelMap_t        fChannelMap;
     UBChannelReverseMap_t fChannelReverseMap;
     void LoadUBChannelMap(int data_taking_timestamp = -1 , int  swizzling_timestamp = -1 );
+    
+    UBOpChannelMap_t        fOpChannelMap;
+    UBOpChannelReverseMap_t fOpChannelReverseMap;
+    void LoadUBOpChannelMap(int data_taking_timestamp = -1 , int  swizzling_timestamp = -1 );
+    
+    
     
   }; // class DatabaseUtil
 } //namespace util
