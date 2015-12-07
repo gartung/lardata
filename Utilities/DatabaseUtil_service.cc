@@ -293,12 +293,12 @@ int util::DatabaseUtil::GetPOTFromDB(int run,long double &POT) {
 
 namespace util {
 
-  void DatabaseUtil::LoadUBChannelMap( int data_taking_timestamp, int  swizzling_timestamp) {
+  int DatabaseUtil::LoadUBChannelMap( int data_taking_timestamp, int  swizzling_timestamp) {
 
     if ( fChannelMap.size()>0 ) {
       // Use prevously grabbed data to avoid repeated call to database.
       // Also this avoids inglorious segfault. 
-      return;
+      return 0;
     }
    if(this->Connect()==-1)  {
     if(fShouldConnect)
@@ -355,7 +355,7 @@ namespace util {
       int larsoft_chan = atoi( fields[3].c_str() );
       
       UBDaqID daq_id(crate_id,slot,boardChan);
-      std::pair<UBDaqID, UBLArSoftOpCh_t> p(daq_id,larsoft_chan);
+      std::pair<UBDaqID, UBLArSoftCh_t> p(daq_id,larsoft_chan);
 
       if ( fOpChannelMap.find(daq_id) != fOpChannelMap.end() ){
 	std::cout << __PRETTY_FUNCTION__ << ": ";
@@ -367,9 +367,10 @@ namespace util {
       }
              
       fOpChannelMap.insert( p );
-      fOpChannelReverseMap.insert( std::pair< UBOpLArSoftCh_t, UBDaqID >( larsoft_chan, daq_id ) );
+      fOpChannelReverseMap.insert( std::pair< UBLArSoftCh_t, UBDaqID >( larsoft_chan, daq_id ) );
     }
     this->DisConnect();
+    return 0;
   }// end of LoadUBChannelMap
 
   UBChannelMap_t DatabaseUtil::GetUBChannelMap( int data_taking_timestamp, int swizzling_timestamp ) {
@@ -385,12 +386,12 @@ namespace util {
 //// placeholders for the Optical Channel functions
 ///////////////////////////////////////////////////////////////////////////////////
 
-void DatabaseUtil::LoadUBOpChannelMap( int data_taking_timestamp, int  swizzling_timestamp) {
+int DatabaseUtil::LoadUBOpChannelMap( int data_taking_timestamp, int  swizzling_timestamp) {
 
     if ( fOpChannelMap.size()>0 ) {
       // Use prevously grabbed data to avoid repeated call to database.
       // Also this avoids inglorious segfault. 
-      return;
+      return 0;
     }
     if(this->Connect()==-1)  {
     if(fShouldConnect)
@@ -421,7 +422,7 @@ void DatabaseUtil::LoadUBOpChannelMap( int data_taking_timestamp, int  swizzling
     PQclear(res);
 
     char dbquery[1] = {' '};  //I hate C++ strong typing and string handling so very, very much. 
-    sprintf(dbquery, "SELECT get_map_double_sec(%i,%i);", data_taking_timestamp, swizzling_timestamp);
+    sprintf(dbquery, "SELECT get_optical_map_double_sec(%i,%i);", data_taking_timestamp, swizzling_timestamp);
     res = PQexec(conn, dbquery); 
 
     if ((!res) || (PQresultStatus(res) != PGRES_TUPLES_OK) || (PQntuples(res) < 1))
@@ -445,6 +446,7 @@ void DatabaseUtil::LoadUBOpChannelMap( int data_taking_timestamp, int  swizzling
       int slot         = atoi( fields[1].c_str() );
       int boardChan    = atoi( fields[2].c_str() );
       int larsoft_chan = atoi( fields[3].c_str() );
+     // int opdet_chan = atoi( fields[4].c_str() ); //currently unused?
       
       UBDaqID daq_id(crate_id,slot,boardChan);
       std::pair<UBDaqID, UBLArSoftCh_t> p(daq_id,larsoft_chan);
@@ -462,6 +464,7 @@ void DatabaseUtil::LoadUBOpChannelMap( int data_taking_timestamp, int  swizzling
       fChannelReverseMap.insert( std::pair< UBLArSoftCh_t, UBDaqID >( larsoft_chan, daq_id ) );
     }
     this->DisConnect();
+    return 0;
   }// end of LoadUBChannelMap
 
   

@@ -99,11 +99,11 @@ namespace util{
 
     UBChannelMap_t        fChannelMap;
     UBChannelReverseMap_t fChannelReverseMap;
-    void LoadUBChannelMap(int data_taking_timestamp = -1 , int  swizzling_timestamp = -1 );
+    int LoadUBChannelMap(int data_taking_timestamp = -1 , int  swizzling_timestamp = -1 );
     
     UBOpChannelMap_t        fOpChannelMap;
     UBOpChannelReverseMap_t fOpChannelReverseMap;
-    void LoadUBOpChannelMap(int data_taking_timestamp = -1 , int  swizzling_timestamp = -1 );
+    int LoadUBOpChannelMap(int data_taking_timestamp = -1 , int  swizzling_timestamp = -1 );
     
     
     
