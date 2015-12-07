@@ -354,6 +354,7 @@ namespace util {
       int boardChan    = atoi( fields[2].c_str() );
       int larsoft_chan = atoi( fields[3].c_str() );
       
+            
       UBDaqID daq_id(crate_id,slot,boardChan);
       std::pair<UBDaqID, UBLArSoftCh_t> p(daq_id,larsoft_chan);
 
@@ -366,8 +367,8 @@ namespace util {
 			  << fOpChannelMap.find(daq_id)->second;
       }
              
-      fOpChannelMap.insert( p );
-      fOpChannelReverseMap.insert( std::pair< UBLArSoftCh_t, UBDaqID >( larsoft_chan, daq_id ) );
+      fChannelMap.insert( p );
+      fChannelReverseMap.insert( std::pair< UBLArSoftCh_t, UBDaqID >( larsoft_chan, daq_id ) );
     }
     this->DisConnect();
     return 0;
@@ -422,7 +423,11 @@ int DatabaseUtil::LoadUBOpChannelMap( int data_taking_timestamp, int  swizzling_
     PQclear(res);
 
     char dbquery[1] = {' '};  //I hate C++ strong typing and string handling so very, very much. 
-    sprintf(dbquery, "SELECT get_optical_map_double_sec(%i,%i);", data_taking_timestamp, swizzling_timestamp);
+    //sprintf(dbquery, "SELECT get_optical_map_double_sec(%i,%i);", data_taking_timestamp, swizzling_timestamp);
+    sprintf(dbquery, "SELECT get_optical_map_double_sec(%i,%lu);", data_taking_timestamp, 14499000000);
+    
+    std::cout << " dbdbdbdbdbdbd " << dbquery << std::endl;
+    
     res = PQexec(conn, dbquery); 
 
     if ((!res) || (PQresultStatus(res) != PGRES_TUPLES_OK) || (PQntuples(res) < 1))
@@ -445,8 +450,9 @@ int DatabaseUtil::LoadUBOpChannelMap( int data_taking_timestamp, int  swizzling_
       int crate_id     = atoi( fields[0].c_str() );
       int slot         = atoi( fields[1].c_str() );
       int boardChan    = atoi( fields[2].c_str() );
-      int larsoft_chan = atoi( fields[3].c_str() );
-     // int opdet_chan = atoi( fields[4].c_str() ); //currently unused?
+      //string changain  = fields[3].c_str();
+      int larsoft_chan = atoi( fields[4].c_str() );
+     // int opdet_chan = atoi( fields[5].c_str() ); //currently unused?
       
       UBDaqID daq_id(crate_id,slot,boardChan);
       std::pair<UBDaqID, UBLArSoftCh_t> p(daq_id,larsoft_chan);
@@ -460,8 +466,8 @@ int DatabaseUtil::LoadUBOpChannelMap( int data_taking_timestamp, int  swizzling_
 			  << fChannelMap.find(daq_id)->second;
       }
              
-      fChannelMap.insert( p );
-      fChannelReverseMap.insert( std::pair< UBLArSoftCh_t, UBDaqID >( larsoft_chan, daq_id ) );
+      fOpChannelMap.insert( p );
+      fOpChannelReverseMap.insert( std::pair< UBLArSoftCh_t, UBDaqID >( larsoft_chan, daq_id ) );
     }
     this->DisConnect();
     return 0;
