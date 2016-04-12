@@ -10,14 +10,14 @@
 
 #include <map>
 
-#include "RecoObjects/KHitContainerWireX.h"
+#include "lardata/RecoObjects/KHitContainerWireX.h"
 
 #include "cetlib/exception.h"
 
-#include "RecoObjects/KHitWireX.h"
-#include "Utilities/LArProperties.h"
-#include "Utilities/DetectorProperties.h"
-#include "Geometry/Geometry.h"
+#include "lardata/RecoObjects/KHitWireX.h"
+#include "lardata/DetectorInfoServices/LArPropertiesService.h"
+#include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
+#include "larcore/Geometry/Geometry.h"
 
 namespace trkf {
 
@@ -47,8 +47,8 @@ namespace trkf {
     // Get services.
 
     art::ServiceHandle<geo::Geometry> geom;
-    art::ServiceHandle<util::LArProperties> larprop;
-    art::ServiceHandle<util::DetectorProperties> detprop;
+    auto const* larprop = lar::providerFrom<detinfo::LArPropertiesService>();
+    auto const* detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
 
     // Make a temporary map from channel number to KHitGroup objects.
     // The KHitGroup pointers are borrowed references to KHitGroup

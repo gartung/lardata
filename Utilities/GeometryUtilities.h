@@ -13,18 +13,18 @@
 #include <TLorentzVector.h>
 
 #include "PxUtils.h"
-#include "Geometry/Geometry.h"
-#include "Utilities/LArProperties.h"
-#include "Utilities/DetectorProperties.h"
-#include "Utilities/UtilException.h"
+#include "larcore/Geometry/Geometry.h"
+#include "lardata/DetectorInfoServices/LArPropertiesService.h"
+#include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
+#include "lardata/Utilities/UtilException.h"
 #include "time.h"
 
-#include "RecoBase/Hit.h"
-#include "Geometry/CryostatGeo.h"
-#include "Geometry/PlaneGeo.h"
-#include "Geometry/WireGeo.h"
-#include "Geometry/TPCGeo.h"
-#include "SimpleTypesAndConstants/geo_types.h"
+#include "lardata/RecoBase/Hit.h"
+#include "larcore/Geometry/CryostatGeo.h"
+#include "larcore/Geometry/PlaneGeo.h"
+#include "larcore/Geometry/WireGeo.h"
+#include "larcore/Geometry/TPCGeo.h"
+#include "larcore/SimpleTypesAndConstants/geo_types.h"
 #include "art/Persistency/Common/Ptr.h" 
 
 #include <climits>
@@ -286,8 +286,8 @@ namespace util{
     */
  
     art::ServiceHandle<geo::Geometry> geom;
-    art::ServiceHandle<util::DetectorProperties> detp;
-    art::ServiceHandle<util::LArProperties> larp;
+    auto const* detp = lar::providerFrom<detinfo::DetectorPropertiesService>();
+    auto const* larp = lar::providerFrom<detinfo::LArPropertiesService>();
     
     std::vector< Double_t > vertangle;  //angle wrt to vertical
     Double_t fWirePitch;

@@ -39,8 +39,8 @@ namespace util{
   {
     /*
     geom = (util::Geometry*)(util::Geometry::GetME());
-    detp = (util::DetectorProperties*)(util::DetectorProperties::GetME());
-    larp = (util::LArProperties*)(util::LArProperties::GetME());
+    detp = (detinfo::DetectorPropertiesService*)(detinfo::DetectorPropertiesService::GetME());
+    larp = (detinfo::LArPropertiesService*)(detinfo::LArPropertiesService::GetME());
     */
 
     fNPlanes = geom->Nplanes();

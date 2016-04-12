@@ -9,10 +9,10 @@
 ////////////////////////////////////////////////////////////////////////
 #include <stdint.h>
 
-#include "RecoObjects/KHitWireLine.h"
-#include "RecoObjects/SurfWireLine.h"
-#include "Geometry/Geometry.h"
-#include "Utilities/DetectorProperties.h"
+#include "lardata/RecoObjects/KHitWireLine.h"
+#include "lardata/RecoObjects/SurfWireLine.h"
+#include "larcore/Geometry/Geometry.h"
+#include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
 #include "cetlib/exception.h"
 
 namespace trkf {
@@ -34,7 +34,7 @@ namespace trkf {
     fHit(hit)
   {
     // Get services.
-    art::ServiceHandle<util::DetectorProperties> detprop;
+    auto const* detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
 
     // Extract wire id.
     geo::WireID wireid = hit->WireID();

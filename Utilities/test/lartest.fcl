@@ -7,7 +7,7 @@ services:
   user: {}
 }
 
-services.user.LArProperties:      @local::microboone_properties
+services.user.LArPropertiesService:      @local::microboone_properties
 services.user.DatabaseUtil:       @local::microboone_database
 services.user.DatabaseUtil.ShouldConnect: false
 

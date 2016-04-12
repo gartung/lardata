@@ -1,12 +1,10 @@
 
 art_make( NO_PLUGINS
-          LIBRARY_NAME  Utilities
-          LIB_LIBRARIES DetectorProperties_service
-                        LArProperties_service
-                        LArFFT_service
-                        TimeService_service
-                        RecoBase
-                        Geometry
+          LIBRARY_NAME  lardata_Utilities
+          LIB_LIBRARIES 
+                        lardata_Utilities_LArFFT_service
+                        lardata_RecoBase
+                        larcore_Geometry
                         ${ART_FRAMEWORK_CORE}
 			${ART_FRAMEWORK_PRINCIPAL}
 			${ART_FRAMEWORK_SERVICES_REGISTRY}
@@ -21,8 +19,8 @@ art_make( NO_PLUGINS
         )
 
 simple_plugin(TimeService "service"
-	      RawData
-              DatabaseUtil_service
+	      lardata_RawData
+              lardata_Utilities_DatabaseUtil_service
 	      ${ART_UTILITIES}
               ${ART_FRAMEWORK_CORE}
 	      ${ART_FRAMEWORK_PRINCIPAL}
@@ -56,11 +54,9 @@ simple_plugin(DatabaseUtil "service"
 )
 
 simple_plugin(DetectorProperties "service"
-              TimeService_service
-              LArProperties_service
-              DatabaseUtil_service
-              Geometry_service
-              Geometry
+              lardata_Utilities_DatabaseUtil_service
+              larcore_Geometry_Geometry_service
+              larcore_Geometry
 	      ${ART_PERSISTENCY_ROOTDB}
 	      ${SQLITE3}
 	      ${MF_MESSAGELOGGER}
@@ -96,7 +92,7 @@ simple_plugin(LArFFT "service"
 )
 
 simple_plugin(LArProperties "service"
-              DatabaseUtil_service
+              lardata_Utilities_DatabaseUtil_service
 	      ${ART_UTILITIES}
 	      ${MF_MESSAGELOGGER}
 	      ${MF_UTILITIES}

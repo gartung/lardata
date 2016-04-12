@@ -1,8 +1,8 @@
 
 art_make( NO_PLUGINS
-          LIBRARY_NAME  DetectorInfo
+          LIBRARY_NAME  lardata_DetectorInfo
           LIB_LIBRARIES
-			Geometry
+			larcore_Geometry
                         ${MF_MESSAGELOGGER}
                         ${MF_UTILITIES}
                         ${CETLIB}

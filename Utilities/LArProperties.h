@@ -205,5 +205,5 @@ namespace util{
       
     }; // class LArProperties
 } //namespace utils
-DECLARE_ART_SERVICE(util::LArProperties, LEGACY)
+DECLARE_ART_SERVICE(detinfo::LArPropertiesService, LEGACY)
 #endif // LARPROPERTIES_H

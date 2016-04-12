@@ -9,9 +9,9 @@
 ////////////////////////////////////////////////////////////////////////
 
 #include <cmath>
-#include "RecoObjects/InteractPlane.h"
-#include "RecoObjects/SurfPlane.h"
-#include "Utilities/LArProperties.h"
+#include "lardata/RecoObjects/InteractPlane.h"
+#include "lardata/RecoObjects/SurfPlane.h"
+#include "lardata/DetectorInfoServices/LArPropertiesService.h"
 #include "cetlib/exception.h"
 
 namespace trkf {
@@ -70,7 +70,7 @@ namespace trkf {
   {
     // Get LAr service.
 
-    art::ServiceHandle<util::LArProperties> larprop;
+    auto const* larprop = lar::providerFrom<detinfo::LArPropertiesService>();
 
     // Make sure we are on a plane surface (throw exception if not).
 

@@ -1,7 +1,7 @@
-#include "timeservice.fcl"
+#include "detectorclocks.fcl"
 
 BEGIN_PROLOG
 
-csu40L_timeservice: @local::standard_timeservice
+csu40L_detectorclocks: @local::standard_detectorclocks
 
 END_PROLOG

@@ -16,7 +16,7 @@
 
 #include <iostream>
 #include "ElecClock.h"
-#include "RawData/TriggerData.h"
+#include "lardata/RawData/TriggerData.h"
 
 namespace util {
   /**
@@ -53,16 +53,16 @@ namespace util {
     double fFramePeriod;
 
     /// TPC clock
-    ::util::ElecClock fTPCClock;
+    ::detinfo::ElecClock fTPCClock;
 
     /// Optical clock
-    ::util::ElecClock fOpticalClock;
+    ::detinfo::ElecClock fOpticalClock;
 
     /// Trigger clock
-    ::util::ElecClock fTriggerClock;
+    ::detinfo::ElecClock fTriggerClock;
 
     /// External clock
-    ::util::ElecClock fExternalClock;
+    ::detinfo::ElecClock fExternalClock;
 
     /// Time offset from trigger to TPC readout start
     double fTriggerOffsetTPC;

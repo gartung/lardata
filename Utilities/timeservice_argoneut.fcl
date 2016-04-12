@@ -1,10 +1,10 @@
-#include "timeservice.fcl"
+#include "detectorclocks.fcl"
 
 BEGIN_PROLOG
 
-argoneut_timeservice: @local::standard_timeservice
-argoneut_timeservice.TriggerOffsetTPC: -11.88 #60 ticks * 198 ns
-argoneut_timeservice.DefaultTrigTime:  0
-argoneut_timeservice.DefaultBeamTime:  0
+argoneut_detectorclocks: @local::standard_detectorclocks
+argoneut_detectorclocks.TriggerOffsetTPC: -11.88 #60 ticks * 198 ns
+argoneut_detectorclocks.DefaultTrigTime:  0
+argoneut_detectorclocks.DefaultBeamTime:  0
 
 END_PROLOG

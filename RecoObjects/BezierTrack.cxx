@@ -1,16 +1,16 @@
-#include "RecoObjects/BezierTrack.h"
+#include "lardata/RecoObjects/BezierTrack.h"
 
-#include "AnalysisAlg/CalorimetryAlg.h"
-#include "Geometry/Geometry.h"
-#include "Geometry/CryostatGeo.h"
-#include "Geometry/TPCGeo.h"
-#include "Geometry/PlaneGeo.h"
-#include "RecoBase/Hit.h"
-#include "RecoBase/SpacePoint.h"
-#include "SimpleTypesAndConstants/PhysicalConstants.h"
-#include "SimpleTypesAndConstants/geo_types.h"
-#include "RecoObjects/BezierCurveHelper.h"
-#include "Utilities/DetectorProperties.h"
+#include "lardata/AnalysisAlg/CalorimetryAlg.h"
+#include "larcore/Geometry/Geometry.h"
+#include "larcore/Geometry/CryostatGeo.h"
+#include "larcore/Geometry/TPCGeo.h"
+#include "larcore/Geometry/PlaneGeo.h"
+#include "lardata/RecoBase/Hit.h"
+#include "lardata/RecoBase/SpacePoint.h"
+#include "larcore/SimpleTypesAndConstants/PhysicalConstants.h"
+#include "larcore/SimpleTypesAndConstants/geo_types.h"
+#include "lardata/RecoObjects/BezierCurveHelper.h"
+#include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
 
 #include "TVector3.h"
 
@@ -479,7 +479,7 @@ namespace trkf {
 
   void BezierTrack::GetProjectedPointUVWT(double s, double *uvw, double*ticks, int t=0, int c=0) const
   {
-    art::ServiceHandle<util::DetectorProperties> det;
+    auto const* det = lar::providerFrom<detinfo::DetectorPropertiesService>();
     art::ServiceHandle<geo::Geometry>            geo;
 
     double  xyz[3];
@@ -507,7 +507,7 @@ namespace trkf {
   void BezierTrack::GetClosestApproaches( art::PtrVector<recob::Hit> const & hits ,     std::vector<double>& s,  std::vector<double>& Distances) const
   {
 
-    art::ServiceHandle<util::DetectorProperties> det;
+    auto const* det = lar::providerFrom<detinfo::DetectorPropertiesService>();
     art::ServiceHandle<geo::Geometry>            geo;
 
     s.clear();
@@ -589,7 +589,7 @@ namespace trkf {
 
   void BezierTrack::GetClosestApproach( recob::Hit const & hit,       double& s,  double& Distance) const
   {
-    art::ServiceHandle<util::DetectorProperties> det;
+    auto const* det = lar::providerFrom<detinfo::DetectorPropertiesService>();
     art::ServiceHandle<geo::Geometry>            geo;
 
     //unsigned int c1, t1, p1, w1;
@@ -636,7 +636,7 @@ namespace trkf {
 
   void BezierTrack::GetClosestApproach( art::Ptr<recob::Hit> const& hit,       double& s,  double& Distance) const
   {
-    art::ServiceHandle<util::DetectorProperties> det;
+    auto const* det = lar::providerFrom<detinfo::DetectorPropertiesService>();
     art::ServiceHandle<geo::Geometry>            geo;
 
     //unsigned int c1, t1, p1, w1;
@@ -682,7 +682,7 @@ namespace trkf {
 
   void BezierTrack::GetClosestApproach( uint32_t w, int p, int t, int c, float x, double& s,  double& Distance) const
   {
-    art::ServiceHandle<util::DetectorProperties> det;
+    auto const* det = lar::providerFrom<detinfo::DetectorPropertiesService>();
     art::ServiceHandle<geo::Geometry>            geo;
     
     
@@ -750,7 +750,7 @@ namespace trkf {
 
   void BezierTrack::GetClosestApproach( TVector3 vec,          double& s,  double& Distance) const
   {
-    art::ServiceHandle<util::DetectorProperties> det;
+    auto const* det = lar::providerFrom<detinfo::DetectorPropertiesService>();
     art::ServiceHandle<geo::Geometry>            geo;
 
     double iS, xyz[3], MinDistanceToPoint=10000, MinS=0;

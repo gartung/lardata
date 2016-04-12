@@ -6,13 +6,13 @@
 // Framework includes
 
 // LArSoft includes
-#include "Utilities/DetectorProperties.h"
-#include "Utilities/LArProperties.h"
-#include "Geometry/Geometry.h"
-#include "Geometry/CryostatGeo.h"
-#include "Geometry/TPCGeo.h"
-#include "Geometry/PlaneGeo.h"
-#include "Utilities/DatabaseUtil.h"
+#include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
+#include "lardata/DetectorInfoServices/LArPropertiesService.h"
+#include "larcore/Geometry/Geometry.h"
+#include "larcore/Geometry/CryostatGeo.h"
+#include "larcore/Geometry/TPCGeo.h"
+#include "larcore/Geometry/PlaneGeo.h"
+#include "lardata/Utilities/DatabaseUtil.h"
 #include "messagefacility/MessageLogger/MessageLogger.h"
 
 // Art includes
@@ -43,14 +43,14 @@ namespace util{
   //------------------------------------------------------------
   double DetectorProperties::ConvertTDCToTicks(double tdc) const
   {
-    art::ServiceHandle<util::TimeService> ts;
+    auto const* ts = lar::providerFrom<detinfo::DetectorClocksService>();
     return ts->TPCTDC2Tick(tdc);
   }
   
   //--------------------------------------------------------------
   double DetectorProperties::ConvertTicksToTDC(double ticks) const
   {
-    art::ServiceHandle<util::TimeService> ts;
+    auto const* ts = lar::providerFrom<detinfo::DetectorClocksService>();
     return ts->TPCTick2TDC(ticks);
   }
 
@@ -77,7 +77,7 @@ namespace util{
     fInheritNumberTimeSamples = p.get<bool           >("InheritNumberTimeSamples", false);
     fXTicksParamsLoaded = false;
 
-    art::ServiceHandle<util::TimeService> ts;
+    auto const* ts = lar::providerFrom<detinfo::DetectorClocksService>();
     fTPCClock = ts->TPCClock();
 
     // Save the parameter set.
@@ -90,7 +90,7 @@ namespace util{
   void DetectorProperties::preProcessEvent(const art::Event& evt)
   {
     // Make sure TPC Clock is updated with TimeService (though in principle it shouldn't change
-    art::ServiceHandle<util::TimeService> ts;
+    auto const* ts = lar::providerFrom<detinfo::DetectorClocksService>();
     fTPCClock = ts->TPCClock();
   }
 
@@ -122,7 +122,7 @@ void DetectorProperties::checkDBstatus() const
 //------------------------------------------------------------------------------------//
 int  DetectorProperties::TriggerOffset()     const 
 {
-  art::ServiceHandle<util::TimeService> ts;
+  auto const* ts = lar::providerFrom<detinfo::DetectorClocksService>();
   return fTPCClock.Ticks(ts->TriggerOffsetTPC() * -1.);
 }
 
@@ -165,7 +165,7 @@ int  DetectorProperties::TriggerOffset()     const
 
   void DetectorProperties::CalculateXTicksParams()
   {
-    art::ServiceHandle<util::LArProperties>      lrp;
+    auto const* lrp = lar::providerFrom<detinfo::LArPropertiesService>();
     art::ServiceHandle<geo::Geometry>            geo;
 
     double samplingRate   = SamplingRate();

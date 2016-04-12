@@ -13,8 +13,8 @@
 #include "art/Framework/Services/Registry/ActivityRegistry.h"
 #include "art/Framework/Services/Registry/ServiceHandle.h"
 #include "art/Framework/Services/Registry/ServiceMacros.h"
-#include "SimpleTypesAndConstants/geo_types.h"
-#include "Utilities/TimeService.h"
+#include "larcore/SimpleTypesAndConstants/geo_types.h"
+#include "lardata/DetectorInfoServices/DetectorClocksService.h"
 
 ///General LArSoft Utilities
 namespace util{
@@ -90,8 +90,8 @@ namespace util{
 
       bool	   fAlreadyReadFromDB; ///< tests whether the values have alread been picked up from the Database
 
-      ::util::ElecClock fTPCClock;     ///< TPC electronics clock
+      ::detinfo::ElecClock fTPCClock;     ///< TPC electronics clock
     }; // class DetectorProperties
 } //namespace utils
-DECLARE_ART_SERVICE(util::DetectorProperties, LEGACY)
+DECLARE_ART_SERVICE(detinfo::DetectorPropertiesService, LEGACY)
 #endif // UTIL_DETECTOR_PROPERTIES_H

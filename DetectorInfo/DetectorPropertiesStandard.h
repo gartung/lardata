@@ -12,9 +12,9 @@
 #define DETINFO_DETECTORPROPERTIESSTD_H
 
 #include "fhiclcpp/ParameterSet.h"
-#include "DetectorInfo/LArProperties.h"
-#include "DetectorInfo/DetectorClocks.h"
-#include "DetectorInfo/DetectorProperties.h"
+#include "lardata/DetectorInfoServices/LArPropertiesService.h"
+#include "lardata/DetectorInfo/DetectorClocks.h"
+#include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
 
 ///General LArSoft Utilities
 namespace detinfo{
@@ -112,7 +112,7 @@ namespace detinfo{
       std::vector<std::vector<std::vector<double> > > fXTicksOffsets;
       std::vector<std::vector<double> >               fDriftDirection;
 
-      ::util::ElecClock fTPCClock;     ///< TPC electronics clock
+      ::detinfo::ElecClock fTPCClock;     ///< TPC electronics clock
     }; // class DetectorPropertiesStandard
 } //namespace detinfo
 

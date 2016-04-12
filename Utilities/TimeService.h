@@ -18,8 +18,8 @@
 #include "art/Persistency/Common/PtrVector.h"
 #include "art/Persistency/RootDB/SQLite3Wrapper.h"
 
-#include "RawData/TriggerData.h"
-#include "Utilities/DatabaseUtil.h"
+#include "lardata/RawData/TriggerData.h"
+#include "lardata/Utilities/DatabaseUtil.h"
 #include "SimpleTimeService.h"
 
 namespace util{
@@ -103,6 +103,6 @@ namespace util{
 
 } //namespace utils
 
-DECLARE_ART_SERVICE(util::TimeService, LEGACY)
+DECLARE_ART_SERVICE(detinfo::DetectorClocksService, LEGACY)
 
 #endif 

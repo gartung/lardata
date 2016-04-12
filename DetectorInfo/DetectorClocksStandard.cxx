@@ -1,17 +1,17 @@
-#include "DetectorInfo/DetectorClocksStandard.h"
+#include "lardata/DetectorInfo/DetectorClocksStandard.h"
 
 //-------------------------------------------------------------------------
 detinfo::DetectorClocksStandard::DetectorClocksStandard()
   : fConfigName(detinfo::kInheritConfigTypeMax,""),
     fConfigValue(detinfo::kInheritConfigTypeMax,0),
     fTrigModuleName(""),
-    fG4RefTime    (util::kDEFAULT_MC_CLOCK_T0),
-    fFramePeriod  (util::kDEFAULT_FRAME_PERIOD),
-    fTPCClock     (0,util::kDEFAULT_FRAME_PERIOD,util::kDEFAULT_FREQUENCY_TPC),
-    fOpticalClock (0,util::kDEFAULT_FRAME_PERIOD,util::kDEFAULT_FREQUENCY_OPTICAL),
-    fTriggerClock (0,util::kDEFAULT_FRAME_PERIOD,util::kDEFAULT_FREQUENCY_TRIGGER),
-    fExternalClock(0,util::kDEFAULT_FRAME_PERIOD,util::kDEFAULT_FREQUENCY_EXTERNAL),
-    fTriggerOffsetTPC     (util::kDEFAULT_TRIG_OFFSET_TPC),
+    fG4RefTime    (detinfo::MC_CLOCK_T0),
+    fFramePeriod  (detinfo::FRAME_PERIOD),
+    fTPCClock     (0,detinfo::FRAME_PERIOD,detinfo::FREQUENCY_TPC),
+    fOpticalClock (0,detinfo::FRAME_PERIOD,detinfo::FREQUENCY_OPTICAL),
+    fTriggerClock (0,detinfo::FRAME_PERIOD,detinfo::FREQUENCY_TRIGGER),
+    fExternalClock(0,detinfo::FRAME_PERIOD,detinfo::FREQUENCY_EXTERNAL),
+    fTriggerOffsetTPC     (detinfo::TRIG_OFFSET_TPC),
     fTriggerTime  (0),
     fBeamGateTime (0)
 {
@@ -34,13 +34,13 @@ detinfo::DetectorClocksStandard::DetectorClocksStandard(fhicl::ParameterSet cons
   : fConfigName(detinfo::kInheritConfigTypeMax,""),
     fConfigValue(detinfo::kInheritConfigTypeMax,0),
     fTrigModuleName(""),
-    fG4RefTime    (util::kDEFAULT_MC_CLOCK_T0),
-    fFramePeriod  (util::kDEFAULT_FRAME_PERIOD),
-    fTPCClock     (0,util::kDEFAULT_FRAME_PERIOD,util::kDEFAULT_FREQUENCY_TPC),
-    fOpticalClock (0,util::kDEFAULT_FRAME_PERIOD,util::kDEFAULT_FREQUENCY_OPTICAL),
-    fTriggerClock (0,util::kDEFAULT_FRAME_PERIOD,util::kDEFAULT_FREQUENCY_TRIGGER),
-    fExternalClock(0,util::kDEFAULT_FRAME_PERIOD,util::kDEFAULT_FREQUENCY_EXTERNAL),
-    fTriggerOffsetTPC     (util::kDEFAULT_TRIG_OFFSET_TPC),
+    fG4RefTime    (detinfo::MC_CLOCK_T0),
+    fFramePeriod  (detinfo::FRAME_PERIOD),
+    fTPCClock     (0,detinfo::FRAME_PERIOD,detinfo::FREQUENCY_TPC),
+    fOpticalClock (0,detinfo::FRAME_PERIOD,detinfo::FREQUENCY_OPTICAL),
+    fTriggerClock (0,detinfo::FRAME_PERIOD,detinfo::FREQUENCY_TRIGGER),
+    fExternalClock(0,detinfo::FRAME_PERIOD,detinfo::FREQUENCY_EXTERNAL),
+    fTriggerOffsetTPC     (detinfo::TRIG_OFFSET_TPC),
     fTriggerTime  (0),
     fBeamGateTime (0)
 {
@@ -101,9 +101,9 @@ void detinfo::DetectorClocksStandard::ApplyParams()
   fFramePeriod = fConfigValue.at(kFramePeriod);
   fTriggerOffsetTPC = fConfigValue.at(kTriggerOffsetTPC);
 
-  fTPCClock     = ::util::ElecClock( fTriggerTime, fFramePeriod, fConfigValue.at( kClockSpeedTPC     ) );
-  fOpticalClock = ::util::ElecClock( fTriggerTime, fFramePeriod, fConfigValue.at( kClockSpeedOptical ) );
-  fTriggerClock = ::util::ElecClock( fTriggerTime, fFramePeriod, fConfigValue.at( kClockSpeedTrigger ) );
+  fTPCClock     = ::detinfo::ElecClock( fTriggerTime, fFramePeriod, fConfigValue.at( kClockSpeedTPC     ) );
+  fOpticalClock = ::detinfo::ElecClock( fTriggerTime, fFramePeriod, fConfigValue.at( kClockSpeedOptical ) );
+  fTriggerClock = ::detinfo::ElecClock( fTriggerTime, fFramePeriod, fConfigValue.at( kClockSpeedTrigger ) );
 
 }
 

@@ -12,7 +12,7 @@
 #include "art/Framework/Core/ModuleMacros.h" 
 #include "art/Framework/Core/EDAnalyzer.h"
 
-#include "Utilities/LArProperties.h"
+#include "lardata/DetectorInfoServices/LArPropertiesService.h"
 
 namespace util
 {
@@ -51,7 +51,7 @@ namespace util
 
     // Get services.
 
-    art::ServiceHandle<util::LArProperties> larprop;
+    auto const* larprop = lar::providerFrom<detinfo::LArPropertiesService>();
 
     // Test (default) accessors.
 

@@ -2,7 +2,7 @@
 #include "TimeService.h"
 
 //-----------------------------------------------------------------------------------------
-util::TimeService::TimeService(fhicl::ParameterSet const& pset, art::ActivityRegistry &reg)
+detinfo::DetectorClocksService::TimeService(fhicl::ParameterSet const& pset, art::ActivityRegistry &reg)
   : SimpleTimeService(),
     fConfigName(kInheritConfigTypeMax,""),
     fConfigValue(kInheritConfigTypeMax,0),
@@ -31,7 +31,7 @@ util::TimeService::TimeService(fhicl::ParameterSet const& pset, art::ActivityReg
 }
 
 //------------------------------------------------------------------
-void util::TimeService::reconfigure(fhicl::ParameterSet const& pset)
+void detinfo::DetectorClocksService::reconfigure(fhicl::ParameterSet const& pset)
 //------------------------------------------------------------------
 {
 
@@ -56,7 +56,7 @@ void util::TimeService::reconfigure(fhicl::ParameterSet const& pset)
 }
 
 //-----------------------------------
-void util::TimeService::ApplyParams()
+void detinfo::DetectorClocksService::ApplyParams()
 //-----------------------------------
 {
 
@@ -64,15 +64,15 @@ void util::TimeService::ApplyParams()
   fFramePeriod = fConfigValue.at(kFramePeriod);
   fTriggerOffsetTPC = fConfigValue.at(kTriggerOffsetTPC);
 
-  fTPCClock     = ::util::ElecClock( fTriggerTime, fFramePeriod, fConfigValue.at( kClockSpeedTPC     ) );
-  fOpticalClock = ::util::ElecClock( fTriggerTime, fFramePeriod, fConfigValue.at( kClockSpeedOptical ) );
-  fTriggerClock = ::util::ElecClock( fTriggerTime, fFramePeriod, fConfigValue.at( kClockSpeedTrigger ) );
-  fExternalClock= ::util::ElecClock( fTriggerTime, fFramePeriod, fConfigValue.at( kClockSpeedExternal) );
+  fTPCClock     = ::detinfo::ElecClock( fTriggerTime, fFramePeriod, fConfigValue.at( kClockSpeedTPC     ) );
+  fOpticalClock = ::detinfo::ElecClock( fTriggerTime, fFramePeriod, fConfigValue.at( kClockSpeedOptical ) );
+  fTriggerClock = ::detinfo::ElecClock( fTriggerTime, fFramePeriod, fConfigValue.at( kClockSpeedTrigger ) );
+  fExternalClock= ::detinfo::ElecClock( fTriggerTime, fFramePeriod, fConfigValue.at( kClockSpeedExternal) );
 
 }
 
 //------------------------------------------------------------
-void util::TimeService::preProcessEvent(const art::Event& evt)
+void detinfo::DetectorClocksService::preProcessEvent(const art::Event& evt)
 //------------------------------------------------------------
 {
   art::Handle<std::vector<raw::Trigger> > trig_handle;
@@ -100,7 +100,7 @@ if((!trig_handle.isValid()) || (trig_handle->empty())) {
 }
 
 //------------------------------------------------------
-void util::TimeService::preBeginRun(art::Run const& run)
+void detinfo::DetectorClocksService::preBeginRun(art::Run const& run)
 //------------------------------------------------------
 {
 
@@ -124,7 +124,7 @@ void util::TimeService::preBeginRun(art::Run const& run)
 }
 
 //--------------------------------------------
-void util::TimeService::CheckDBStatus() const
+void detinfo::DetectorClocksService::CheckDBStatus() const
 //--------------------------------------------
 {
 
@@ -152,7 +152,7 @@ void util::TimeService::CheckDBStatus() const
 }
 
 //---------------------------------------------------------------
-void util::TimeService::postOpenFile(const std::string& filename)
+void detinfo::DetectorClocksService::postOpenFile(const std::string& filename)
 //---------------------------------------------------------------
 {
 
@@ -243,7 +243,7 @@ void util::TimeService::postOpenFile(const std::string& filename)
 }
 
 //------------------------------------------------------------------------
-bool util::TimeService::IsRightConfig(const fhicl::ParameterSet& ps) const
+bool detinfo::DetectorClocksService::IsRightConfig(const fhicl::ParameterSet& ps) const
 //------------------------------------------------------------------------
 {
   std::string s;
@@ -258,7 +258,7 @@ bool util::TimeService::IsRightConfig(const fhicl::ParameterSet& ps) const
 }
 
 //-----------------------------------------
-void util::TimeService::debugReport() const
+void detinfo::DetectorClocksService::debugReport() const
 //-----------------------------------------
 {
   std::cout << "fConfigValues contents: "<<std::endl;
