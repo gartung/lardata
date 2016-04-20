@@ -13,10 +13,10 @@
 
 // LArSoft libraries
 #include "larcore/Geometry/GeometryCore.h"
-#include "lardata/DetectorInfo/ProviderPack.h"
-#include "lardata/DetectorInfo/LArProperties.h"
-#include "lardata/DetectorInfo/DetectorClocks.h"
-#include "lardata/DetectorInfo/DetectorProperties.h"
+#include "lardata/lardata/DetectorInfo/ProviderPack.h"
+#include "lardata/lardata/DetectorInfo/LArProperties.h"
+#include "lardata/lardata/DetectorInfo/DetectorClocks.h"
+#include "lardata/lardata/DetectorInfo/DetectorProperties.h"
 
 // framework libraries
 #include "fhiclcpp/ParameterSet.h"

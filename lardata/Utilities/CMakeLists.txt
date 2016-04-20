@@ -75,6 +75,8 @@ simple_plugin(LArPropertiesServiceArgoNeuT "service"
               ${MF_MESSAGELOGGER}
               ${MF_UTILITIES}
               ${CETLIB}
+	      ${ROOT_BASIC_LIB_LIST}
+	      ${ROOT_MATHCORE}
               
 )
 

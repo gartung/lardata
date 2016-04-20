@@ -11,10 +11,8 @@
 #include <cassert>
 
 // LArSoft includes
-#include "lardata/DetectorInfo/DetectorPropertiesStandard.h"
-
-#include "lardata/DetectorInfo/ProviderUtil.h" // lar::IgnorableProviderConfigKeys()
-
+#include "lardata/lardata/DetectorInfo/DetectorPropertiesStandard.h"
+#include "lardata/lardata/DetectorInfo/ProviderUtil.h" // lar::IgnorableProviderConfigKeys()
 #include "larcore/Geometry/Geometry.h"
 #include "larcore/Geometry/CryostatGeo.h"
 #include "larcore/Geometry/TPCGeo.h"
