@@ -4,12 +4,17 @@ cet_test(BulkAllocator_test USE_BOOST_UNIT)
 cet_test(NestedIterator_test USE_BOOST_UNIT)
 cet_test(CountersMap_test USE_BOOST_UNIT)
 cet_test(sparse_vector_test)
+cet_test(StatCollector_test USE_BOOST_UNIT)
+cet_test(FastMatrixMath_test USE_BOOST_UNIT)
+cet_test(SimpleFits_test USE_BOOST_UNIT)
+cet_test(Dereference_test USE_BOOST_UNIT)
 
 # run a FHiCL file with only ComputePi inside
 cet_test(timingreference_test HANDBUILT
   TEST_EXEC lar
   TEST_ARGS --rethrow-all --config timingreference_test.fcl
   DATAFILES timingreference_test.fcl
+  OPTIONAL_GROUPS ONLY_SLF
 )
 
 install_headers()

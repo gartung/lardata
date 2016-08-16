@@ -172,7 +172,7 @@ namespace recob{
   // by default, gives pitch at the beginning of the trajectory
   double Track::PitchInView(geo::View_t view,
 			    size_t trajectory_point) const
-  {
+  { 
     if(view == geo::kUnknown)
       cet::exception("Track") << "Warning cannot obtain pitch for unknown view\n";
     
@@ -181,10 +181,26 @@ namespace recob{
 			      << trajectory_point
 			      << " when direction vector size is " 
 			      << fDir.size() << ".\n";
+    if(trajectory_point > fXYZ.size())
+      cet::exception("Track") << "ERROR: Asking for trajectory point " 
+			      << trajectory_point
+			      << " when XYZ vector size is " 
+			      << fXYZ.size() << ".\n";
     
     art::ServiceHandle<geo::Geometry> geo;
-    double wirePitch   = geo->WirePitch(view);
-    double angleToVert = geo->WireAngleToVertical(view) - 0.5*TMath::Pi();
+    int TPC  = 0;
+    int Cryo = 0;
+    double Position[3];
+    Position[0] = fXYZ[trajectory_point].X();
+    Position[1] = fXYZ[trajectory_point].Y();
+    Position[2] = fXYZ[trajectory_point].Z();
+    geo::TPCID tpcid = geo->FindTPCAtPosition ( Position );
+    if (tpcid.isValid) {
+      TPC  = tpcid.TPC;
+      Cryo = tpcid.Cryostat;
+    }
+    double wirePitch   = geo->WirePitch(view, TPC, Cryo);
+    double angleToVert = geo->WireAngleToVertical(view, TPC, Cryo) - 0.5*TMath::Pi();
 
     //(sin(angleToVert),cos(angleToVert)) is the direction perpendicular to wire
     double cosgamma = std::abs(std::sin(angleToVert)*fDir[trajectory_point].Y() +
@@ -238,20 +254,21 @@ namespace recob{
     //double dcoss[3];
     //double dcose[3];
     //a.Direction(dcoss,dcose);
+    TVector3 const& start = a.VertexDirection();
+    TVector3 const& end   = a.EndDirection();
     stream << std::setiosflags(std::ios::fixed) << std::setprecision(3)
-	   << "\n\n Track ID "       << std::setw(4) << std::right << a.ID()
-	   << " Theta = "            << std::setw(6) << std::right << a.Theta()
-	   << " Phi = "              << std::setw(6) << std::right << a.Phi()
-	   << " \nStartCosines : ( " << &a.VertexDirection()
-	   << ")  EndCosines : ( "   << &a.EndDirection()
-	   << ")\n\n"
-	   << " #Position and Direction = "
-	   << std::setw(5) << std::right << a.NumberTrajectoryPoints()
-	   << " #Covariance = "      << std::setw(6) << std::right << a.NumberCovariance()
-	   << " #dQdx = "            << std::setw(6) << "\n" << std::right;
-
+           << "\n Track ID "       << std::setw(4) << std::right << a.ID()
+           << " Theta = "            << std::setw(6) << std::right << a.Theta()
+           << " Phi = "              << std::setw(6) << std::right << a.Phi()
+           << "\n  StartCosines : ( " << start.X() << " ; " << start.Y() << " ; " << start.Z()
+           << ")  EndCosines : ( "   << end.X() << " ; " << end.Y() << " ; " << end.Z()
+           << ")"
+           << "\n  #Position and Direction = "
+           << std::setw(5) << std::right << a.NumberTrajectoryPoints()
+           << " #Covariance = "      << std::setw(6) << std::right << a.NumberCovariance()
+           << " #dQdx = "            << std::setw(6) << std::right;
     for(size_t i = 0; i < a.fdQdx.size(); ++i)
-      stream << a.fdQdx.at(i).size() << " ";
+      stream << " " << a.fdQdx.at(i).size();
 
     stream << std::endl;
 
@@ -336,5 +353,37 @@ namespace recob{
 
     return false; //They are equal
   }
+  
+  //----------------------------------------------------------------------------
+  double Track::ZenithAngle() const 
+  {
+    /// Returns the zenith angle, the angle which the track makes with respect to the
+    /// y axis (vertical) in radians. The positive (negative) y direction returns pi (0)
+    /// Conversion from LArSoft co-ordinates to 'regular' cartesian co-ordinates is 
+    /// required and is done by; x -> y, y -> z, z -> x. (LAr -> vec)
+    
+    TVector3 CartVec;
+    CartVec[0] = fDir.front()[2]; // x = z(LAr)
+    CartVec[1] = fDir.front()[0]; // y = x(LAr)
+    CartVec[2] = fDir.front()[1]; // z = y(LAr)
 
+    return TMath::Pi() - CartVec.Theta();
+  }
+
+  //----------------------------------------------------------------------------
+  double Track::AzimuthAngle() const 
+  {
+    /// Returns the azimuthal angle, the angle which the track makes around the y axis
+    /// (vertical) in radians. The positive z direction returns 0.
+    /// Conversion from LArSoft co-ordinates to 'regular' cartesian co-ordinates is 
+    /// required and is done by; x -> y, y -> z, z -> x. (LAr -> vec)
+   
+    TVector3 CartVec;
+    CartVec[0] = fDir.front()[2]; // x = z(LAr)
+    CartVec[1] = fDir.front()[0]; // y = x(LAr)
+    CartVec[2] = fDir.front()[1]; // z = y(LAr)
+    
+    return CartVec.Phi();
+  }
+  
 }

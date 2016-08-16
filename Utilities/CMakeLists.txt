@@ -2,11 +2,11 @@
 art_make( NO_PLUGINS
           LIBRARY_NAME  Utilities
           LIB_LIBRARIES DetectorProperties_service
-	                LArProperties_service
+                        LArProperties_service
                         LArFFT_service
-			TimeService_service
-	                RecoBase
-	                Geometry
+                        TimeService_service
+                        RecoBase
+                        Geometry
                         ${ART_FRAMEWORK_CORE}
 			${ART_FRAMEWORK_PRINCIPAL}
 			${ART_FRAMEWORK_SERVICES_REGISTRY}
@@ -45,6 +45,13 @@ simple_plugin(DatabaseUtil "service"
 	      ${FHICLCPP}
 	      ${CETLIB}
 	      ${PQ}
+	      ${ART_UTILITIES}
+              ${ART_FRAMEWORK_CORE}
+              ${ART_FRAMEWORK_PRINCIPAL}
+              ${ART_PERSISTENCY_ROOTDB}
+              ${ART_PERSISTENCY_COMMON}
+              ${ART_PERSISTENCY_PROVENANCE}
+              ${ART_FRAMEWORK_SERVICES_REGISTRY}
               BASENAME_ONLY
 )
 

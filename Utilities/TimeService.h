@@ -31,6 +31,7 @@ namespace util{
     kClockSpeedTPC,
     kClockSpeedOptical,
     kClockSpeedTrigger,
+    kClockSpeedExternal,
     kDefaultTrigTime,
     kDefaultBeamTime,
     kInheritConfigTypeMax
@@ -47,7 +48,14 @@ namespace util{
 
     /// Override of base class function ... implement DB status check
     virtual double TriggerOffsetTPC() const
-    { if(!fAlreadyReadFromDB) CheckDBStatus(); return fTriggerOffsetTPC; }
+    { 
+      if(!fAlreadyReadFromDB) 
+	CheckDBStatus(); 
+      if (fTriggerOffsetTPC<0)
+	return fTriggerOffsetTPC; 
+      else
+	return -fTriggerOffsetTPC/fTPCClock.Frequency(); //convert ticks to us
+    }
 
     //
     // All following functions are not for users to execute (but I believe they have to be public)
