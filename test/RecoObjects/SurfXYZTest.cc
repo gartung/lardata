@@ -1,5 +1,5 @@
 #define BOOST_TEST_MODULE ( SurfXYZTest )
-#include "boost/test/auto_unit_test.hpp"
+#include "cetlib/quiet_unit_test.hpp"
 #include "boost/test/floating_point_comparison.hpp"
 
 //
@@ -10,8 +10,8 @@
 
 #include <iostream>
 #include <cmath>
-#include "RecoObjects/SurfXYZPlane.h"
-#include "RecoObjects/KalmanLinearAlgebra.h"
+#include "lardata/RecoObjects/SurfXYZPlane.h"
+#include "lardata/RecoObjects/KalmanLinearAlgebra.h"
 #include "cetlib/exception.h"
 
 struct SurfXYZTestFixture

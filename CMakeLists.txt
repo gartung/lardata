@@ -24,7 +24,7 @@ IF (NOT CETBUILDTOOLS_VERSION)
     MESSAGE (FATAL_ERROR "ERROR: setup cetbuildtools to get the cmake modules")
 ENDIF()
 
-set(CMAKE_MODULE_PATH $ENV{ART_DIR}/Modules
+set(CMAKE_MODULE_PATH $ENV{CANVAS_DIR}/Modules
 		      $ENV{CETBUILDTOOLS_DIR}/Modules
 		      ${CMAKE_MODULE_PATH})
 
@@ -35,21 +35,22 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
   WERROR
   NO_UNDEFINED
   ALLOW_DEPRECATIONS
-  EXTRA_FLAGS -pedantic -Wno-unused-local-typedefs
+  EXTRA_FLAGS -pedantic
 )
 
 cet_report_compiler_flags()
 
 # these are minimum required versions, not the actual product versions
+find_ups_product( larcoreobj )
+find_ups_product( lardataobj )
 find_ups_product( larcore v1_00_00 )
 find_ups_product( nutools v1_00_00 )
 find_ups_product( postgresql v9_1_5 )
-find_ups_product( cetbuildtools v4_09_00 )
 find_ups_product( libwda v2_21_0 )
-
+find_ups_product( cetbuildtools )
 
 #  Find all the libraries needed by our dependent CMakeList.txt files
-cet_find_library( SIMULATIONBASE      NAMES SimulationBase      PATHS ENV NUTOOLS_LIB NO_DEFAULT_PATH )
+cet_find_library( NUSIMDATA_SIMULATIONBASE NAMES nusimdata_SimulationBase PATHS ENV NUSIMDATA_LIB NO_DEFAULT_PATH )
 cet_find_library( PQ                  NAMES pq                  PATHS ENV POSTGRESQL_LIBRARIES NO_DEFAULT_PATH )
 
 # macros for artdaq_dictionary and simple_plugin
@@ -58,17 +59,7 @@ include(ArtMake)
 include(BuildPlugins)
 
 # source
-add_subdirectory(AnalysisAlg)
-add_subdirectory(AnalysisBase)
-## retired - obsolete code for ArgoNeut - needs an overhaul for art 1.08.xx
-##add_subdirectory(Monitoring)
-add_subdirectory(OpticalDetectorData)
-add_subdirectory(RawData)
-add_subdirectory(RecoBase)
-add_subdirectory(RecoBaseArt) # art-dependent interface to RecoBase objects
-add_subdirectory(RecoObjects)
-add_subdirectory(Utilities)
-add_subdirectory(MCBase)
+add_subdirectory(lardata)
 
 # tests
 add_subdirectory(test)
