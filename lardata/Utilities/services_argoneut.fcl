@@ -16,6 +16,7 @@ BEGIN_PROLOG
 
 argoneut_services:
 {
+
  ExptGeoHelperInterface:        @local::argoneut_geometry_helper
  Geometry:                      @local::argoneut_geo
  DetectorPropertiesService:     @local::argoneut_detproperties
@@ -26,6 +27,7 @@ argoneut_services:
  DetectorClocksService:         @local::argoneut_detectorclocks
  ChannelStatusService:          @local::argoneut_channelstatus
  SpaceCharge:                   @local::standard_spacecharge 
+
 }
 
 argoneut_simulation_services:
@@ -44,6 +46,7 @@ argoneut_simulation_services:
  DetectorClocksService:         @local::argoneut_detectorclocks
  ChannelStatusService:          @local::argoneut_channelstatus
  SpaceCharge:                   @local::standard_spacecharge 
+
 }
 
 

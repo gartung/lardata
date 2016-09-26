@@ -15,6 +15,7 @@
 #include "cetlib/exception.h"
 
 #include "lardata/RecoObjects/KHitWireX.h"
+
 #include "larcore/Geometry/Geometry.h"
 
 namespace trkf {
@@ -45,6 +46,7 @@ namespace trkf {
     // Get services.
 
     art::ServiceHandle<geo::Geometry> geom;
+
 
     // Make a temporary map from channel number to KHitGroup objects.
     // The KHitGroup pointers are borrowed references to KHitGroup

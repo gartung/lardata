@@ -10,7 +10,9 @@
 
 #include "lardata/RecoObjects/Propagator.h"
 #include "lardata/RecoObjects/SurfXYZPlane.h"
+
 #include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
+
 #include "cetlib/exception.h"
 
 namespace trkf {
@@ -80,7 +82,9 @@ namespace trkf {
 
       // Get LAr service.
 
+
       auto const * detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
+
 
       // Initialize propagation matrix to unit matrix (if specified).
 
@@ -471,7 +475,9 @@ namespace trkf {
 
     // Get LAr service.
 
+
     auto const * detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
+
 
     // Calculate final energy.
 

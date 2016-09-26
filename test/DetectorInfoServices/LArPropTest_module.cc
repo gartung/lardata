@@ -13,10 +13,12 @@
 #include "art/Framework/Core/EDAnalyzer.h"
 
 #include "lardata/DetectorInfoServices/LArPropertiesService.h"
+
 #include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
 #include "lardata/DetectorInfo/LArProperties.h"
 #include "lardata/DetectorInfo/DetectorProperties.h"
 #include "larcore/CoreUtils/ServiceUtil.h" // lar::providerFrom<>()
+
 
 namespace util
 {
@@ -55,8 +57,10 @@ namespace util
 
     // Get services.
 
+
     detinfo::LArProperties const* larprop = lar::providerFrom<detinfo::LArPropertiesService>();
     detinfo::DetectorProperties const* detprop = lar::providerFrom<detinfo::DetectorPropertiesService>();
+
 
     // Test (default) accessors.
 

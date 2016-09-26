@@ -45,7 +45,9 @@ namespace util{
   {
     /*
     geom = (util::Geometry*)(util::Geometry::GetME());
+
     detp = (util::DetectorProperties*)(util::DetectorProperties::GetME());
+
     */
 
     fNPlanes = geom->Nplanes();

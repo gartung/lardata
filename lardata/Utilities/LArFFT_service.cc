@@ -32,7 +32,9 @@ util::LArFFT::LArFFT(fhicl::ParameterSet const& pset, art::ActivityRegistry& /* 
   // Default to the readout window size if the user didn't input
   // a specific size
   if(fSize <= 0) 
+
     fSize = art::ServiceHandle<detinfo::DetectorPropertiesService>()->provider()->ReadOutWindowSize();
+
 
   InitializeFFT();
 }

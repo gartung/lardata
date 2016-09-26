@@ -34,7 +34,9 @@ namespace trkf {
     fHit(hit)
   {
     // Get services.
+
     const detinfo::DetectorProperties* detprop = art::ServiceHandle<detinfo::DetectorPropertiesService>()->provider();
+
 
     // Extract wire id.
     geo::WireID wireid = hit->WireID();

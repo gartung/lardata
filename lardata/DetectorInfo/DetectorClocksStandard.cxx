@@ -5,6 +5,7 @@ detinfo::DetectorClocksStandard::DetectorClocksStandard()
   : fConfigName(detinfo::kInheritConfigTypeMax,""),
     fConfigValue(detinfo::kInheritConfigTypeMax,0),
     fTrigModuleName(""),
+
     fG4RefTime    (detinfo::kDEFAULT_MC_CLOCK_T0),
     fFramePeriod  (detinfo::kDEFAULT_FRAME_PERIOD),
     fTPCClock     (0,detinfo::kDEFAULT_FRAME_PERIOD,detinfo::kDEFAULT_FREQUENCY_TPC),
@@ -12,6 +13,7 @@ detinfo::DetectorClocksStandard::DetectorClocksStandard()
     fTriggerClock (0,detinfo::kDEFAULT_FRAME_PERIOD,detinfo::kDEFAULT_FREQUENCY_TRIGGER),
     fExternalClock(0,detinfo::kDEFAULT_FRAME_PERIOD,detinfo::kDEFAULT_FREQUENCY_EXTERNAL),
     fTriggerOffsetTPC     (detinfo::kDEFAULT_TRIG_OFFSET_TPC),
+
     fTriggerTime  (0),
     fBeamGateTime (0)
 {
@@ -32,6 +34,7 @@ detinfo::DetectorClocksStandard::DetectorClocksStandard()
 //-------------------------------------------------------------------------
 detinfo::DetectorClocksStandard::DetectorClocksStandard(fhicl::ParameterSet const& pset)
   : DetectorClocksStandard()
+
 {
   // In a constructor, the version of virtual method that is called
   // is always the one specific of the class being constructed

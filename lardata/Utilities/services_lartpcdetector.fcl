@@ -28,6 +28,7 @@ BEGIN_PROLOG
 
 lartpcdetector_services:
 {
+
   ExptGeoHelperInterface:    @local::standard_geometry_helper
   Geometry:                  @local::standard_geo
   DetectorPropertiesService: @local::standard_detproperties
@@ -36,6 +37,7 @@ lartpcdetector_services:
   BackTracker:               @local::standard_backtracker
   DetectorClocksService:     @local::standard_detectorclocks
   ChannelStatusService:      @local::standard_channelstatus
+
 }
 
 END_PROLOG

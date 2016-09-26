@@ -6,9 +6,11 @@
 // Framework includes
 
 // LArSoft includes
+
 #include "lardata/Utilities/DetectorPropertiesServiceArgoNeuT.h"
 #include "lardata/DetectorInfoServices/LArPropertiesService.h"
 #include "lardata/DetectorInfoServices/DetectorClocksService.h"
+
 #include "larcore/Geometry/Geometry.h"
 #include "larcore/Geometry/CryostatGeo.h"
 #include "larcore/Geometry/TPCGeo.h"
@@ -49,13 +51,17 @@ namespace util{
   //------------------------------------------------------------
   double DetectorPropertiesServiceArgoNeuT::ConvertTDCToTicks(double tdc) const
   {
+
     return lar::providerFrom<detinfo::DetectorClocksService>()->TPCTDC2Tick(tdc);
+
   }
   
   //--------------------------------------------------------------
   double DetectorPropertiesServiceArgoNeuT::ConvertTicksToTDC(double ticks) const
   {
+
     return lar::providerFrom<detinfo::DetectorClocksService>()->TPCTick2TDC(ticks);
+
   }
 
   //--------------------------------------------------------------------
@@ -81,7 +87,9 @@ namespace util{
     fInheritNumberTimeSamples = p.get<bool           >("InheritNumberTimeSamples", false);
     fXTicksParamsLoaded = false;
 
+
     fTPCClock = lar::providerFrom<detinfo::DetectorClocksService>()->TPCClock();
+
 
     // Save the parameter set.
     fPS = p;
@@ -92,8 +100,10 @@ namespace util{
   //-------------------------------------------------------------
   void DetectorPropertiesServiceArgoNeuT::preProcessEvent(const art::Event& evt)
   {
+
     // Make sure TPC Clock is updated with DetectorClocksService (though in principle it shouldn't change)
     fTPCClock = lar::providerFrom<detinfo::DetectorClocksService>()->TPCClock();
+
   }
 
 //---------------------------------------------------------------------------------
@@ -124,7 +134,9 @@ void DetectorPropertiesServiceArgoNeuT::checkDBstatus() const
 //------------------------------------------------------------------------------------//
 int  DetectorPropertiesServiceArgoNeuT::TriggerOffset()     const 
 {
+
   return fTPCClock.Ticks(lar::providerFrom<detinfo::DetectorClocksService>()->TriggerOffsetTPC() * -1.);
+
 }
 
 
@@ -166,6 +178,8 @@ int  DetectorPropertiesServiceArgoNeuT::TriggerOffset()     const
 
   void DetectorPropertiesServiceArgoNeuT::CalculateXTicksParams() const
   {
+
+
     art::ServiceHandle<geo::Geometry>            geo;
 
     double samplingRate   = SamplingRate();

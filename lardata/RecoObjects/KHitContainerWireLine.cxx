@@ -15,6 +15,7 @@
 #include "cetlib/exception.h"
 
 #include "lardata/RecoObjects/KHitWireLine.h"
+
 #include "larcore/Geometry/Geometry.h"
 
 namespace trkf {
@@ -43,6 +44,8 @@ namespace trkf {
     // Get services.
 
     art::ServiceHandle<geo::Geometry> geom;
+
+
 
     // Loop over hits.
 

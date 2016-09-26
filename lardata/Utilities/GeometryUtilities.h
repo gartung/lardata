@@ -24,6 +24,7 @@
 #include "larcoreobj/SimpleTypesAndConstants/geo_types.h"
 #include "canvas/Persistency/Common/Ptr.h" 
 
+
 #include <climits>
 #include <iostream>
 #include <vector>
@@ -281,12 +282,15 @@ namespace util{
      larutil::DetectorProperties* detp;
     */
 
+
+
     const geo::GeometryCore* geom;
     const detinfo::DetectorProperties* detp;
     /*
     art::ServiceHandle<detinfo::DetectorPropertiesService> detp;
     art::ServiceHandle<detinfo::LArPropertiesService> larp;
     */
+
     
     std::vector< Double_t > vertangle;  //angle wrt to vertical
     Double_t fWirePitch;

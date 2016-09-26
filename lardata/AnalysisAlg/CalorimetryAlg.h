@@ -54,7 +54,9 @@ namespace calo{
   private:
 
     art::ServiceHandle<geo::Geometry> geom; 
+
     const detinfo::DetectorProperties* detprop;
+
 
     double dEdx_from_dQdx_e(double dQdx_e,double time, double T0=0) const;
    

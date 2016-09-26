@@ -1,4 +1,3 @@
-
 art_make( 
           LIB_LIBRARIES lardataobj_AnalysisBase
                         lardataobj_RecoBase

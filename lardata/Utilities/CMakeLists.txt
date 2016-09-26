@@ -1,6 +1,8 @@
 
 art_make( NO_PLUGINS
+
           LIB_LIBRARIES lardata_Utilities_LArFFT_service
+
                         lardataobj_RecoBase
                         larcore_Geometry
                         ${ART_FRAMEWORK_CORE}
@@ -13,7 +15,9 @@ art_make( NO_PLUGINS
                         ${MF_UTILITIES}
                         ${CETLIB}
                         ${ROOT_BASIC_LIB_LIST}
+
         )
+
 
 #simple_plugin(TimeService "service"
 #	      lardataobj_RawData
@@ -34,6 +38,7 @@ art_make( NO_PLUGINS
 #              
 #)
 
+
 simple_plugin(DatabaseUtil "service"
 	      ${MF_MESSAGELOGGER}
 	      ${MF_UTILITIES}
@@ -47,7 +52,9 @@ simple_plugin(DatabaseUtil "service"
               art_Persistency_Common canvas_Persistency_Common
               art_Persistency_Provenance canvas_Persistency_Provenance
               ${ART_FRAMEWORK_SERVICES_REGISTRY}
+
 	      ${ROOT_CORE}
+
 )
 simple_plugin(FileCatalogMetadataExtras "service"
 	      art_Utilities canvas_Utilities
@@ -68,7 +75,12 @@ simple_plugin(LArPropertiesServiceArgoNeuT "service"
               ${MF_MESSAGELOGGER}
               ${MF_UTILITIES}
               ${CETLIB}
+
 	      ${ROOT_CORE}
+	      ${ROOT_BASIC_LIB_LIST}
+	      ${ROOT_MATHCORE}
+              
+
 )
 
 simple_plugin(DetectorPropertiesServiceArgoNeuT "service"
@@ -92,6 +104,7 @@ simple_plugin(LArFFT "service"
 	      ${CETLIB}
 	      ${ROOT_FFTW}
 	      ${ROOT_BASIC_LIB_LIST}
+
 )
 
 simple_plugin(MemoryPeakReporter "service"
