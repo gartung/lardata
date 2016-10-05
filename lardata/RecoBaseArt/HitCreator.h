@@ -204,6 +204,27 @@ namespace recob {
         float                goodness_of_fit,
         int                  dof
         );
+
+      // same as above, adding sigtype to avoid having to call geom singleton instance in threaded code.       
+      HitCreator(
+        recob::Wire const&   wire,
+        geo::WireID const&   wireID,
+        raw::TDCtick_t       start_tick,
+        raw::TDCtick_t       end_tick,
+        float                rms,
+        float                peak_time,
+        float                sigma_peak_time,
+        float                peak_amplitude,
+        float                sigma_peak_amplitude,
+        float                hit_integral,
+        float                hit_sigma_integral,
+	float                summedADC,
+        short int            multiplicity,
+        short int            local_index,
+        float                goodness_of_fit,
+	geo::SigType_t const& st,
+        int                  dof
+        );
       
       
       /**

@@ -131,6 +131,49 @@ namespace recob {
       )
   {} // HitCreator::HitCreator(Wire)
   
+  //----------------------------------------------------------------------
+  // Same as above constructor, but explicitly receiving signalType -- avoiding geom service for threading reasons to come.
+  HitCreator::HitCreator(
+    recob::Wire const&   wire,
+    geo::WireID const&   wireID,
+    raw::TDCtick_t       start_tick,
+    raw::TDCtick_t       end_tick,
+    float                rms,
+    float                peak_time,
+    float                sigma_peak_time,
+    float                peak_amplitude,
+    float                sigma_peak_amplitude,
+    float                hit_integral,
+    float                hit_sigma_integral,
+    float                summedADC,
+    short int            multiplicity,
+    short int            local_index,
+    float                goodness_of_fit,
+    geo::SigType_t const& st,
+    int                  dof
+    ):
+    hit(
+      wire.Channel(),
+      start_tick,
+      end_tick,
+      peak_time,
+      sigma_peak_time,
+      rms,
+      peak_amplitude,
+      sigma_peak_amplitude,
+      summedADC,
+      hit_integral,
+      hit_sigma_integral,
+      multiplicity,
+      local_index,
+      goodness_of_fit,
+      dof,
+      wire.View(),
+      st,
+      wireID
+      )
+  {} // HitCreator::HitCreator(Wire)
+  
   
   //----------------------------------------------------------------------
   HitCreator::HitCreator(
