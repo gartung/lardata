@@ -15,6 +15,7 @@ art_make(
 	                ${FHICLCPP}
 			${CETLIB}
 			${ROOT_BASIC_LIB_LIST}
+			${Boost_SYSTEM_LIBRARY}
         )
 
 
