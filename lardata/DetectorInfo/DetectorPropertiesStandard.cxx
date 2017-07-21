@@ -131,6 +131,7 @@ namespace detinfo{
     fTimeOffsetV       	      = p.get< double 	    >("TimeOffsetV"      );
     fTimeOffsetZ       	      = p.get< double 	    >("TimeOffsetZ",0.0  );
     fTimeOffsetY       	      = p.get< double 	    >("TimeOffsetY",0.0  );
+    fTimeOffsetX       	      = p.get< double 	    >("TimeOffsetX",0.0  );
     fInheritNumberTimeSamples = p.get<bool          >("InheritNumberTimeSamples", false);
     
     fSternheimerParameters.a    = p.get< double >("SternheimerA");
@@ -160,6 +161,7 @@ namespace detinfo{
     fHasTimeOffsetV = config.TimeOffsetV(fTimeOffsetV);
     fHasTimeOffsetZ = config.TimeOffsetZ(fTimeOffsetZ);
     fHasTimeOffsetY = config.TimeOffsetY(fTimeOffsetY);
+    fHasTimeOffsetX = config.TimeOffsetX(fTimeOffsetX);
     
     fSternheimerParameters.a    = config.SternheimerA();
     fSternheimerParameters.k    = config.SternheimerK();
@@ -590,6 +592,8 @@ For plane = 0, t offset is pitch/Coeff[1] - (pitch+xyz[0])/Coeff[0]
 	    fXTicksOffsets[cstat][tpc][plane] += fTimeOffsetZ;
 	  else if(view == geo::kY)
 	    fXTicksOffsets[cstat][tpc][plane] += fTimeOffsetY;
+	  else if(view == geo::kX)
+	    fXTicksOffsets[cstat][tpc][plane] += fTimeOffsetX;
 	  else
 	    throw cet::exception(__FUNCTION__) << "Bad view = "
 						       << view << "\n" ;

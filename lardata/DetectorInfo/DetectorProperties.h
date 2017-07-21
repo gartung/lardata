@@ -97,6 +97,8 @@ namespace detinfo{
       virtual double       TimeOffsetZ()       const = 0;
       virtual double       TimeOffsetY()       const
         { throw std::runtime_error("DetectorProperties::TimeOffsetY() not implemented"); }
+      virtual double       TimeOffsetX()       const
+        { throw std::runtime_error("DetectorProperties::TimeOffsetX() not implemented"); }
 
       virtual double       ConvertXToTicks(double X, int p, int t, int c) const = 0;
       virtual double       ConvertXToTicks(double X, geo::PlaneID const& planeid) const = 0;
