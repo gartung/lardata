@@ -20,6 +20,8 @@ standard_detproperties :
  TimeOffsetU:       -5.193
  TimeOffsetV:       0.585
  TimeOffsetZ:       0
+ TimeOffsetY:       0
+ TimeOffsetX:       0
  ReadOutWindowSize: 2048
 
  SimpleBoundaryProcess: true  #enable opticalBoundaryProcessSimple instead of G4 default
