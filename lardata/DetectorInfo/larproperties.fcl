@@ -66,10 +66,11 @@ standard_properties:
 
  # Surface reflectivity data - vector of energy spectrum per
  #   surface type
+ #   JStock (jason.stock@mines.sdsmt.edu). Aluminum reflectivities assumed to be the same as stainless steel.
  ReflectiveSurfaceEnergies:           [ 7, 9, 10 ]             
- ReflectiveSurfaceNames:            [ "STEEL_STAINLESS_Fe7Cr2Ni" ]  
- ReflectiveSurfaceReflectances:     [ [ 0.25, 0.25, 0.25 ] ]        
- ReflectiveSurfaceDiffuseFractions: [ [ 0.5,  0.5,  0.5  ] ]
+ ReflectiveSurfaceNames:            [ "STEEL_STAINLESS_Fe7Cr2Ni", "ALUMINUM_Al" ] 
+ ReflectiveSurfaceReflectances:     [ [ 0.25, 0.25, 0.25 ], [0.25, 0.25, 0.25] ]        
+ ReflectiveSurfaceDiffuseFractions: [ [ 0.5,  0.5,  0.5 ], [0.5, 0.5, 0.5] ]
 
  # Information related with the simulation of the Wavelength Shifter (TPB) 
  LoadExtraMatProperties: false	    
