@@ -1,37 +1,43 @@
 process_name: Dump
 
-services: {}
+services: {
+  message: {
+    destinations: {
+      console: {
+        type:      cout
+        threshold: INFO
+        format: {
+          noLineBreaks:    false
+          lineLength:    128
+          timestamp:       ""
+          wantModule:      false
+          wantSubroutine:  false
+          wantSomeContext: false
+        }
+        categories: {
+          Root_Information: { limit: -1 } # print about missing dictionaries
+          default:          { limit:  0 } # suppress everything else!
+        }
+      }
+    } # destinations
+  } # message
+}
 
-#source is a root file
-source:
-{
+source: {
   module_type: RootInput
-  maxEvents:   10        # Number of events to create
+  maxEvents:   10        # Number of events to dump (override by command line)
 }
 
-outputs:
-{
- out1: {
-  module_type: FileDumperOutput
-  wantProductFullClassName:     true
-  wantProductFriendlyClassName: false
- }
+physics: {
+  dump:      [ dumper ]
+  end_paths: [ dump ]
 }
 
-physics:
-{
-
- producers:{}
-
- filters:{}
-
- analyzers:{}
-
- #define the output stream, there could be more than one if using filters 
- stream1:  [ out1 ]
-
- #end_paths is a keyword and contains the paths that do not modify the art::Event, 
- #ie analyzers and output streams.  these all run simultaneously
- end_paths:     [stream1]  
+outputs: {
+  dumper: {
+    module_type:                  FileDumperOutput
+    wantProductFullClassName:     true
+    wantProductFriendlyClassName: false
+  }
 }
 
