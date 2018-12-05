@@ -64,7 +64,15 @@ namespace recob {
     short int            multiplicity,
     short int            local_index,
     float                goodness_of_fit,
-    int                  dof
+    int                  dof,
+    float                summedADC1,
+    float                summedADC2,
+    float                summedADC3,
+    float                summedADC4,
+    float                summedADC5,
+    float                summedADC6,
+    float                summedADC7,
+    float                summedADC8
     ):
     hit(
       digits.Channel(),
@@ -84,7 +92,15 @@ namespace recob {
       dof,
       art::ServiceHandle<geo::Geometry>()->View(digits.Channel()),
       art::ServiceHandle<geo::Geometry>()->SignalType(digits.Channel()),
-      wireID
+      wireID,
+      summedADC1,
+      summedADC2,
+      summedADC3,
+      summedADC4,
+      summedADC5,
+      summedADC6,
+      summedADC7,
+      summedADC8
       )
   {} // HitCreator::HitCreator(RawDigit)
   
@@ -106,7 +122,15 @@ namespace recob {
     short int            multiplicity,
     short int            local_index,
     float                goodness_of_fit,
-    int                  dof
+    int                  dof,
+    float                summedADC1,
+    float      	         summedADC2,
+    float      	       	 summedADC3,
+    float      	       	 summedADC4,
+    float      	       	 summedADC5,
+    float      	       	 summedADC6,
+    float      	       	 summedADC7,
+    float      	       	 summedADC8
     ):
     hit(
       wire.Channel(),
@@ -126,7 +150,15 @@ namespace recob {
       dof,
       wire.View(),
       art::ServiceHandle<geo::Geometry>()->SignalType(wire.Channel()),
-      wireID
+      wireID,
+      summedADC1,
+      summedADC2,
+      summedADC3,
+      summedADC4,
+      summedADC5,
+      summedADC6,
+      summedADC7,
+      summedADC8
       )
   {} // HitCreator::HitCreator(Wire)
   
@@ -180,13 +212,21 @@ namespace recob {
     short int                 local_index,
     float                     goodness_of_fit,
     int                       dof,
-    RegionOfInterest_t const& signal
+    RegionOfInterest_t const& signal,
+    float                summedADC1,
+    float                summedADC2,
+    float                summedADC3,
+    float                summedADC4,
+    float                summedADC5,
+    float                summedADC6,
+    float                summedADC7,
+    float                summedADC8
     ):
     HitCreator(
       wire, wireID, signal.begin_index(), signal.end_index(),
       rms, peak_time, sigma_peak_time, peak_amplitude, sigma_peak_amplitude,
       hit_integral, hit_sigma_integral, summedADC, multiplicity, local_index,
-      goodness_of_fit, dof
+      goodness_of_fit, dof, summedADC1,summedADC2,summedADC3,summedADC4,summedADC5,summedADC6,summedADC7,summedADC8
       )
   {} // HitCreator::HitCreator(Wire; RoI)
   
@@ -208,11 +248,20 @@ namespace recob {
     float                     goodness_of_fit,
     int                       dof,
     size_t                    iSignalRoI
+    float                summedADC1,
+    float                summedADC2,
+    float                summedADC3,
+    float                summedADC4,
+    float                summedADC5,
+    float                summedADC6,
+    float                summedADC7,
+    float                summedADC8
     ):
     HitCreator(
       wire, wireID, rms, peak_time, sigma_peak_time, peak_amplitude, sigma_peak_amplitude,
       hit_integral, hit_sigma_integral, summedADC, multiplicity, local_index,
-      goodness_of_fit, dof, wire.SignalROI().range(iSignalRoI)
+      goodness_of_fit, dof, wire.SignalROI().range(iSignalRoI), summedADC1,summedADC2,summedADC3,summedADC4,
+      summedADC5,summedADC6,summedADC7,summedADC8
       )
   {} // HitCreator::HitCreator(Wire; RoI index)
   

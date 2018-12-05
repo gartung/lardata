@@ -62,7 +62,9 @@ namespace recob {
    *   start_tick, end_tick, rms,
    *   peak_time, sigma_peak_time, peak_amplitude, sigma_peak_amplitude,
    *   hit_integral, hit_sigma_integral, summedADC,
-   *   multiplicity, local_index, goodness_of_fit, dof
+   *   multiplicity, local_index, goodness_of_fit, dof,
+   *   summedADC1, summedADC2, summedADC3, summedADC4, 
+   *   summedADC5, summedADC6, summedADC7, summedADC8
    *   );
    * hit.push_back(hit.move()); // hit content is not valid any more
    * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -128,7 +130,15 @@ namespace recob {
         short int            multiplicity,
         short int            local_index,
         float                goodness_of_fit,
-        int                  dof
+        int                  dof,
+        float                summedADC1,
+       	float  	       	     summedADC2,
+       	float  	       	     summedADC3,
+       	float  	       	     summedADC4,
+       	float  	       	     summedADC5,
+       	float  	       	     summedADC6,
+       	float  	       	     summedADC7,
+       	float  	       	     summedADC8
         );
       
       
@@ -173,7 +183,18 @@ namespace recob {
         short int            local_index,
         float                goodness_of_fit,
         int                  dof
-        );
+        float                summedADC1,
+        float                summedADC2,
+        float                summedADC3,
+        float                summedADC4,
+        float                summedADC5,
+        float                summedADC6,
+        float                summedADC7,
+        float                summedADC8
+/*if we want to get hits from a recob::wire with summedADC1-8 will I need to redefine anything else???
+At the moment fpga hits are not used in recob (they could be in future) so leaving out summedADC1-8 from recob::wire hitcreator???
+But default value of summedADC1-8 is zero so I hope leaving them in will be ok*/      
+       );
       
       
       /**
@@ -217,7 +238,15 @@ namespace recob {
         short int            multiplicity,
         short int            local_index,
         float                goodness_of_fit,
-        int                  dof
+        int                  dof,
+        float                summedADC1,
+        float                summedADC2,
+        float                summedADC3,
+        float                summedADC4,
+        float                summedADC5,
+        float                summedADC6,
+        float                summedADC7,
+        float                summedADC8
         );
       
       
@@ -262,7 +291,15 @@ namespace recob {
         short int                 local_index,
         float                     goodness_of_fit,
         int                       dof,
-        RegionOfInterest_t const& signal
+        RegionOfInterest_t const& signal,
+        float                summedADC1,
+        float                summedADC2,
+        float                summedADC3,
+        float                summedADC4,
+        float                summedADC5,
+        float                summedADC6,
+        float                summedADC7,
+        float                summedADC8
         );
       
       
@@ -307,7 +344,15 @@ namespace recob {
         short int          local_index,
         float              goodness_of_fit,
         int                dof,
-        size_t             iSignalRoI
+        size_t             iSignalRoI,
+        float              summedADC1,
+        float              summedADC2,
+        float              summedADC3,
+        float              summedADC4,
+        float              summedADC5,
+        float              summedADC6,
+        float              summedADC7,
+        float              summedADC8
         );
       
       
