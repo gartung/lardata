@@ -106,7 +106,15 @@ void lar::test::AssnsChainHitMaker::produce(art::Event& event) {
       37,                        // DOF
       geo::kUnknown,             // view
       geo::kMysteryType,         // signal_type
-      geo::WireID{ 0, 1, 2, i }  // wire ID
+      geo::WireID{ 0, 1, 2, i },  // wire ID
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
       );
       
   } // for

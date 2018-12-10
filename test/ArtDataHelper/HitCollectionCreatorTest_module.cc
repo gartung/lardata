@@ -143,7 +143,15 @@ void recob::test::HitCollectionCreatorTest::produceHits
         7,                           /* dof */
         geo::kUnknown,               /* view */
         geo::kMysteryType,           /* signal_type */
-        geo::WireID{}                /* wireID */
+        geo::WireID{},                /* wireID */
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
         )
     );
   } // for hits

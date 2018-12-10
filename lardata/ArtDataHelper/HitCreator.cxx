@@ -179,7 +179,15 @@ namespace recob {
     short int            multiplicity,
     short int            local_index,
     float                goodness_of_fit,
-    int                  dof
+    int                  dof,
+    float                summedADC1,
+    float                summedADC2,
+    float                summedADC3,
+    float                summedADC4,
+    float                summedADC5,
+    float                summedADC6,
+    float                summedADC7,
+    float                summedADC8
     ):
     HitCreator(
       wire, wireID, start_tick, end_tick,
@@ -191,7 +199,8 @@ namespace recob {
         0.
         ), // sum of ADC counts between start_tick and end_tick
       multiplicity, local_index,
-      goodness_of_fit, dof
+      goodness_of_fit, dof,
+      summedADC1,summedADC2,summedADC3,summedADC4,summedADC5,summedADC6,summedADC7,summedADC8
       )
   {} // HitCreator::HitCreator(Wire; no summed ADC)
   
@@ -247,7 +256,7 @@ namespace recob {
     short int                 local_index,
     float                     goodness_of_fit,
     int                       dof,
-    size_t                    iSignalRoI
+    size_t                    iSignalRoI,
     float                summedADC1,
     float                summedADC2,
     float                summedADC3,

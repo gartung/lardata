@@ -182,7 +182,7 @@ namespace recob {
         short int            multiplicity,
         short int            local_index,
         float                goodness_of_fit,
-        int                  dof
+        int                  dof,
         float                summedADC1,
         float                summedADC2,
         float                summedADC3,
