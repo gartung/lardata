@@ -116,7 +116,8 @@ void lar::test::TrackProxyHitMaker::produce(art::Event& event) {
       0,
       0,
       0,
-      0
+      0,
+      false
       );
       
   } // for

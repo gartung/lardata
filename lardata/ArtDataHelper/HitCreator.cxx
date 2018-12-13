@@ -72,7 +72,8 @@ namespace recob {
     float                summedADC5,
     float                summedADC6,
     float                summedADC7,
-    float                summedADC8
+    float                summedADC8,
+    bool                 continues
     ):
     hit(
       digits.Channel(),
@@ -100,7 +101,8 @@ namespace recob {
       summedADC5,
       summedADC6,
       summedADC7,
-      summedADC8
+      summedADC8,
+      continues
       )
   {} // HitCreator::HitCreator(RawDigit)
   
@@ -130,7 +132,8 @@ namespace recob {
     float      	       	 summedADC5,
     float      	       	 summedADC6,
     float      	       	 summedADC7,
-    float      	       	 summedADC8
+    float      	       	 summedADC8,
+    bool                 continues
     ):
     hit(
       wire.Channel(),
@@ -158,7 +161,8 @@ namespace recob {
       summedADC5,
       summedADC6,
       summedADC7,
-      summedADC8
+      summedADC8,
+      continues
       )
   {} // HitCreator::HitCreator(Wire)
   
@@ -187,7 +191,8 @@ namespace recob {
     float                summedADC5,
     float                summedADC6,
     float                summedADC7,
-    float                summedADC8
+    float                summedADC8,
+    bool                 continues
     ):
     HitCreator(
       wire, wireID, start_tick, end_tick,
@@ -200,7 +205,8 @@ namespace recob {
         ), // sum of ADC counts between start_tick and end_tick
       multiplicity, local_index,
       goodness_of_fit, dof,
-      summedADC1,summedADC2,summedADC3,summedADC4,summedADC5,summedADC6,summedADC7,summedADC8
+      summedADC1,summedADC2,summedADC3,summedADC4,summedADC5,summedADC6,summedADC7,summedADC8,
+      continues
       )
   {} // HitCreator::HitCreator(Wire; no summed ADC)
   
@@ -229,13 +235,15 @@ namespace recob {
     float                summedADC5,
     float                summedADC6,
     float                summedADC7,
-    float                summedADC8
+    float                summedADC8,
+    bool                 continues
     ):
     HitCreator(
       wire, wireID, signal.begin_index(), signal.end_index(),
       rms, peak_time, sigma_peak_time, peak_amplitude, sigma_peak_amplitude,
       hit_integral, hit_sigma_integral, summedADC, multiplicity, local_index,
-      goodness_of_fit, dof, summedADC1,summedADC2,summedADC3,summedADC4,summedADC5,summedADC6,summedADC7,summedADC8
+      goodness_of_fit, dof, summedADC1,summedADC2,summedADC3,summedADC4,summedADC5,summedADC6,summedADC7,summedADC8,
+      continues
       )
   {} // HitCreator::HitCreator(Wire; RoI)
   
@@ -264,13 +272,14 @@ namespace recob {
     float                summedADC5,
     float                summedADC6,
     float                summedADC7,
-    float                summedADC8
+    float                summedADC8,
+    bool                 continues
     ):
     HitCreator(
       wire, wireID, rms, peak_time, sigma_peak_time, peak_amplitude, sigma_peak_amplitude,
       hit_integral, hit_sigma_integral, summedADC, multiplicity, local_index,
       goodness_of_fit, dof, wire.SignalROI().range(iSignalRoI), summedADC1,summedADC2,summedADC3,summedADC4,
-      summedADC5,summedADC6,summedADC7,summedADC8
+      summedADC5,summedADC6,summedADC7,summedADC8, continues
       )
   {} // HitCreator::HitCreator(Wire; RoI index)
   

@@ -114,7 +114,8 @@ void lar::test::AssnsChainHitMaker::produce(art::Event& event) {
       0,
       0,
       0,
-      0
+      0,
+      false
       );
       
   } // for

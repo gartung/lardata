@@ -64,7 +64,8 @@ namespace recob {
    *   hit_integral, hit_sigma_integral, summedADC,
    *   multiplicity, local_index, goodness_of_fit, dof,
    *   summedADC1, summedADC2, summedADC3, summedADC4, 
-   *   summedADC5, summedADC6, summedADC7, summedADC8
+   *   summedADC5, summedADC6, summedADC7, summedADC8,
+   *   continues
    *   );
    * hit.push_back(hit.move()); // hit content is not valid any more
    * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -138,7 +139,8 @@ namespace recob {
        	float  	       	     summedADC5,
        	float  	       	     summedADC6,
        	float  	       	     summedADC7,
-       	float  	       	     summedADC8
+       	float  	       	     summedADC8,
+        bool                 continues
         );
       
       
@@ -190,7 +192,8 @@ namespace recob {
         float                summedADC5,
         float                summedADC6,
         float                summedADC7,
-        float                summedADC8
+        float                summedADC8,
+        bool                 continues
 /*if we want to get hits from a recob::wire with summedADC1-8 will I need to redefine anything else???
 At the moment fpga hits are not used in recob (they could be in future) so leaving out summedADC1-8 from recob::wire hitcreator???
 But default value of summedADC1-8 is zero so I hope leaving them in will be ok*/      
@@ -246,7 +249,8 @@ But default value of summedADC1-8 is zero so I hope leaving them in will be ok*/
         float                summedADC5,
         float                summedADC6,
         float                summedADC7,
-        float                summedADC8
+        float                summedADC8,
+        bool                 continues
         );
       
       
@@ -299,7 +303,8 @@ But default value of summedADC1-8 is zero so I hope leaving them in will be ok*/
         float                summedADC5,
         float                summedADC6,
         float                summedADC7,
-        float                summedADC8
+        float                summedADC8,
+        bool                 continues
         );
       
       
@@ -352,7 +357,8 @@ But default value of summedADC1-8 is zero so I hope leaving them in will be ok*/
         float              summedADC5,
         float              summedADC6,
         float              summedADC7,
-        float              summedADC8
+        float              summedADC8,
+        bool               continues
         );
       
       

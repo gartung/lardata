@@ -151,7 +151,8 @@ void recob::test::HitCollectionCreatorTest::produceHits
         0,
         0,
         0,
-        0
+        0,
+        false
         )
     );
   } // for hits
