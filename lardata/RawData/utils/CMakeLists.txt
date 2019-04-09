@@ -10,9 +10,9 @@ art_make(NO_PLUGINS
                        art_Persistency_Provenance
                        canvas
                        cetlib_except
-                       ${PQ}
-                       ${Boost_SERIALIZATION_LIBRARY}
-                       ${Boost_DATE_TIME_LIBRARY}
+                       ${PostgreSQL_LIBRARY}
+                       ${Boost_serialization_LIBRARY}
+                       ${Boost_data_time_LIBRARY}
                        ROOT::Core
                        ROOT::RIO
                        ROOT::Tree

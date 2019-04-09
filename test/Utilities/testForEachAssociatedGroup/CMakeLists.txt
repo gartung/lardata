@@ -1,7 +1,7 @@
 simple_plugin( AssnProducer1          "module"  NO_INSTALL cetlib_except art_Persistency_Provenance)
 simple_plugin( AssnProducer2          "module"  NO_INSTALL cetlib_except art_Persistency_Provenance)
 simple_plugin( AssnAnalyzer           "module"  NO_INSTALL cetlib_except art_Persistency_Provenance)
-
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-pedantic")
 cet_test(associated_groups_test USE_BOOST_UNIT
   LIBRARIES
     canvas

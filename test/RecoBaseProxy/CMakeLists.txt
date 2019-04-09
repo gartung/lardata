@@ -2,6 +2,7 @@
 ###  ProxyBase tests
 ###
 add_subdirectory(ProxyBase)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-pedantic")
 
 simple_plugin(ProxyBaseTest "module"
   lardata_RecoBaseProxy
