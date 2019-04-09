@@ -1,8 +1,9 @@
 add_subdirectory( testPtrMaker )
 add_subdirectory( testForEachAssociatedGroup )
 add_subdirectory( testAssnsChainUtils )
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-pedantic")
 
-# BulkAllocator_test, NestedIterator_test, CountersMap_test 
+# BulkAllocator_test, NestedIterator_test, CountersMap_test
 # and test pure header libraries (they are templates)
 
 # test removed per issue #19494
@@ -29,7 +30,6 @@ cet_test(timingreference_test HANDBUILT
   DATAFILES timingreference_test.fcl
   OPTIONAL_GROUPS ONLY_SLF
 )
-
 
 install_headers()
 install_fhicl()

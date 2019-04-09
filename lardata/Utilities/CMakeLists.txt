@@ -8,7 +8,7 @@ art_make(NO_PLUGINS
 
 simple_plugin(DatabaseUtil "service"
               ${MF_MESSAGELOGGER}
-              ${PQ}
+              ${PostgreSQL_LIBRARY}
               ${ART_FRAMEWORK_CORE}
               ${ART_FRAMEWORK_PRINCIPAL}
               ${ART_ROOT_IO_ROOTDB}
@@ -21,7 +21,8 @@ simple_plugin(FileCatalogMetadataExtras "service"
               ${ART_FRAMEWORK_SERVICES_SYSTEM_FILECATALOGMETADATA_SERVICE}
               ${SQLITE3}
               ${MF_MESSAGELOGGER}
-              ${ROOT_BASIC_LIB_LIST})
+              ${ROOT_Core_LIBRARY}
+              ${ROOT_RIO_LIBRARY})
 
 simple_plugin(LArPropertiesServiceArgoNeuT "service"
               lardata_Utilities_DatabaseUtil_service
@@ -35,13 +36,13 @@ simple_plugin(DetectorPropertiesServiceArgoNeuT "service"
               ${ART_ROOT_IO_ROOTDB}
               ${SQLITE3}
               ${MF_MESSAGELOGGER}
-              ${ROOT_CORE}
-              ${ROOT_RIO})
+              ${ROOT_Core_LIBRARY}
+              ${ROOT_RIO_LIBRARY})
 
 simple_plugin(LArFFT "service"
               ${MF_MESSAGELOGGER}
-              ${ROOT_FFTW}
-              ${ROOT_BASIC_LIB_LIST})
+              ${ROOT_FFTW_LIBRARY}
+              ${ROOT_LIBRARIES})
 
 simple_plugin(ComputePi "module"
               ${MF_MESSAGELOGGER})

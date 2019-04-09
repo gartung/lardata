@@ -28,5 +28,3 @@ cet_test(donothing HANDBUILT
   TEST_EXEC lar
   TEST_ARGS --rethrow-all --config ./test_donothing.fcl
 )
-
-

@@ -5,7 +5,7 @@ art_make(
     ${MF_MESSAGELOGGER}
     ${FHICLCPP}
     cetlib cetlib_except
-    ${ROOT_CORE}
+    ${ROOT_Core_LIBRARY}
 )
 
 cet_test(LarProp HANDBUILT
@@ -67,9 +67,6 @@ cet_test( DetectorPropertiesServiceBo_test
   TEST_EXEC lar
   TEST_ARGS --rethrow-all --config ./detectorpropertiesservicetest_bo.fcl
 )
-
-# ------------------------------------------------------------------------------
-
 
 install_headers()
 install_fhicl()

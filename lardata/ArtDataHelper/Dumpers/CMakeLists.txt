@@ -35,6 +35,7 @@ foreach(Dumper IN LISTS RawDataDumpers)
   simple_plugin(${Dumper} "module"
       lardataobj_RawData
       art_Persistency_Provenance
+      ${ROOT_Core_LIBRARY}
       ${MF_MESSAGELOGGER})
 endforeach(Dumper IN LISTS RawDataDumpers)
 
@@ -45,6 +46,7 @@ foreach(Dumper IN LISTS RecoBaseDumpers)
       lardata_ArtDataHelper_Dumpers
       lardata_RecoBaseProxy
       art_Persistency_Provenance
+      ${ROOT_Core_LIBRARY}
       ${MF_MESSAGELOGGER})
 endforeach(Dumper IN LISTS RecoBaseDumpers)
 
@@ -53,14 +55,15 @@ foreach(Dumper IN LISTS SimulationDumpers)
   simple_plugin(${Dumper} "module"
       lardataobj_Simulation
       art_Persistency_Provenance
-      ${MF_MESSAGELOGGER}
-      ${ROOT_CORE})
+      ${MF_MESSAGELOGGER})
+      ${ROOT_Core_LIBRARY}
 endforeach(Dumper IN LISTS SimulationDumpers)
 
 
 foreach(Dumper IN LISTS MCDumpers)
   simple_plugin(${Dumper} "module"
       lardataobj_MCBase
+      ${ROOT_Core_LIBRARY}
       art_Persistency_Provenance)
 endforeach(Dumper IN LISTS MCDumpers)
 

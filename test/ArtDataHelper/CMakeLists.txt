@@ -3,7 +3,7 @@ art_make(
     lardata_ArtDataHelper
     lardataobj_RecoBase
     ${MF_MESSAGELOGGER}
-    
+    ${ROOT_Core_Library}
     ${FHICLCPP}
     cetlib_except
 )

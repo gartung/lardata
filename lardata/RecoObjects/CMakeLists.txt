@@ -1,3 +1,4 @@
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-misleading-indentation")
 art_make(LIB_LIBRARIES lardataobj_AnalysisBase
                        lardataobj_RecoBase
                        larcore_Geometry_Geometry_service
@@ -7,9 +8,11 @@ art_make(LIB_LIBRARIES lardataobj_AnalysisBase
                        canvas
                        ${FHICLCPP}
                        cetlib_except
-                       ${ROOT_CORE}
-                       ${ROOT_PHYSICS}
-                       ${Boost_SYSTEM_LIBRARY})
+                       ${ROOT_Core_LIBRARY}
+                       ${ROOT_Physics_LIBRARY}
+                       ${Boost_system_LIBRARY}
+        )
+
 
 install_headers()
 install_fhicl()

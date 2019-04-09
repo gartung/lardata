@@ -1,48 +1,48 @@
 simple_plugin( AssnProducer1          "module"  NO_INSTALL cetlib_except art_Persistency_Provenance)
 simple_plugin( AssnProducer2          "module"  NO_INSTALL cetlib_except art_Persistency_Provenance)
 simple_plugin( AssnAnalyzer           "module"  NO_INSTALL cetlib_except art_Persistency_Provenance)
-
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-pedantic")
 cet_test(associated_groups_test USE_BOOST_UNIT
   LIBRARIES
     canvas
     cetlib cetlib_except
-    ${ROOT_CORE}
+    ${ROOT_Core_LIBRARY}
   )
 
 cet_test(test_feag HANDBUILT
-  TEST_EXEC lar 
+  TEST_EXEC lar
   TEST_ARGS --rethrow-all --config test_feag.fcl
   DATAFILES test_feag.fcl
 )
 
 cet_test(test_feag2 HANDBUILT
-  TEST_EXEC lar 
+  TEST_EXEC lar
   TEST_ARGS --rethrow-all --config test_feag2.fcl
   DATAFILES test_feag2.fcl
   TEST_PROPERTIES DEPENDS test_feag
 )
 
 cet_test(test_associatedgroups_full HANDBUILT
-  TEST_EXEC lar 
+  TEST_EXEC lar
   TEST_ARGS --rethrow-all --config test_associatedgroups_full.fcl
   DATAFILES test_associatedgroups_full.fcl
 )
 
 cet_test(test_associatedgroups HANDBUILT
-  TEST_EXEC lar 
+  TEST_EXEC lar
   TEST_ARGS --rethrow-all --config test_associatedgroups.fcl
   DATAFILES test_associatedgroups.fcl
   TEST_PROPERTIES DEPENDS test_feag2
 )
 
 cet_test(test_associatedgroupswithleft_full HANDBUILT
-  TEST_EXEC lar 
+  TEST_EXEC lar
   TEST_ARGS --rethrow-all --config test_associatedgroupswithleft_full.fcl
   DATAFILES test_associatedgroupswithleft_full.fcl
 )
 
 cet_test(test_associatedgroupswithleft HANDBUILT
-  TEST_EXEC lar 
+  TEST_EXEC lar
   TEST_ARGS --rethrow-all --config test_associatedgroupswithleft.fcl
   DATAFILES test_associatedgroupswithleft.fcl
   TEST_PROPERTIES DEPENDS test_feag2

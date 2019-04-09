@@ -2,14 +2,15 @@
 ###  ProxyBase tests
 ###
 add_subdirectory(ProxyBase)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-pedantic")
 
 simple_plugin(ProxyBaseTest "module"
   lardata_RecoBaseProxy
   lardataobj_RecoBase
   art_Persistency_Provenance
   ${MF_MESSAGELOGGER}
-  
-  ${ROOT_GENVECTOR}
+  ${ROOT_Core_LIBRARY} 
+  ${ROOT_GenVector_LIBRARY}
   USE_BOOST_UNIT
   )
 
@@ -30,8 +31,8 @@ simple_plugin(TrackProxyTest "module"
   lardataobj_RecoBase
   art_Persistency_Provenance
   ${MF_MESSAGELOGGER}
-  
-  ${ROOT_GENVECTOR}
+  ${ROOT_Core_LIBRARY}
+  ${ROOT_GenVector_LIBRARY}
   USE_BOOST_UNIT
   )
 
@@ -39,14 +40,14 @@ simple_plugin(TrackProxyHitMaker "module"
   lardataobj_RecoBase
   art_Persistency_Provenance
   ${MF_MESSAGELOGGER}
-  
+  ${ROOT_Core_LIBRARY}
   )
 
 simple_plugin(TrackProxyTrackMaker "module"
   lardataobj_RecoBase
   art_Persistency_Provenance
   ${MF_MESSAGELOGGER}
-  ${ROOT_CORE}
+  ${ROOT_Core_LIBRARY}
   )
 
 cet_test(TrackProxy_test
@@ -65,8 +66,8 @@ simple_plugin(ChargedSpacePointProxyTest "module"
   lardataobj_RecoBase
   art_Persistency_Provenance
   ${MF_MESSAGELOGGER}
-  
-  ${ROOT_GENVECTOR}
+  ${ROOT_Core_LIBRARY}
+  ${ROOT_GenVector_LIBRARY}
   USE_BOOST_UNIT
   )
 
@@ -74,7 +75,7 @@ simple_plugin(ChargedSpacePointProxyInputMaker "module"
   lardataobj_RecoBase
   lardata_ArtDataHelper
   ${MF_MESSAGELOGGER}
-  
+  ${ROOT_Core_LIBRARY}
   USE_BOOST_UNIT
   )
 
@@ -85,5 +86,3 @@ cet_test(ChargedSpacePointProxy_test
   TEST_ARGS -- --rethrow-all -c ./test_chargedspacepointproxy.fcl
   USE_BOOST_UNIT
   )
-
-###############################################################################
