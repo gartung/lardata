@@ -93,7 +93,9 @@ double lar::util::TrackPitchInView
       cet::exception("TrackPitchInView") << "ERROR: invalid TPC " << std::string(tpcid)
          << " for trajectory point #" << trajectory_point  << ".\n";
    }
-   double wirePitch   = geom->WirePitch(view, tpcid.TPC, tpcid.Cryostat);
+   // TEMPORARY FIX -- from Gray Putnam
+   // NOTE: this assumes that all sets of wire planes in ech TPC have the same pitch
+   double wirePitch   = geom->WirePitch(view);
    double angleToVert = geom->WireAngleToVertical(view, tpcid.TPC, tpcid.Cryostat) - 0.5*::util::pi<>();
 
    const auto& dir = track.DirectionAtPoint(trajectory_point);
