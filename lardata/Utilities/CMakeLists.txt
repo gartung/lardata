@@ -13,7 +13,7 @@ art_make(NO_PLUGINS
 
 simple_plugin(DatabaseUtil "service"
               ${MF_MESSAGELOGGER}
-              ${PQ}
+              ${PostgreSQL_LIBRARY}
               ${ART_FRAMEWORK_CORE}
               ${ART_FRAMEWORK_PRINCIPAL}
               ${ART_ROOT_IO_ROOTDB}
@@ -31,16 +31,16 @@ simple_plugin(DetectorPropertiesServiceArgoNeuT "service"
               ${ART_ROOT_IO_ROOTDB}
               ${SQLITE3}
               ${MF_MESSAGELOGGER}
-              ${ROOT_CORE}
-              ${ROOT_RIO})
+              ROOT::Core
+              ROOT::RIO)
 
 simple_plugin(LArFFT "service"
               ${MF_MESSAGELOGGER}
-              ${ROOT_CORE}
-              ${ROOT_FFTW}
-              ${ROOT_HIST}
-              ${ROOT_MATHCORE}
-              ${ROOT_PHYSICS})
+              ROOT::Core
+              ROOT::FFTW
+              ROOT::Hist
+              ROOT::MathCore
+              ROOT::Physics)
 
 simple_plugin(ComputePi "module"
               ${MF_MESSAGELOGGER})
@@ -64,6 +64,5 @@ set_property(TARGET gshf_MarqFitAlg PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 install_headers()
 install_fhicl()
-install_source()
 
 add_subdirectory(test)

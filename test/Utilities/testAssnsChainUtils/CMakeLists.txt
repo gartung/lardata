@@ -7,6 +7,7 @@ simple_plugin(
     ${MF_MESSAGELOGGER}
     ${FHICLCPP}
     cetlib_except
+    ROOT::Core
   NO_INSTALL
   )
 simple_plugin(
@@ -18,6 +19,7 @@ simple_plugin(
     ${MF_MESSAGELOGGER}
     ${FHICLCPP}
     cetlib_except
+    ROOT::Core
   NO_INSTALL
   )
 simple_plugin(
@@ -29,6 +31,7 @@ simple_plugin(
     ${MF_MESSAGELOGGER}
     ${FHICLCPP}
     cetlib_except
+    ROOT::Core
   NO_INSTALL
   )
 simple_plugin(
@@ -40,7 +43,8 @@ simple_plugin(
     ${MF_MESSAGELOGGER}
     ${FHICLCPP}
     cetlib_except
-    ${ROOT_BASIC_LIB_LIST}
+    ROOT::Core
+    ROOT::Physics
   NO_INSTALL
   )
 simple_plugin(
@@ -52,7 +56,7 @@ simple_plugin(
     ${MF_MESSAGELOGGER}
     ${FHICLCPP}
     cetlib_except
-    ${ROOT_CORE}
+    ROOT::Core
   )
 
 cet_test(AssnsChainUtil_test HANDBUILT

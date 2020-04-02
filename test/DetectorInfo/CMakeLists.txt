@@ -8,5 +8,4 @@ cet_test( DetectorPropertiesBo_test
   TEST_ARGS ./dettest_bo.fcl
 )
 
-install_source()
 install_fhicl()

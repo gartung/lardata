@@ -3,7 +3,7 @@ art_make(
     lardata_ArtDataHelper
     lardataobj_RecoBase
     ${MF_MESSAGELOGGER}
-    
+    ROOT::Core
     ${FHICLCPP}
     cetlib_except
 )
@@ -16,5 +16,3 @@ cet_test(HitCollectorTest HANDBUILT
 
 install_headers()
 install_fhicl()
-install_source()
-

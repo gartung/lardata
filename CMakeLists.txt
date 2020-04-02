@@ -13,21 +13,14 @@
 # ======================================================================
 
 
-# use cmake 2.8 or later
-cmake_minimum_required (VERSION 2.8)
+# use cmake 3.12 or later
+cmake_minimum_required (VERSION 3.12)
 
-project(lardata)
+project(lardata VERSION 8.14.02 LANGUAGES CXX)
 
-# cetbuildtools contains our cmake modules
-SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
-IF (NOT CETBUILDTOOLS_VERSION)
-    MESSAGE (FATAL_ERROR "ERROR: setup cetbuildtools to get the cmake modules")
-ENDIF()
-
-set(CMAKE_MODULE_PATH $ENV{CANVAS_ROOT_IO_DIR}/Modules
-		      $ENV{CETBUILDTOOLS_DIR}/Modules
-		      ${CMAKE_MODULE_PATH})
-
+set(fcl_dir job)
+set(gdml_dir gdml)
+find_package( cetmodules )
 include(CetCMakeEnv)
 cet_cmake_env()
 
@@ -40,22 +33,19 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
 cet_report_compiler_flags()
 
 # these are minimum required versions, not the actual product versions
-find_ups_product( nusimdata )
-find_ups_product( larcoreobj )
-find_ups_product( larcorealg )
-find_ups_product( lardataobj )
-find_ups_product( lardataalg )
-find_ups_product( larcore  )
-find_ups_product( art  )
-find_ups_product(art_root_io)
-find_ups_product( postgresql  )
-find_ups_product( range )
-find_ups_product( cetbuildtools )
-find_ups_product( fftw )
+find_package( PostgreSQL REQUIRED )
+find_package( Range-v3 )
+find_package( ROOT REQUIRED COMPONENTS Core GenVector FFTW Cling RIO Net Hist Geom XMLIO Gdml Graf Graf3d Gpad Tree EG Thread MathCore Physics Postscript Rint)
+find_package(Boost REQUIRED COMPONENTS date_time filesystem graph program_options
+serialization regex system unit_test_framework)
+find_package( lardataobj REQUIRED)
+find_package( lardataalg REQUIRED)
+find_package( larcore  REQUIRED)
+find_package( nutools  REQUIRED)
 
 #  Find all the libraries needed by our dependent CMakeList.txt files
-# cet_find_library( NUSIMDATA_SIMULATIONBASE NAMES nusimdata_SimulationBase PATHS ENV NUSIMDATA_LIB NO_DEFAULT_PATH )
-cet_find_library( PQ                  NAMES pq                  PATHS ENV POSTGRESQL_LIBRARIES NO_DEFAULT_PATH )
+cet_find_library( NUSIMDATA_SIMULATIONBASE NAMES nusimdata_SimulationBase  )
+find_library(SQLITE3 NAMES sqlite3 REQUIRED)
 
 # macros for artdaq_dictionary and simple_plugin
 include(ArtDictionary)
@@ -67,9 +57,9 @@ add_subdirectory(lardata)
 
 # tests
 add_subdirectory(test)
-
+add_subdirectory(cmakeConfig)
 # ups - table and config files
-add_subdirectory(ups)
+#add_subdirectory(ups)
 
 # packaging utility
-include(UseCPack)
+#include(UseCPack)

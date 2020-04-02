@@ -10,12 +10,13 @@ art_make(NO_PLUGINS
                        art_Persistency_Provenance
                        canvas
                        cetlib_except
-                       ${PQ}
-                       ${Boost_SERIALIZATION_LIBRARY}
-                       ${Boost_DATE_TIME_LIBRARY}
-                       ${ROOT_CORE}
-                       ${ROOT_RIO}
-                       ${ROOT_TREE}
+                       ${PostgreSQL_LIBRARY}
+                       Boost::system
+                       Boost::serialization
+                       Boost::date_time
+                       ROOT::Core
+                       ROOT::RIO
+                       ROOT::Tree
         )
 
 simple_plugin(LArRawInputSource "source"
